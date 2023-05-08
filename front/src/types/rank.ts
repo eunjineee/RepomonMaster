@@ -1,14 +1,13 @@
 export type RepomonRankContentType = {
-  rating: number;
-  repoExp: number;
   repoId: number;
-  repoKey: string;
   repoName: string;
+  repoExp: number;
   repoOwner: string;
-  repomon: string;
   repomonNickname: string;
+  rating: number;
   repomonTier: number;
-  username: string;
+  repoRank: number;
+  repomonUrl: string;
 };
 
 export type RepomonRankInfoType = {
