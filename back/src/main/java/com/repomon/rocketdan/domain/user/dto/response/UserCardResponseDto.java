@@ -48,7 +48,7 @@ public class UserCardResponseDto {
 	private final Long forkCount;
 
 
-	public static UserCardResponseDto fromEntity(UserCardDetail userCardDetail, UserEntity user, RepoEntity representrepo) throws IOException {
+	public static UserCardResponseDto fromEntity(UserCardDetail userCardDetail, UserEntity user, RepoEntity representrepo, List<String> languages) throws IOException {
 
 
 		return UserCardResponseDto.builder()
@@ -63,7 +63,7 @@ public class UserCardResponseDto {
 				.myrepomonTier(representrepo.getRepomon().getRepomonTier())
 			.totalCommitCount(userCardDetail.getTotalCommitCount())
 			.totalCodeLineCount(userCardDetail.getTotalCodeLineCount())
-			.languages(userCardDetail.getLanguages())
+			.languages(languages)
 			.avgContribution(userCardDetail.getAvgContribution())
 			.totalMergeCount(userCardDetail.getTotalMergeCount())
 			.totalReviewCount(userCardDetail.getTotalReviewCount())

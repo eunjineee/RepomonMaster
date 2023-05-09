@@ -2,6 +2,7 @@ package com.repomon.rocketdan.domain.user.controller;
 
 
 import com.repomon.rocketdan.common.dto.ResultDto;
+import com.repomon.rocketdan.domain.repo.dto.request.RepoCardRequestDto;
 import com.repomon.rocketdan.domain.user.dto.request.RepresentRepomonRequestDto;
 import com.repomon.rocketdan.domain.user.dto.response.UserCardResponseDto;
 import com.repomon.rocketdan.domain.user.dto.response.UserResponseDto;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -48,4 +50,18 @@ public class UserController {
 		return ResponseEntity.ok(responseDto);
 	}
 
+	@ApiOperation(value = "유저카드 언어 조회")
+	@GetMapping("/{userId}/card/language")
+	public ResponseEntity<ResultDto<List<String>>> getUserLanguage(@PathVariable Long userId) throws IOException {
+		List<String> responseDto = userService.getUserRepoLanguage(userId);
+		System.out.println("responseDto = " + responseDto);
+		return ResponseEntity.ok().body(ResultDto.of(responseDto));
+	}
+
+	@ApiOperation(value = "유저카드 언어설정")
+	@PutMapping("/{userId}/card/language")
+	public ResponseEntity<ResultDto> modifyPersonalRepoCard(@PathVariable Long userId, @RequestBody RepoCardRequestDto requestDto) {
+		userService.modifyUserRepo(userId, requestDto);
+		return ResponseEntity.ok(ResultDto.ofSuccess());
+	}
 }

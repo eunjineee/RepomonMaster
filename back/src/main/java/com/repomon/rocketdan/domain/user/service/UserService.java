@@ -5,6 +5,7 @@ import com.repomon.rocketdan.common.utils.GHUtils;
 import com.repomon.rocketdan.common.utils.SecurityUtils;
 import com.repomon.rocketdan.domain.repo.app.RepoDetail;
 import com.repomon.rocketdan.domain.repo.app.RepoListItem;
+import com.repomon.rocketdan.domain.repo.dto.request.RepoCardRequestDto;
 import com.repomon.rocketdan.domain.repo.entity.ActiveRepoEntity;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
 import com.repomon.rocketdan.domain.repo.repository.ActiveRepoRepository;
@@ -13,16 +14,20 @@ import com.repomon.rocketdan.domain.user.dto.request.RepresentRepomonRequestDto;
 import com.repomon.rocketdan.domain.user.dto.response.UserCardResponseDto;
 import com.repomon.rocketdan.domain.user.dto.response.UserResponseDto;
 import com.repomon.rocketdan.domain.user.entity.UserEntity;
+import com.repomon.rocketdan.domain.user.entity.UserLanguageEntity;
+import com.repomon.rocketdan.domain.user.repository.UserLanguageRepository;
 import com.repomon.rocketdan.domain.user.repository.UserRepository;
 import com.repomon.rocketdan.exception.CustomException;
 import com.repomon.rocketdan.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHUser;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +39,7 @@ import static com.repomon.rocketdan.exception.ErrorCode.*;
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
+	private final UserLanguageRepository userLanguageRepository;
 
 	private final ActiveRepoRepository activeRepoRepository;
 	private final RepoRepository repoRepository;
@@ -121,12 +127,43 @@ public class UserService {
 		ActiveRepoEntity representActiveRepo = user.getRepresentRepo().orElseThrow(
 				() -> new CustomException(NOT_FOUND_REPRESENT_REPOSITORY)
 		);
+		List<UserLanguageEntity> userLanguages = userLanguageRepository.findAllByUser(user);
+		List<String> userLanguage = new ArrayList<>();
+		if (null != userLanguages) {
+			for (UserLanguageEntity item : userLanguages) {
+				userLanguage.add(item.getLanguageCode());
+			}
+		}
 		try {
 			RepoEntity representRepo =representActiveRepo.getRepo();
-			return UserCardResponseDto.fromEntity(ghUtils.getUserCardInfo(user.getUserName()), user, representRepo);
+			return UserCardResponseDto.fromEntity(ghUtils.getUserCardInfo(user.getUserName()), user, representRepo, userLanguage);
 
 		} catch (IOException | InterruptedException e) {
 			throw new CustomException(ErrorCode.DATA_BAD_REQUEST);
+		}
+	}
+
+	public List<String> getUserRepoLanguage(Long userId) throws IOException {
+		UserEntity user = userRepository.findById(userId).orElseThrow(
+				() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);}
+		);
+		List<String> userLanguage = ghUtils.getLanguagesByUser(user.getUserName());
+		return userLanguage;
+	}
+
+	public void modifyUserRepo(Long userId, RepoCardRequestDto requestDto){
+		UserEntity user = userRepository.findById(userId).orElseThrow(
+				() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);}
+		);
+		List<UserLanguageEntity> languageList = userLanguageRepository.findAllByUser(user);
+
+		if (null != languageList){
+			for (UserLanguageEntity item : languageList){
+				userLanguageRepository.delete(item);
+			}
+		}
+		for (String item : requestDto.getLangueges()) {
+			userLanguageRepository.save(UserLanguageEntity.of(item, user));
 		}
 	}
 

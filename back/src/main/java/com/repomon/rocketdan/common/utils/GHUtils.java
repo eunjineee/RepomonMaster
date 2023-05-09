@@ -500,11 +500,12 @@ public class GHUtils {
     /**
      * 유저 모든 레포지터리에서 언어 조회
      *
-     * @param repos
-     * @return
-     * @throws IOException
      */
-    public List<String> getLanguagesByUser(Map<String, GHRepository> repos) throws IOException {
+    public List<String> getLanguagesByUser(String userName) throws IOException {
+        GHUser user = gitHub.getUser(userName);
+        Map<String, GHRepository> repos = getRepositoriesInPublicOrganization(user);
+        repos.putAll(getRepositories(user));
+
         Set<String> languages = new HashSet<>();
         for (GHRepository repo : repos.values()) {
             Map<String, Long> repoLanguages = repo.listLanguages();
@@ -595,7 +596,7 @@ public class GHUtils {
         userCardInfo.setRepoCount(repos.size());
         userCardInfo.setTotalCommitCount(getTotalCommitCountByUser(repos, userName));
         userCardInfo.setTotalCodeLineCount(getTotalCodeLineCountByUser(repos, userName));
-        userCardInfo.setLanguages(getLanguagesByUser(repos));
+
         userCardInfo.setAvgContribution(getAvgContributionByUser(repos, userName));
         userCardInfo.setTotalIssueCount(getTotalIssueCountByUser(userName));
         userCardInfo.setStarCount(getStarAndForkByUser(repos).get(0));

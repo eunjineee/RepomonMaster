@@ -1,16 +1,16 @@
 package com.repomon.rocketdan.domain.user.entity;
 
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.repomon.rocketdan.domain.repo.entity.ActiveRepoEntity;
+import com.repomon.rocketdan.domain.repo.entity.PersonalLanguageEntity;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "user_language")
@@ -25,5 +25,12 @@ public class UserLanguageEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    public static UserLanguageEntity of(String languageCode, UserEntity user) {
+        return UserLanguageEntity.builder()
+                .languageCode(languageCode)
+                .user(user)
+                .build();
+    }
 
 }
