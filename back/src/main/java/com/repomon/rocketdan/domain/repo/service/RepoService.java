@@ -222,6 +222,7 @@ public class RepoService {
 			.orElseGet(() -> findContributeDtoWithGHApi(repoEntity));
 
 		for(int retries = 5; retries > 0 && responseDto.getCommitters().isEmpty(); retries--){
+			redisContributeRepository.delete(responseDto);
 			responseDto = findContributeDtoWithGHApi(repoEntity);
 		}
 
@@ -398,7 +399,12 @@ public class RepoService {
 			Map<String, Integer> commitCountMap = ghUtils.getCommitterInfoMap(statistics);
 
 			String mvp = null;
-			int totalCommitCount = ghUtils.getTotalCommitCount(statistics);
+
+			int totalCommitCount = 0;
+			while(totalCommitCount == 0 && !commitCountMap.isEmpty()) {
+				totalCommitCount = ghUtils.getTotalCommitCount(statistics);
+			}
+
 			for (String user : commitCountMap.keySet()) {
 				if (mvp == null || commitCountMap.get(user) > commitCountMap.get(mvp)) {
 					mvp = user;

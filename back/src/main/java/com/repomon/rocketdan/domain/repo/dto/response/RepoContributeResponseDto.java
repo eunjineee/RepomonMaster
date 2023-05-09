@@ -2,6 +2,7 @@ package com.repomon.rocketdan.domain.repo.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
+import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class RepoContributeResponseDto {
     private String repoOwner;
     private int totalCommitCount;
     private long totalLineCount;
-    private Map<String, Integer> committers;
+    private Map<String, Integer> committers = new HashMap<>();
     private String mvp;
 
 

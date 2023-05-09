@@ -29,7 +29,7 @@ public class RepoListResponseDto {
     private String userName;
     private int totalPages;
     private long totalElements;
-    private List<RepoListItem> repoListItems;
+    private List<RepoListItem> repoListItems = new ArrayList<>();
 
     public static RepoListResponseDto empty(String userName){
         return new RepoListResponseDto(null, userName, 0, 0L, new ArrayList<>());

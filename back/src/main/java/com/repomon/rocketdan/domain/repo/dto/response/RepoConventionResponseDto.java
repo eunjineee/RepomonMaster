@@ -4,6 +4,7 @@ package com.repomon.rocketdan.domain.repo.dto.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.repomon.rocketdan.domain.repo.entity.RepoConventionEntity;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.redis.core.RedisHash;
@@ -25,7 +26,7 @@ public class RepoConventionResponseDto {
 	@Indexed
 	private Long repoId;
 	private String repoOwner;
-	private List<ConventionInfo> conventions;
+	private List<ConventionInfo> conventions = new ArrayList<>();
 	private int totalCnt;
 	private int collectCnt;
 

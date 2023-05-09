@@ -42,7 +42,7 @@ public class GHUtils {
     private String accessToken;
     private GitHub gitHub;
 
-    private int pageSize = 200;
+    private int pageSize = 100;
 
     @PostConstruct
     private void init() throws IOException {
