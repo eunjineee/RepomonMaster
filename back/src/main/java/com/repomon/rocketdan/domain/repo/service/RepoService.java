@@ -4,6 +4,7 @@ package com.repomon.rocketdan.domain.repo.service;
 import com.repomon.rocketdan.common.utils.GHUtils;
 import com.repomon.rocketdan.common.utils.SecurityUtils;
 import com.repomon.rocketdan.domain.repo.app.RepoDetail;
+import com.repomon.rocketdan.domain.repo.dto.request.RepoCardRequestDto;
 import com.repomon.rocketdan.domain.repo.dto.request.RepoConventionRequestDto;
 import com.repomon.rocketdan.domain.repo.dto.request.RepoPeriodRequestDto;
 import com.repomon.rocketdan.domain.repo.dto.response.*;
@@ -53,6 +54,7 @@ public class RepoService {
 	private final RepoHistoryRepository repoHistoryRepository;
 	private final RepoConventionRepository conventionRepository;
 	private final ActiveRepoRepository activeRepoRepository;
+	private final PersonalLanguageRepository languageRepository;
 
 	// redis repository
 	private final RepoRedisListRepository redisListRepository;
@@ -559,6 +561,28 @@ public class RepoService {
 		return RepomonSelectResponseDto.createSelectRepomon(repomonList);
 	}
 
+	public void modifyPersonalRepo(Long repoId, RepoCardRequestDto requestDto){
+		String userName = SecurityUtils.getCurrentUserId();
+		UserEntity user = userRepository.findByUserName(userName).orElseThrow(
+				() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);}
+		);
+		RepoEntity repo = repoRepository.findById(repoId).orElseThrow(() -> {
+			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
+		});
+		ActiveRepoEntity activeRepoEntity = activeRepoRepository.findByRepoAndUser(repo, user).orElseThrow(() -> {
+			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
+		});
+
+		List<PersonalLanguageEntity> pastLanguage = languageRepository.findAllByActiveRepoEntity(activeRepoEntity);
+		if (null != pastLanguage){
+			for (PersonalLanguageEntity item : pastLanguage){
+				languageRepository.delete(item);
+			}
+		}
+		for (String item : requestDto.getLangueges()) {
+			languageRepository.save(PersonalLanguageEntity.of(item, activeRepoEntity));
+		}
+	}
 
 	/**
 	 * 레포 card detail
@@ -593,7 +617,14 @@ public class RepoService {
 			throw new RuntimeException(e);
 		}
 
-		return RepoCardResponseDto.fromEntityAndGHRepository(repoEntity, ghRepository, historyEntityList, totalLineCount, contributers);
+		//컨벤션 지킴율
+		double conventionrate = 0;
+		RepoConventionResponseDto conventionDto = getRepoConventionInfo(repoId);
+		if (conventionDto.getTotalCnt() != 0 && conventionDto.getCollectCnt() != 0){
+			conventionrate = conventionDto.getCollectCnt()/conventionDto.getTotalCnt()*100;
+		}
+
+		return RepoCardResponseDto.fromEntityAndGHRepository(repoEntity, ghRepository, historyEntityList, totalLineCount, contributers, conventionrate);
 	}
 
 	/**
@@ -629,6 +660,14 @@ public class RepoService {
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);});
         Map<String, String> userInfo = ghUtils.getUser(user.getUserName());
 
+		//언어 설정
+		ActiveRepoEntity activeRepo = activeRepoRepository.findByRepoAndUser(repoEntity, user).orElseThrow(()-> {throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);});
+		List<PersonalLanguageEntity> language = languageRepository.findAllByActiveRepoEntity(activeRepo);
+		List<String> languages = new ArrayList<>();
+		for (PersonalLanguageEntity item : language){
+			languages.add(item.getLanguageCode());
+		}
+
 		//기여도
 		RepoContributeResponseDto contributeResponse = redisContributeRepository.findByRepoId(repoId)
 				.orElseGet(() -> findContributeDtoWithGHApi(repoEntity));
@@ -657,8 +696,13 @@ public class RepoService {
 		//내 코드 수
 		Long mytotalcode = ghUtils.getLineCountWithUser(statistics, user.getUserName());
 
+		//컨벤션 지킴율
+		double conventionrate = 0;
+		RepoConventionResponseDto conventionDto = getRepoConventionInfo(repoId);
+		if (conventionDto.getTotalCnt() != 0 && conventionDto.getCollectCnt() != 0){
+			conventionrate = conventionDto.getCollectCnt()/conventionDto.getTotalCnt()*100;
+		}
 
-
-		return RepoPersonalCardResponseDto.fromEntityAndGHRepository(repoEntity, ghRepository, historyEntityList, contributers, userInfo, contributeResponse, myissue ,mytotalcode, mymerges);
+		return RepoPersonalCardResponseDto.fromEntityAndGHRepository(repoEntity, ghRepository, historyEntityList, contributers, userInfo, contributeResponse, myissue ,mytotalcode, mymerges, conventionrate, languages);
 	}
 }

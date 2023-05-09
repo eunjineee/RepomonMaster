@@ -1,16 +1,14 @@
 package com.repomon.rocketdan.domain.repo.entity;
 
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "personal_language")
@@ -27,4 +25,10 @@ public class PersonalLanguageEntity {
 	@JoinColumn(name = "active_repo_id")
 	private ActiveRepoEntity activeRepoEntity;
 
+	public static PersonalLanguageEntity of(String languageCode, ActiveRepoEntity repoEntity) {
+		return PersonalLanguageEntity.builder()
+				.languageCode(languageCode)
+				.activeRepoEntity(repoEntity)
+				.build();
+	}
 }

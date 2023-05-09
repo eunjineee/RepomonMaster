@@ -19,7 +19,7 @@ import org.springframework.data.redis.core.index.Indexed;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash(value = "redis-repoList", timeToLive = 86400)
+@RedisHash(value = "redis-repoList")
 public class RepoListResponseDto {
 
     @Id @JsonIgnore

@@ -118,13 +118,12 @@ public class UserService {
 	 */
 	public UserCardResponseDto getUserCard(Long userId) {
 		UserEntity user = userRepository.findById(userId).orElseThrow(() -> {throw new CustomException(NOT_FOUND_USER);});
-
+		ActiveRepoEntity representActiveRepo = user.getRepresentRepo().orElseThrow(
+				() -> new CustomException(NOT_FOUND_REPRESENT_REPOSITORY)
+		);
 		try {
-			RepoEntity representrepo = repoRepository.findById(user.getRepresentRepo().get().getActiveRepoId()).orElseThrow(
-					() -> {
-						throw new CustomException(NOT_FOUND_REPRESENT_REPOSITORY);
-					});
-			return UserCardResponseDto.fromEntity(ghUtils.getUserCardInfo(user.getUserName()), user, representrepo);
+			RepoEntity representRepo =representActiveRepo.getRepo();
+			return UserCardResponseDto.fromEntity(ghUtils.getUserCardInfo(user.getUserName()), user, representRepo);
 
 		} catch (IOException | InterruptedException e) {
 			throw new CustomException(ErrorCode.DATA_BAD_REQUEST);

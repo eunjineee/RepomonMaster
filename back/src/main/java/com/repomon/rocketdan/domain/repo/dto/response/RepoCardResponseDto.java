@@ -59,7 +59,7 @@ import org.kohsuke.github.GHRepository;
         private Long merges;
         private Long reviews;
 
-        public static RepoCardResponseDto fromEntityAndGHRepository(RepoEntity repoEntity, GHRepository ghRepository, List<RepoHistoryEntity> historyEntityList, Long totalcode, Integer contributers) {
+        public static RepoCardResponseDto fromEntityAndGHRepository(RepoEntity repoEntity, GHRepository ghRepository, List<RepoHistoryEntity> historyEntityList, Long totalcode, Integer contributers, Double conventionrate) {
             try {
                 Map<String, Long> languageMap = ghRepository.listLanguages();
                 List<String> languages = new ArrayList<>();
@@ -91,7 +91,7 @@ import org.kohsuke.github.GHRepository;
                             break;
                     }
                 }
-
+                int convention = (int) Math.round(conventionrate);
                 return RepoCardResponseDto.builder()
                         .repomonId(repoEntity.getRepomon().getRepomonId())
                         .repoExp(repoEntity.getRepoExp())
@@ -103,7 +103,7 @@ import org.kohsuke.github.GHRepository;
                         .languages(languages)
                         .totalcommit(totalCommit)
                         .totalcode(totalcode)
-                        .conventionrate(60)
+                        .conventionrate(convention)
                         .starCnt(ghRepository.getStargazersCount())
                         .forkCnt(ghRepository.getForksCount())
                         .commits(commitsExp)
