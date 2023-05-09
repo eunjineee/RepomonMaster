@@ -8,6 +8,7 @@ import com.repomon.rocketdan.common.handler.OAuth2SuccessHandler;
 import com.repomon.rocketdan.common.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -47,7 +48,8 @@ public class SecurityConfig{
             .and()
                 .authorizeRequests()
                 .antMatchers("/login/success").authenticated()
-                .antMatchers("/repo/{repoId}/info/convention", "/repo/{repoId}/info/period").authenticated()
+                .mvcMatchers(HttpMethod.PUT, "/repo/{repoId}/info/convention").authenticated()
+                .antMatchers("/repo/{repoId}/info/period").authenticated()
                 .antMatchers("/repomon/{repoId}/match", "/repomon/nickname", "/repomon/start", "/repomon/stat").authenticated()
                 .antMatchers("/user/{userId}/represent").authenticated()
                 .anyRequest().permitAll() // 그 외 요청은 모두 permitAll 처리
