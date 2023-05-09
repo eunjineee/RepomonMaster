@@ -1,5 +1,6 @@
 package com.repomon.rocketdan.common.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,9 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
@@ -35,6 +38,15 @@ public class RedisConfig {
     public RedisTemplate<?, ?> redisTemplate() {
         RedisTemplate<?, ?> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
+
+        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+        RedisSerializer<Object> jsonSerializer = new GenericJackson2JsonRedisSerializer(new ObjectMapper());
+
+        redisTemplate.setKeySerializer(stringSerializer);
+        redisTemplate.setValueSerializer(jsonSerializer);
+        redisTemplate.setHashKeySerializer(stringSerializer);
+        redisTemplate.setHashValueSerializer(jsonSerializer);
+
         return redisTemplate;
     }
 
@@ -46,7 +58,10 @@ public class RedisConfig {
             .entryTtl(Duration.ofSeconds(600)) // 캐시의 기본 유효시간 설정
             .computePrefixWith(CacheKeyPrefix.simple())
             .serializeKeysWith(
-                RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())); // redis 캐시 데이터 저장방식을 StringSeriallizer로 지정
+                RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())
+            ).serializeValuesWith(
+                RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())
+            );
 
         // 캐시키별 유효시간 설정
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
