@@ -6,7 +6,11 @@ import com.repomon.rocketdan.domain.user.entity.UserEntity;
 import com.repomon.rocketdan.domain.user.repository.UserRepository;
 import com.repomon.rocketdan.exception.CustomException;
 import com.repomon.rocketdan.exception.ErrorCode;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.kohsuke.github.GHRateLimit;
+import org.kohsuke.github.GHRateLimit.Record;
 import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
 import org.springframework.stereotype.Component;
 
 @Aspect @Slf4j
@@ -29,22 +36,38 @@ public class GHUtilsAop {
     private final RepoRepository repoRepository;
     private final GHUtils ghUtils;
 
-    @Around("@annotation(Retries)")
-    public Object aroundRetriesAnno(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
-        int retries = 10;
+    @Around("execution(* com.repomon.rocketdan.common.utils.GHUtils.*(..))")
+    public Object aroundRetriesAnno(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        String methodName = proceedingJoinPoint.getSignature().getName();
+        try {
+            GHUtils ghUtils = (GHUtils) proceedingJoinPoint.getTarget();
+            GitHub gitHub = ghUtils.gitHub;
 
-        while(retries-- > 0) {
-            try {
-                return proceedingJoinPoint.proceed();
-            } catch (Exception e) {
-                Thread.sleep(500L);
+            GHRateLimit rateLimit = gitHub.getRateLimit();
+            Record core = rateLimit.getCore();
+
+            log.info("remaining 개수 => {}", core.getRemaining());
+            if (core.getRemaining() == 0) {
+                LocalDateTime resetDate = LocalDateTime.ofInstant(core.getResetDate().toInstant(),
+                    ZoneId.systemDefault());
+                Duration between = Duration.between(LocalDateTime.now(), resetDate);
+                long seconds = between.getSeconds();
+                Thread.sleep(seconds);
             }
+
+            return proceedingJoinPoint.proceed();
+        } catch (RuntimeException e) {
+            return aroundRetriesAnno(proceedingJoinPoint);
+        } finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            log.info("END: " + methodName + " " + timeMs + "ms");
         }
-        throw new RuntimeException();
     }
 
     @Around("execution(* com.repomon.rocketdan.domain.repo.service.RepoService.modifyAllRepo(..))))")
-    public Object useRepoIoInSearchAllRepo(ProceedingJoinPoint proceedingJoinPoint){
+    public Object useRepoIoInSearchAllRepo(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
         log.info("사용중인 modifyAllRepo -> repoId 체크시작!!");
         List<Object> params = Arrays.asList((proceedingJoinPoint.getArgs()));
         log.info("Params => {}", params);
@@ -82,8 +105,6 @@ public class GHUtilsAop {
             usingKeys.addAll(repoIds);
 
             return proceedingJoinPoint.proceed();
-        }catch(Throwable throwable){
-            throw new RuntimeException();
         }finally {
             usingKeys.removeAll(repoIds);
             usingUsers.remove(userId);
@@ -94,7 +115,7 @@ public class GHUtilsAop {
     @Around("execution(* com.repomon.rocketdan.domain.repo.service.RepoService.modifyRepoInfo(..)) || "
         + "execution(* com.repomon.rocketdan.domain.repo.service.RepoService.RepoCardDetail(..)) || "
         + "execution(* com.repomon.rocketdan.domain.repo.service.RepoService.RepoPersonalCardDetail(..))")
-    public Object useRepoIoInSearch(ProceedingJoinPoint proceedingJoinPoint) {
+    public Object useRepoIoInSearch(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         log.info("사용중인 repoId 체크시작!!");
         List<Object> params = Arrays.asList((proceedingJoinPoint.getArgs()));
         log.info("Params => {}", params);
@@ -109,8 +130,6 @@ public class GHUtilsAop {
         try {
             usingKeys.add(repoId);
             return proceedingJoinPoint.proceed();
-        }catch(Throwable throwable){
-            throw new RuntimeException();
         }finally {
             usingKeys.remove(repoId);
             log.info("사용중인 repoId 체크 끝!!");
