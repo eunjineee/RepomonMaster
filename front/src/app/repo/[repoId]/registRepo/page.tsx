@@ -13,27 +13,55 @@ import { Canvas } from "@react-three/fiber";
 import { Model1 } from "./Model1";
 import { Model2 } from "./Model2";
 import { Model3 } from "./Model3";
+import InputField from "@/components/UI/InputField";
 
 const Page: NextPage<PageProps> = ({ params }) => {
   const [numArr, setNumArr] = useState([0, 0, 0, 0, 0]);
   const dice = useRef<HTMLImageElement>(null);
   const diceShadow = useRef<HTMLDivElement>(null);
 
+  // Post 데이터
+  const [repoName, setRepoName] = useState<string>("");
+  useEffect(() => {
+    console.log(repoName);
+  }, [repoName]);
+
   function generateRandomNumArr() {
+    const MAX_VALUE = 10;
+    const MIN_VALUE = 1;
+    const NUM_ELEMENTS = 5;
+    const MAX_SUM = 30;
+
     let sum = 0;
-    const newArr = [];
+    let newArr = [];
+    let i = 0;
 
-    // 첫번째 요소는 1~10사이의 랜덤값으로 설정
-    newArr.push(Math.floor(Math.random() * 10) + 1);
+    // 무작위로 요소의 값을 지정하되, 요소의 합이 MAX_SUM 이하가 되도록 한다.
+    while (i < NUM_ELEMENTS) {
+      // 다음 요소에 지정될 값의 범위를 설정한다.
+      const remainingElements = NUM_ELEMENTS - i;
+      const minValue = Math.max(
+        MIN_VALUE,
+        MAX_SUM - sum - MAX_VALUE * remainingElements
+      );
+      const maxValue = Math.min(
+        MAX_VALUE,
+        MAX_SUM - sum - MIN_VALUE * remainingElements
+      );
 
-    // 나머지 요소는 1~10사이의 랜덤값으로 설정되며, 총합이 30이 되도록 함
-    for (let i = 1; i < 5; i++) {
-      const maxNum = 30 - sum - (5 - i);
-      const randomNum = Math.floor(Math.random() * Math.min(maxNum, 10)) + 1;
-      newArr.push(randomNum);
-      sum += randomNum;
+      // 요소의 값을 무작위로 선택한다.
+      const newValue =
+        Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+
+      // 새로운 요소를 배열에 추가한다.
+      newArr.push(newValue);
+
+      // 합을 계산한다.
+      sum += newValue;
+      i++;
     }
 
+    // 배열을 설정한다.
     setNumArr(newArr);
   }
 
@@ -109,9 +137,13 @@ const Page: NextPage<PageProps> = ({ params }) => {
   // 랜덤 3개의 레포몬 요청
   const [randomRepos, setRandomRepos] = useState<RandomRepoType>();
   const [isHoverOne, setIsHoverOne] = useState<boolean>(false);
+  const [isClickOne, setIsClickOne] = useState<boolean>(false);
+  const [isClickTwo, setIsClickTwo] = useState<boolean>(false);
+  const [isClickThree, setIsClickThree] = useState<boolean>(false);
   const [isHoverTwo, setIsHoverTwo] = useState<boolean>(false);
   const [isHoverThree, setIsHoverThree] = useState<boolean>(false);
-
+  const [selectedRef, setSelectedRef] =
+    useState<React.RefObject<HTMLDivElement>>();
   const monRef1 = useRef<HTMLDivElement>(null);
   const monRef2 = useRef<HTMLDivElement>(null);
   const monRef3 = useRef<HTMLDivElement>(null);
@@ -120,39 +152,76 @@ const Page: NextPage<PageProps> = ({ params }) => {
     const data = getRandomRepo()
       .then((response) => {
         const res = response.data.data;
-        console.log(res);
         setRandomRepos(res);
-        console.log("랜덤 3개", randomRepos);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
+  // 레포몬 선택 시 스포트라이트
+  function clickMonHandle(refDiv: React.RefObject<HTMLDivElement>) {
+    if (
+      refDiv.current &&
+      monRef1.current &&
+      monRef2.current &&
+      monRef3.current
+    ) {
+      if (refDiv === monRef1) {
+        (refDiv.current.style as CSSStyleDeclaration).backgroundColor =
+          "rgba(201,199,194,255)";
+        (monRef2.current.style as CSSStyleDeclaration).backgroundColor =
+          "inherit";
+        (monRef3.current.style as CSSStyleDeclaration).backgroundColor =
+          "inherit";
+        setIsClickOne(true);
+        setIsClickTwo(false);
+        setIsClickThree(false);
+      } else if (refDiv === monRef2) {
+        (refDiv.current.style as CSSStyleDeclaration).backgroundColor =
+          "rgba(201,199,194,255)";
+        (monRef1.current.style as CSSStyleDeclaration).backgroundColor =
+          "inherit";
+        (monRef3.current.style as CSSStyleDeclaration).backgroundColor =
+          "inherit";
+        setIsClickOne(false);
+        setIsClickTwo(true);
+        setIsClickThree(false);
+      } else if (refDiv === monRef3) {
+        (refDiv.current.style as CSSStyleDeclaration).backgroundColor =
+          "rgba(201,199,194,255)";
+        (monRef1.current.style as CSSStyleDeclaration).backgroundColor =
+          "inherit";
+        (monRef2.current.style as CSSStyleDeclaration).backgroundColor =
+          "inherit";
+        setIsClickOne(false);
+        setIsClickTwo(false);
+        setIsClickThree(true);
+      }
+    }
+  }
+
   return (
     <div className={styles.pageContainer}>
       <div className={styles.selectBox}>
-        <div>
-          <p style={{ marginBottom: "2em", fontSize: "3em" }}>
-            레포지터리를 대표할 레포몬을 선택하세요!
-          </p>
-        </div>
+        <p className={styles.repoTitle}>함께할 레포몬을 선택해주세요!</p>
         <div style={{ display: "flex" }}>
-          <div className={styles.monChar} ref={monRef1}>
-            <Canvas
-              onMouseOver={() => setIsHoverOne(true)}
-              onMouseLeave={() => setIsHoverOne(false)}
-            >
+          <div
+            className={styles.monChar}
+            ref={monRef1}
+            onClick={() => clickMonHandle(monRef1)}
+          >
+            <Canvas>
               {" "}
               <ambientLight intensity={0.1} />
               <ambientLight intensity={0.1} />
               <directionalLight
-                color={isHoverOne ? "white" : "black"}
+                color={isClickOne ? "white" : "black"}
                 position={[0, 0, 5]}
                 intensity={0.5}
               />
               <directionalLight
-                color={isHoverOne ? "white" : "black"}
+                color={isClickOne ? "white" : "black"}
                 position={[-5, 0, -5]}
                 intensity={0.5}
               />
@@ -161,21 +230,22 @@ const Page: NextPage<PageProps> = ({ params }) => {
               />
             </Canvas>
           </div>
-          <div className={styles.monChar} ref={monRef2}>
-            <Canvas
-              onMouseOver={() => setIsHoverTwo(true)}
-              onMouseLeave={() => setIsHoverTwo(false)}
-            >
+          <div
+            className={styles.monChar}
+            ref={monRef2}
+            onClick={() => clickMonHandle(monRef2)}
+          >
+            <Canvas>
               {" "}
               <ambientLight intensity={0.1} />
               <ambientLight intensity={0.1} />
               <directionalLight
-                color={isHoverTwo ? "white" : "black"}
+                color={isClickTwo ? "white" : "black"}
                 position={[0, 0, 5]}
                 intensity={0.5}
               />
               <directionalLight
-                color={isHoverTwo ? "white" : "black"}
+                color={isClickTwo ? "white" : "black"}
                 position={[-5, 0, -5]}
                 intensity={0.5}
               />
@@ -184,21 +254,22 @@ const Page: NextPage<PageProps> = ({ params }) => {
               />
             </Canvas>
           </div>
-          <div className={styles.monChar} ref={monRef3}>
-            <Canvas
-              onMouseOver={() => setIsHoverThree(true)}
-              onMouseLeave={() => setIsHoverThree(false)}
-            >
+          <div
+            className={styles.monChar}
+            ref={monRef3}
+            onClick={() => clickMonHandle(monRef3)}
+          >
+            <Canvas>
               {" "}
               <ambientLight intensity={0.1} />
               <ambientLight intensity={0.1} />
               <directionalLight
-                color={isHoverThree ? "white" : "black"}
+                color={isClickThree ? "white" : "black"}
                 position={[0, 0, 5]}
                 intensity={0.5}
               />
               <directionalLight
-                color={isHoverThree ? "white" : "black"}
+                color={isClickThree ? "white" : "black"}
                 position={[-5, 0, -5]}
                 intensity={0.5}
               />
@@ -211,6 +282,21 @@ const Page: NextPage<PageProps> = ({ params }) => {
       </div>
       <div className={styles.settingBox}>
         <div className={styles.conventionBox}>
+          <div
+            style={{
+              display: "flex",
+              marginLeft: "10%",
+              marginTop: "5%",
+              alignItems: "center",
+              fontWeight: "700",
+              fontSize: "1.7em",
+              color: "#7291fa",
+              justifyContent: "flex-start",
+            }}
+          >
+            <p style={{ width: "25%" }}>레포몬 이름 설정</p>
+            <InputField setRepoName={setRepoName} />
+          </div>
           <GitTable />
         </div>
         <div className={styles.diceContainer}>
@@ -266,13 +352,13 @@ const Page: NextPage<PageProps> = ({ params }) => {
                             className="border-white whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
                             style={{ width: "50%", borderWidth: "5px" }}
                           >
-                            회피율
+                            회피
                           </td>
                           <td
                             className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500"
                             ref={avoidanceRef}
                           >
-                            {numArr[1]}%
+                            {numArr[1]}
                           </td>
                         </tr>
                         <tr
@@ -283,13 +369,13 @@ const Page: NextPage<PageProps> = ({ params }) => {
                             className=" border-white whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
                             style={{ width: "50%", borderWidth: "5px" }}
                           >
-                            방어율
+                            방어력
                           </td>
                           <td
                             className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500"
                             ref={enduranceRef}
                           >
-                            {numArr[2]}%
+                            {numArr[2]}
                           </td>
                         </tr>
                         <tr
@@ -300,13 +386,13 @@ const Page: NextPage<PageProps> = ({ params }) => {
                             className="border-white whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
                             style={{ width: "50%", borderWidth: "5px" }}
                           >
-                            치명타율
+                            치명타
                           </td>
                           <td
                             className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500"
                             ref={criticalRef}
                           >
-                            {numArr[3]}%
+                            {numArr[3]}
                           </td>
                         </tr>
                         <tr
@@ -317,13 +403,13 @@ const Page: NextPage<PageProps> = ({ params }) => {
                             className="border-white whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
                             style={{ width: "50%", borderWidth: "5px" }}
                           >
-                            명중률
+                            명중수치
                           </td>
                           <td
                             className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500"
                             ref={hitRef}
                           >
-                            {numArr[4]}%
+                            {numArr[4]}
                           </td>
                         </tr>
                       </tbody>
@@ -331,15 +417,13 @@ const Page: NextPage<PageProps> = ({ params }) => {
                     <div
                       style={{
                         fontSize: "0.8em",
-                        color: "grey",
+                        color: "#4e4e4e",
                         textAlign: "center",
                         marginTop: "5%",
                       }}
                     >
-                      <p>(공격력 최소 1 ~ 최대 10)</p>
-                      <p>
-                        (기타 확률 최소 1% ~ 최대 10%, 모든 확률 총합은 30 이하)
-                      </p>
+                      <p>(모든 능력치는 1~10 사이의 무작위 수치로 설정되며)</p>
+                      <p>(5개 능력치의 총합은 30 이하입니다.)</p>
                     </div>
                   </div>
                 </div>

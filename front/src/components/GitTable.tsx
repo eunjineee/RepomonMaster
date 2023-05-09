@@ -39,7 +39,7 @@ function GitTable() {
 
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-      <div style={{ width: "80%", marginTop: "15%" }}>
+      <div style={{ width: "80%", marginTop: "10%" }}>
         <table
           className="min-w-full text-center text-sm font-light"
           style={{ position: "relative" }}

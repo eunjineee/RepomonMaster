@@ -21,7 +21,7 @@ import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
 const Page = ({ params }: { params: { userId: string } }) => {
   const router = useRouter();
 
-  // 레포지터리 유저 정보 GET
+  // 레포지토리 유저 정보 GET
   const [userInfo, setUserInfo] = useState<UserInfoType>();
   const [repoInfo, setRepoInfo] = useState<RepoListType>({
     repoListItems: [],
@@ -48,7 +48,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
       });
   }, []);
 
-  // 레포지터리 리스트 GET
+  // 레포지토리 리스트 GET
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -111,7 +111,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
         contentLabel=""
       >
         <p className="text-center flex items-center justify-center text-2xl antialiased font-semibold text-sky-600">
-          레포지터리 리스트 로딩중
+          레포지토리 리스트 로딩중
         </p>
         <LoadingSpinner />
       </Modal>
@@ -156,7 +156,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
             </div>
           </div>
           <div className={styles.bodyList}>
-            <div className={styles.listTitle}>
+            <div className={styles.listTitle} style={{ display: "block" }}>
               <div
                 style={{
                   display: "flex",
@@ -165,7 +165,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
                   marginLeft: "10%",
                 }}
               >
-                <p>레포지터리 목록</p>
+                <p style={{ width: "7em" }}>레포지토리 목록</p>
                 <ArrowPathIcon
                   width="2rem"
                   style={{ marginLeft: "2%" }}
@@ -181,17 +181,19 @@ const Page = ({ params }: { params: { userId: string } }) => {
                     setIsReloaded(!isReloaded);
                   }}
                 />
-                <p
-                  style={{
-                    fontSize: "1em",
-                    marginLeft: "1em",
-                    opacity: "0.7",
-                  }}
-                >
-                  <span style={{ color: "red", fontWeight: "800" }}>*</span>최초
-                  로드 시, 리스트가 보이지 않을 때 갱신 버튼을 눌러주세요
-                </p>
               </div>
+              <p
+                style={{
+                  fontSize: "1em",
+                  marginLeft: "1em",
+                  opacity: "0.7",
+                  marginLeft: "10%",
+                  marginBlock: "1%",
+                }}
+              >
+                <span style={{ color: "red", fontWeight: "800" }}>*</span> 최초
+                로드 시, 리스트가 보이지 않을 때 갱신 버튼을 눌러주세요
+              </p>
             </div>
             <div className={styles.listCards}>
               <div className="grid grid-cols-2 gap-4">

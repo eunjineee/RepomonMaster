@@ -27,11 +27,11 @@
     }
   }
   & .settingBox {
-    width: 80%;
+    width: 90%;
     min-height: 100vh;
     height: auto;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     & .conventionBox {
       width: 70%;
     }
@@ -117,6 +117,15 @@
     align-items: center;
     margin-bottom: 5%;
   }
+}
+
+.repoTitle {
+  font-weight: 700;
+  margin-bottom: 2em;
+  font-size: 4em;
+  color: #fdfdfe;
+  text-shadow: 0px 0px 5px #81b7cc, 0px 0px 10px #83acc7, 0px 0px 10px #7ba3c9,
+    0px 0px 20px #81b6ce;
 }
 
 #tableText {
