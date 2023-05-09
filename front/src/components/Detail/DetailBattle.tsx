@@ -293,7 +293,7 @@ const DetailBattle = ({
           <div>
             {battleRecords.length === 0 && (
               <p style={{ color: "grey", fontSize: "1.5rem" }}>
-                배틀 기록이 없습니다.
+                배틀 기록이 없어요.
               </p>
             )}
             {battleRecords &&
