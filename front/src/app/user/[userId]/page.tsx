@@ -185,7 +185,6 @@ const Page = ({ params }: { params: { userId: string } }) => {
               <p
                 style={{
                   fontSize: "1em",
-                  marginLeft: "1em",
                   opacity: "0.7",
                   marginLeft: "10%",
                   marginBlock: "1%",

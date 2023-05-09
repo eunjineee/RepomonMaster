@@ -213,8 +213,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
           >
             <Canvas>
               {" "}
-              <ambientLight intensity={0.1} />
-              <ambientLight intensity={0.1} />
+              <ambientLight intensity={0.03} />
               <directionalLight
                 color={isClickOne ? "white" : "black"}
                 position={[0, 0, 5]}
@@ -237,8 +236,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
           >
             <Canvas>
               {" "}
-              <ambientLight intensity={0.1} />
-              <ambientLight intensity={0.1} />
+              <ambientLight intensity={0.03} />
               <directionalLight
                 color={isClickTwo ? "white" : "black"}
                 position={[0, 0, 5]}
@@ -261,8 +259,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
           >
             <Canvas>
               {" "}
-              <ambientLight intensity={0.1} />
-              <ambientLight intensity={0.1} />
+              <ambientLight intensity={0.03} />
               <directionalLight
                 color={isClickThree ? "white" : "black"}
                 position={[0, 0, 5]}
