@@ -15,14 +15,16 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "personal_language")
 public class PersonalLanguageEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "personal_language_id")
-    private Long personalLanguageId;
 
-    private String languageCode;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "personal_language_id")
+	private Long personalLanguageId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "repo_id")
-    private RepoEntity repoEntity;
+	private String languageCode;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "active_repo_id")
+	private ActiveRepoEntity activeRepoEntity;
+
 }
