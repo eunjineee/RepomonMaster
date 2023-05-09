@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { axiosRequestRepoRank } from "@/api/rank";
+import { axiosRequestBattleRank } from "@/api/rank";
 import { RepoRankContentType, RepoRankInfoType } from "@/types/rank";
-import styles from "./RepomonRank.module.scss";
+import styles from "./BattleRank.module.scss";
 import Image from "next/image";
 import Pagination from "@/components/UI/Pagination";
 import top1Icon from "public/static/rank/1.png";
@@ -12,7 +12,7 @@ import top3Icon from "public/static/rank/3.png";
 import { pretreatModelUrl } from "@/app/utils/PretreatModelUrl";
 import { useRouter } from "next/navigation";
 
-const RepomonRank = ({
+const BattleRank = ({
   searchInput,
   searchRequestSign,
 }: {
@@ -26,17 +26,17 @@ const RepomonRank = ({
   const router = useRouter();
 
   useEffect(() => {
-    requestRepoRank();
+    requestBattleRank();
   }, [page, searchRequestSign]);
 
   const onClickRepoItem = (repoId: number) => {
     router.push(`/repo/${repoId}`);
   };
 
-  const requestRepoRank = async () => {
+  const requestBattleRank = async () => {
     try {
-      const res = await axiosRequestRepoRank(page, searchInput);
-      console.log("레포몬 랭킹: ", res);
+      const res = await axiosRequestBattleRank(page, searchInput);
+      console.log("배틀 랭킹: ", res);
       setRepomonRankInfo(res.data);
       if (isInitial) {
         setTop3(res.data.content.slice(0, 3));
@@ -143,4 +143,4 @@ const RepomonRank = ({
   );
 };
 
-export default RepomonRank;
+export default BattleRank;

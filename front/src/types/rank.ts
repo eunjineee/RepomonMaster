@@ -1,4 +1,4 @@
-export type RepomonRankContentType = {
+export type RepoRankContentType = {
   repoId: number;
   repoName: string;
   repoExp: number;
@@ -10,8 +10,8 @@ export type RepomonRankContentType = {
   repomonUrl: string;
 };
 
-export type RepomonRankInfoType = {
-  content: RepomonRankContentType[];
+export type RepoRankInfoType = {
+  content: RepoRankContentType[];
   empty: boolean;
   first: boolean;
   last: boolean;

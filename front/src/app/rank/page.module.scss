@@ -42,7 +42,6 @@
     width: 80%;
     height: 100%;
     margin: 0 auto;
-    // outline: 1px solid red;
 
     .banner-text {
       position: absolute;
@@ -77,39 +76,43 @@
       height: 40px;
       display: flex;
       align-items: center;
-    }
 
-    .banner-search {
-      width: 100%;
-      height: 100%;
-      border-radius: 50px;
-      border: none;
-      box-shadow: none;
-      padding: 0 5%;
-    }
-
-    & svg {
-      margin: 0 0 0 1%;
-      color: white;
-
-      &:hover {
-        cursor: pointer;
-        opacity: 0.7;
+      .banner-search {
+        width: 100%;
+        height: 100%;
+        border-radius: 50px;
+        border: none;
+        box-shadow: none;
+        padding: 0 5%;
       }
-    }
 
-    .search-icon {
-      width: 50px;
-    }
+      & svg {
+        margin: 0 0 0 1%;
+        color: white;
 
-    .clear-icon {
-      width: 40px;
+        &:hover {
+          cursor: pointer;
+          opacity: 0.7;
+        }
+      }
+
+      .search-icon {
+        width: 40px;
+      }
+
+      .clear-icon {
+        width: 35px;
+      }
     }
 
     .banner-lottie {
       position: absolute;
       top: -10%;
       right: -5%;
+
+      @include desktop125 {
+        width: 450px;
+      }
     }
   }
 }
