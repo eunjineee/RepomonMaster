@@ -15,6 +15,8 @@ import {
 import { RepoListType, UserInfoType } from "@/types/repoInfo";
 import { useAppSelector } from "@/redux/hooks";
 import Paging from "@/components/UI/Pagination";
+import Modal from "react-modal";
+import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
 
 const Page = ({ params }: { params: { userId: string } }) => {
   const router = useRouter();
@@ -71,8 +73,48 @@ const Page = ({ params }: { params: { userId: string } }) => {
   // 동일 유저 체크
   const [isSameUser, setIsSameUser] = useState<boolean>();
 
+  // Loading Modal
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+
+  const customStyles = {
+    content: {
+      zIndex: "10_000_000",
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      width: "370px",
+      height: "190px",
+      display: "flex",
+      justifyContent: "center",
+    },
+  };
+  const afterOpenModal = () => {};
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    Modal.setAppElement("#pageContainer");
+  }, []);
+
   return (
-    <>
+    <div id="pageContainer">
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel=""
+      >
+        <p className="text-center flex items-center justify-center text-2xl antialiased font-semibold text-sky-600">
+          레포지터리 리스트 로딩중
+        </p>
+        <LoadingSpinner />
+      </Modal>
       <div className={styles.pageContainer}>
         <div className={styles.bannerBack}>
           <iframe
@@ -131,15 +173,24 @@ const Page = ({ params }: { params: { userId: string } }) => {
                   ref={arrowRef}
                   onClick={async () => {
                     setIsListLoaded(false);
-                    console.log("loading...");
+                    setIsOpen(true);
                     userInfo?.userId && (await refreshAllRepo(userInfo.userId));
                     setIsListLoaded(true);
-                    console.log("load done..!");
+                    setIsOpen(false);
                     setIsLoaded(false);
                     setIsReloaded(!isReloaded);
-                    console.log("done");
                   }}
                 />
+                <p
+                  style={{
+                    fontSize: "1em",
+                    marginLeft: "1em",
+                    opacity: "0.7",
+                  }}
+                >
+                  <span style={{ color: "red", fontWeight: "800" }}>*</span>최초
+                  로드 시, 리스트가 보이지 않을 때 갱신 버튼을 눌러주세요
+                </p>
               </div>
             </div>
             <div className={styles.listCards}>
@@ -161,7 +212,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
                         isSameUser={isSameUser}
                         setIsSameUser={setIsSameUser}
                         isLoaded={isLoaded}
-                        repomonId={repoInfo.repoListItems.at(i)?.repomonId}
+                        repomonId={repoInfo.repoListItems.at(i)?.repomonId || 0}
                         repomonUrl={
                           repoInfo.repoListItems.at(i)?.repomonUrl || ""
                         }
@@ -183,7 +234,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

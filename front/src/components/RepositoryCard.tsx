@@ -21,7 +21,7 @@ type propType = {
   isSameUser: boolean | undefined;
   setIsSameUser: React.Dispatch<React.SetStateAction<boolean | undefined>>;
   isLoaded: boolean | undefined;
-  repomonId: number | undefined;
+  repomonId: number;
   repomonUrl: string;
 };
 
@@ -35,6 +35,10 @@ function RepositoryCard(props: propType) {
     setIsActive(!isActive);
     if (props.repoId) setActiveRepo(props.repoId);
     console.log("변경");
+  }
+
+  function handleBtnRegist() {
+    router.push(`/repo/${props.repoId}/registRepo`);
   }
 
   function handleRouting() {
@@ -147,10 +151,28 @@ function RepositoryCard(props: propType) {
           <p style={{ fontSize: "1em", fontWeight: "500", marginBlock: "3%" }}>
             {props.desc === null ? "설명 없음" : props.desc}
           </p>
-          <div style={{ display: props.isSameUser ? "block" : "none" }}>
-            <p>경험치 : {props.exp}</p>
-            <p>배틀 레이팅 : {props.rating} </p>
-          </div>
+          {props.repomonId >= 9000 ? (
+            <button
+              style={{
+                display: props.isSameUser ? "block" : "none",
+                textAlign: "center",
+                backgroundColor: "#5AA7FF",
+                color: "white",
+                width: "10em",
+                height: "3em",
+                borderRadius: "10px",
+                marginTop: "2em",
+              }}
+              onClick={handleBtnRegist}
+            >
+              레포몬 등록
+            </button>
+          ) : (
+            <div style={{ display: props.isSameUser ? "block" : "none" }}>
+              <p>경험치 : {props.exp}</p>
+              <p>배틀 레이팅 : {props.rating} </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

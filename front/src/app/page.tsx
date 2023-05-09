@@ -21,7 +21,7 @@ import { gitTipData } from "./dashboard/gitData";
 const Model = ({ isClicked, onIsClickedChange }: any) => {
   // const [isClicked, SetIsClicked] = useState<boolean>(false);
   const [repomonURL, setRepomonURL] = useState<string>(
-    "/static/models/Chick_1.glb"
+    "/static/models/tempLoader.glb"
   );
 
   const handleClick = useCallback(() => {
