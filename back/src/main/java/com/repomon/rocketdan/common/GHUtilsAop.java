@@ -44,7 +44,7 @@ public class GHUtilsAop {
     }
 
     @Around("execution(* com.repomon.rocketdan.domain.repo.service.RepoService.modifyAllRepo(..))))")
-    public Object useRepoIoInSearchAllRepo(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
+    public Object useRepoIoInSearchAllRepo(ProceedingJoinPoint proceedingJoinPoint){
         log.info("사용중인 modifyAllRepo -> repoId 체크시작!!");
         List<Object> params = Arrays.asList((proceedingJoinPoint.getArgs()));
         log.info("Params => {}", params);
@@ -78,21 +78,23 @@ public class GHUtilsAop {
             });
         });
 
-        usingKeys.addAll(repoIds);
+        try {
+            usingKeys.addAll(repoIds);
 
-        Object proceed = proceedingJoinPoint.proceed();
-
-        usingKeys.removeAll(repoIds);
-        usingUsers.remove(userId);
-        log.info("사용중인  modifyAllRepo -> repoId 체크 끝!!");
-
-        return proceed;
+            return proceedingJoinPoint.proceed();
+        }catch(Throwable throwable){
+            throw new RuntimeException();
+        }finally {
+            usingKeys.removeAll(repoIds);
+            usingUsers.remove(userId);
+            log.info("사용중인  modifyAllRepo -> repoId 체크 끝!!");
+        }
     }
 
     @Around("execution(* com.repomon.rocketdan.domain.repo.service.RepoService.modifyRepoInfo(..)) || "
         + "execution(* com.repomon.rocketdan.domain.repo.service.RepoService.RepoCardDetail(..)) || "
         + "execution(* com.repomon.rocketdan.domain.repo.service.RepoService.RepoPersonalCardDetail(..))")
-    public Object useRepoIoInSearch(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
+    public Object useRepoIoInSearch(ProceedingJoinPoint proceedingJoinPoint) {
         log.info("사용중인 repoId 체크시작!!");
         List<Object> params = Arrays.asList((proceedingJoinPoint.getArgs()));
         log.info("Params => {}", params);
@@ -104,13 +106,14 @@ public class GHUtilsAop {
             throw new CustomException(ErrorCode.NO_ACCESS);
         }
 
-        usingKeys.add(repoId);
-
-        Object proceed = proceedingJoinPoint.proceed();
-
-        usingKeys.remove(repoId);
-        log.info("사용중인 repoId 체크 끝!!");
-
-        return proceed;
+        try {
+            usingKeys.add(repoId);
+            return proceedingJoinPoint.proceed();
+        }catch(Throwable throwable){
+            throw new RuntimeException();
+        }finally {
+            usingKeys.remove(repoId);
+            log.info("사용중인 repoId 체크 끝!!");
+        }
     }
 }
