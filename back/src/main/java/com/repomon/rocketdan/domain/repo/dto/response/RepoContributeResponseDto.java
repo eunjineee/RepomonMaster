@@ -24,14 +24,12 @@ public class RepoContributeResponseDto {
     private String repoOwner;
     private int totalCommitCount;
     private long totalLineCount;
-    private Map<String, Integer> committers;
+    private Map<String, Integer> committers = new HashMap<>();
     private String mvp;
 
 
     public static RepoContributeResponseDto of(int totalCommitCount, long totalLineCount,
         Map<String, Integer> committers, String mvp, RepoEntity repoEntity) {
-        committers = committers.isEmpty() ? new HashMap<>() : committers;
-
         return RepoContributeResponseDto.builder()
             .totalCommitCount(totalCommitCount)
             .totalLineCount(totalLineCount)
