@@ -10,6 +10,7 @@ import Lottie from "react-lottie-player";
 import rankingLottie from "public/static/lotties/ranking.json";
 import RepomonRank from "@/components/Rank/RepomonRank";
 import BattleRank from "@/components/Rank/BattleRank";
+import UserRank from "@/components/Rank/UserRank";
 
 const Page = () => {
   const [tabIndex, setTabIndex] = useState<string>("레포몬");
@@ -133,6 +134,12 @@ const Page = () => {
         )}
         {tabIndex === "배틀" && (
           <BattleRank
+            searchInput={searchInput}
+            searchRequestSign={searchRequestSign}
+          />
+        )}
+        {tabIndex === "유저" && (
+          <UserRank
             searchInput={searchInput}
             searchRequestSign={searchRequestSign}
           />

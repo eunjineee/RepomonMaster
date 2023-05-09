@@ -7,6 +7,7 @@ type pageProps = {
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   totalPage: number;
   totalElement: number;
+  size: number;
 };
 const Paging = (props: pageProps) => {
   const [page, setPage] = useState(props.currentPage);
@@ -20,7 +21,7 @@ const Paging = (props: pageProps) => {
   return (
     <Pagination
       activePage={page}
-      itemsCountPerPage={6}
+      itemsCountPerPage={props.size}
       totalItemsCount={props.totalElement}
       pageRangeDisplayed={5}
       prevPageText={"‹"}

@@ -22,7 +22,7 @@ const BattleRank = ({
   const [page, setPage] = useState<number>(0);
   const [top3, setTop3] = useState<RepoRankContentType[]>([]);
   const [isInitial, setIsInitial] = useState<boolean>(true);
-  const [repomonRankInfo, setRepomonRankInfo] = useState<RepoRankInfoType>();
+  const [battleRankInfo, setBattleRankInfo] = useState<RepoRankInfoType>();
   const router = useRouter();
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const BattleRank = ({
     try {
       const res = await axiosRequestBattleRank(page, searchInput);
       console.log("배틀 랭킹: ", res);
-      setRepomonRankInfo(res.data);
+      setBattleRankInfo(res.data);
       if (isInitial) {
         setTop3(res.data.content.slice(0, 3));
         setIsInitial(false);
@@ -59,7 +59,7 @@ const BattleRank = ({
             <div className={styles.border} />
             <div className={styles["main-element"]} />
             <Image
-              alt={`top${index}icon`}
+              alt={`top${index + 1}icon`}
               src={index === 0 ? top1Icon : index === 1 ? top2Icon : top3Icon}
               width={35}
               height={35}
@@ -67,7 +67,7 @@ const BattleRank = ({
             ></Image>
             <div className={styles["img-div"]}>
               <Image
-                alt="top1"
+                alt={`top${index + 1}`}
                 src={`/static/models_png/${pretreatModelUrl(
                   data.repomonUrl
                 )}.png`}
@@ -80,9 +80,9 @@ const BattleRank = ({
               <p className={styles["card-content"]}>{data.repoOwner}</p>
               <p className={styles["card-title"]}>레포지토리</p>
               <p className={styles["card-content"]}>{data.repoName}</p>
-              <p className={styles["card-title"]}>경험치</p>
+              <p className={styles["card-title"]}>레이팅</p>
               <p className={styles["card-content"]}>
-                {data.repoExp} <span>EXP</span>
+                {data.rating.toLocaleString()}
               </p>
             </div>
           </div>
@@ -94,49 +94,48 @@ const BattleRank = ({
           <span>레포몬</span>
           <span>레포지토리</span>
           <span>유저</span>
-          <span>경험치</span>
+          <span>레이팅</span>
         </div>
-        {repomonRankInfo?.content.map((item, index) => (
+        {battleRankInfo?.content.map((item, index) => (
           <div
             key={index}
             className={styles["list-item"]}
             onClick={() => onClickRepoItem(item.repoId)}
           >
-            <span>{index + 1}</span>
+            <span>{item.repomonRank}</span>
             <span>
               <Image
                 alt="레포몬"
                 src={`/static/models_png/${pretreatModelUrl(
                   item.repomonUrl
                 )}.png`}
-                width={45}
-                height={45}
+                width={40}
+                height={40}
               ></Image>
               {item.repomonNickname}
             </span>
             <span>{item.repoName}</span>
             <span>{item.repoOwner}</span>
             <span>
-              {item.repoExp}
+              {item.rating.toLocaleString()}
               <span
                 style={{
                   color: "rgb(70, 70, 70)",
                   fontSize: "1rem",
                   margin: "0 0 0 0.3rem",
                 }}
-              >
-                EXP
-              </span>
+              ></span>
             </span>
           </div>
         ))}
       </div>
       <div className={styles["pagination-div"]}>
         <Pagination
+          size={15}
           currentPage={page}
           setCurrentPage={setPage}
-          totalPage={repomonRankInfo?.totalPages!}
-          totalElement={repomonRankInfo?.totalElements!}
+          totalPage={battleRankInfo?.totalPages!}
+          totalElement={battleRankInfo?.totalElements!}
         />
       </div>
     </div>
