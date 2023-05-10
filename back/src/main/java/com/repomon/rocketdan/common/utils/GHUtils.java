@@ -211,55 +211,49 @@ public class GHUtils {
         throws IOException {
         Map<LocalDate, RepoHistoryEntity> histories = new HashMap<>();
 
-        PagedIterable<GHRepository> ghRepositories = ghRepository
-            .listForks().withPageSize(100);
+        Integer forkCnt = repoEntity.getForkCnt();
+        int forksCount = ghRepository.getForksCount();
 
-        PagedIterator<GHRepository> iterator = ghRepositories.iterator();
-        while(iterator.hasNext()){
-            List<GHRepository> repositories = iterator.nextPage();
-            for (GHRepository repo : repositories) {
-                Date createdAt = repo.getCreatedAt();
-                if (createdAt.after(fromDate)) {
-                    LocalDate forkedAt = createdAt.toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate();
+        if(forkCnt >= forksCount) return histories.values();
+        forksCount -= forkCnt;
+        LocalDate date = fromDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-                    configureRepoInfo(histories, forkedAt, repoEntity, GrowthFactor.FORK, 1);
-                } else {
-                    return histories.values();
-                }
-            }
+        if(forkCnt + forksCount >= 5000 && forkCnt >= 5000){
+            configureRepoInfo(histories, date, repoEntity, GrowthFactor.FORK, 0);
         }
+        else {
+            int tmp = forksCount;
+            if(tmp >= 5000) tmp = 5000;
+            configureRepoInfo(histories, date, repoEntity, GrowthFactor.FORK, tmp);
+        }
+
+        repoEntity.updateForkCnt(forksCount);
 
         return histories.values();
     }
-
 
     public Collection<RepoHistoryEntity> GHStarToHistory(GHRepository ghRepository, RepoEntity repoEntity, Date fromDate)
         throws IOException {
         Map<LocalDate, RepoHistoryEntity> histories = new HashMap<>();
 
-        PagedIterable<GHStargazer> ghStargazers = ghRepository
-            .listStargazers2().withPageSize(100);
+        Integer starCnt = repoEntity.getStarCnt();
+        int stargazersCount = ghRepository.getStargazersCount();
 
-        PagedIterator<GHStargazer> iterator = ghStargazers.iterator();
-        while(iterator.hasNext()){
-            List<GHStargazer> stargazers = iterator.nextPage();
-            Collections.reverse(stargazers);
-            for (GHStargazer stargazer : stargazers) {
-                Date starredAt = stargazer.getStarredAt();
-                if (starredAt.after(fromDate)) {
-                    LocalDate starredDate = starredAt.toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate();
+        if(starCnt >= stargazersCount) return histories.values();
+        stargazersCount -= starCnt;
+        LocalDate date = fromDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-                    configureRepoInfo(histories, starredDate, repoEntity, GrowthFactor.STAR, 1);
-                    continue;
-                }
-                break;
-            }
+
+        if(starCnt + stargazersCount >= 5000 && starCnt >= 5000) {
+            configureRepoInfo(histories, date, repoEntity, GrowthFactor.STAR, 0);
+        }
+        else {
+            int tmp = stargazersCount;
+            if(tmp >= 5000) tmp = 5000;
+                configureRepoInfo(histories, date, repoEntity, GrowthFactor.STAR, tmp);
         }
 
+        repoEntity.updateStarCnt(stargazersCount);
         return histories.values();
     }
 

@@ -84,6 +84,8 @@ public class RepomonStatusEntity extends RepoEntity {
 			.repoOwner(ownerName)
 			.repomonNickname(repomonEntity.getRepomonName())
 			.repoExp(0L)
+			.forkCnt(0)
+			.starCnt(0)
 			.repoKey(ghRepository.getNodeId())
 			.repoStart(repoCreatedAt)
 			.repoEnd(null)

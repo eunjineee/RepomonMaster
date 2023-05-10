@@ -33,6 +33,8 @@ public class RepoEntity extends CommonEntity {
 	private String repoName;
 	private String repoOwner;
 	private String repomonNickname;
+	private Integer starCnt;
+	private Integer forkCnt;
 	private Long repoExp;
 	private String repoKey;
 	private LocalDateTime repoStart;
@@ -87,4 +89,11 @@ public class RepoEntity extends CommonEntity {
 		this.repoEnd = endAt;
 	}
 
+	public void updateForkCnt(int forksCount) {
+		this.forkCnt += forksCount;
+	}
+
+	public void updateStarCnt(int starCnt){
+		this.starCnt += starCnt;
+	}
 }

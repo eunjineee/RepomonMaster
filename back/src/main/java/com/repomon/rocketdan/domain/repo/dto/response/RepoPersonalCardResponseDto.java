@@ -123,8 +123,6 @@ public class RepoPersonalCardResponseDto {
         int myissueexp = (int) (myissue * GrowthFactor.idxToEnum(3).getExp());
         int mymergeexp = (int) (mymerges.get(0) * GrowthFactor.idxToEnum(2).getExp());
         int myreviewexp = (int) (mymerges.get(1) * GrowthFactor.idxToEnum(4).getExp());
-        int starCnt = (int) (ghRepository.getStargazersCount() * GrowthFactor.idxToEnum(5).getExp());
-        int forkCnt = (int) (ghRepository.getForksCount() * GrowthFactor.idxToEnum(6).getExp());
 
 return RepoPersonalCardResponseDto.builder()
                 .repomonId(repoEntity.getRepomon().getRepomonId())
@@ -138,8 +136,8 @@ return RepoPersonalCardResponseDto.builder()
                 .repoEnd(repoEntity.getRepoEnd())
                 .languages(languages)
 
-                .starCnt(starCnt)
-                .forkCnt(forkCnt)
+                .starCnt(repoEntity.getStarCnt())
+                .forkCnt(repoEntity.getForkCnt())
                 .commits(commitsExp)
                 .issues(issuesExp)
                 .merges(mergesExp)
