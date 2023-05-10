@@ -19,7 +19,7 @@ const RepomonRank = ({
   searchInput: string;
   searchRequestSign: boolean;
 }) => {
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const [top3, setTop3] = useState<RepoRankContentType[]>([]);
   const [isInitial, setIsInitial] = useState<boolean>(true);
   const [repomonRankInfo, setRepomonRankInfo] = useState<RepoRankInfoType>();
@@ -35,7 +35,7 @@ const RepomonRank = ({
 
   const requestRepoRank = async () => {
     try {
-      const res = await axiosRequestRepoRank(page, searchInput);
+      const res = await axiosRequestRepoRank(page - 1, searchInput);
       console.log("레포몬 랭킹: ", res);
       setRepomonRankInfo(res.data);
       if (isInitial) {

@@ -21,13 +21,13 @@
   }
 
   .item {
-    font-size: 24px;
+    font-size: 22px;
     margin-left: 3rem;
     color: $highlight;
     transition: all 0.2s ease-in-out;
 
     @include desktop125 {
-      font-size: 22px;
+      font-size: 20px;
     }
 
     &:hover {

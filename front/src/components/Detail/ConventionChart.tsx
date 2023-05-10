@@ -30,10 +30,10 @@ export function ConventionChart({
         plugins: {
           legend: {
             onClick: () => {},
-            position: "top" as const,
+            position: "bottom" as const,
             labels: {
               font: {
-                size: 16,
+                size: 15,
                 family: "SUIT-Thin",
                 weight: "bold",
               },

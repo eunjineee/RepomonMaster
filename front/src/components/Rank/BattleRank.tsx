@@ -19,7 +19,7 @@ const BattleRank = ({
   searchInput: string;
   searchRequestSign: boolean;
 }) => {
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const [top3, setTop3] = useState<RepoRankContentType[]>([]);
   const [isInitial, setIsInitial] = useState<boolean>(true);
   const [battleRankInfo, setBattleRankInfo] = useState<RepoRankInfoType>();
@@ -35,7 +35,7 @@ const BattleRank = ({
 
   const requestBattleRank = async () => {
     try {
-      const res = await axiosRequestBattleRank(page, searchInput);
+      const res = await axiosRequestBattleRank(page - 1, searchInput);
       console.log("배틀 랭킹: ", res);
       setBattleRankInfo(res.data);
       if (isInitial) {

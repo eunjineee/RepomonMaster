@@ -64,7 +64,7 @@ type DetailRepomonType = {
   repomonSkillUrl: string;
   repomonTier: number;
   repomonUrl: string;
-  selectRepomonList: {
+  selectRepomonList?: {
     repomonId: number;
     repomonName: string;
     repomonUrl: string;
@@ -92,9 +92,8 @@ export type RepoDetailBattleType = {
   rating: number;
   repoId: number;
   repoName: string;
-  repoMon: DetailRepomonType;
+  repomon: DetailRepomonType;
   repomonNickname: string;
-  repomonTier: number;
   statPoint: number;
   winCnt: number;
 };

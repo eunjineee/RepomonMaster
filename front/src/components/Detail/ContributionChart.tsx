@@ -66,14 +66,15 @@ export function ContributionChart({
       options={{
         plugins: {
           legend: {
-            onClick: () => {},
-            labels: {
-              font: {
-                size: 16,
-                family: "SUIT-Regular",
-              },
-              color: "rgb(30, 30, 30)",
-            },
+            display: false,
+            // onClick: () => {},
+            // labels: {
+            //   font: {
+            //     size: 15,
+            //     family: "SUIT-Regular",
+            //   },
+            //   color: "rgb(30, 30, 30)",
+            // },
           },
         },
       }}

@@ -19,12 +19,12 @@
 }
 
 .left {
-  margin: 0 3% 0 0;
-  width: 42%;
+  margin: 0 5% 0 2.5%;
+  width: 35%;
 
   @include desktop125 {
-    margin: 0 7% 0 0;
-    width: 38%;
+    margin: 0 5% 0 2.5%;
+    width: 35%;
   }
 }
 

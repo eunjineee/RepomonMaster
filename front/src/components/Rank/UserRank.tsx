@@ -19,7 +19,7 @@ const UserRank = ({
   searchInput: string;
   searchRequestSign: boolean;
 }) => {
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const [top3, setTop3] = useState<UserRankContentType[]>([]);
   const [isInitial, setIsInitial] = useState<boolean>(true);
   const [userRankInfo, setUserRankInfo] = useState<UserRankInfoType>();
@@ -35,7 +35,7 @@ const UserRank = ({
 
   const requestUserRank = async () => {
     try {
-      const res = await axiosRequestUserRank(page, searchInput);
+      const res = await axiosRequestUserRank(page - 1, searchInput);
       console.log("유저 랭킹: ", res);
       setUserRankInfo(res.data);
       if (isInitial) {

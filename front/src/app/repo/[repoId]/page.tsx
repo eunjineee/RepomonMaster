@@ -38,7 +38,6 @@ import RenameModal from "@/components/Detail/RenameModal";
 import Loading from "@/app/loading";
 import DetailConvention from "@/components/Detail/DetailConvention";
 import DetailContribution from "@/components/Detail/DetailContribution";
-import Image from "next/image";
 import { languageColor } from "@/styles/colors";
 import { customAlert } from "@/app/utils/CustomAlert";
 import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
@@ -259,7 +258,12 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
           <div className={styles.info}>
             <div className={styles["repo-mon-card-div"]}>
               <div className={styles["repo-mon-card"]}>
-                <DetailRepomon repomonUrl={repoDetailInfo.repomonUrl} />
+                <DetailRepomon
+                  repomonUrl={repoDetailInfo.repomonUrl}
+                  repomonTier={
+                    repoDetailBattleInfo?.repomon.repomonTier as number
+                  }
+                />
                 <div className={styles["repo-mon-info"]}>
                   <p>
                     <span className={styles.lv}>
