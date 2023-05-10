@@ -13,10 +13,20 @@
 .left {
   margin: 0 3% 0 0;
   width: 42%;
+
+  @include desktop125 {
+    margin: 0 7% 0 0;
+    width: 38%;
+  }
 }
 
 .right {
   width: 55%;
+  font-size: 1.125rem;
+
+  @include desktop125 {
+    font-size: 1rem;
+  }
 
   & > div {
     display: grid;

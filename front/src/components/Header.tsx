@@ -101,8 +101,8 @@ const Header = () => {
             <Image
               alt="프로필 이미지"
               src={avatarUrl ? avatarUrl : gitCat}
-              width={55}
-              height={55}
+              width={50}
+              height={50}
               className={styles.avatar}
               onClick={onClickAvatar}
             />

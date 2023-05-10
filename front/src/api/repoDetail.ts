@@ -107,3 +107,9 @@ export const axiosRequestRepoDetailContribution = async (repoId: number) => {
 
   return res;
 };
+
+export const axiosRequestRepoDetailUpdate = async (repoId: number) => {
+  const res = await http.put(`repo/${repoId}/info`);
+
+  return res;
+};

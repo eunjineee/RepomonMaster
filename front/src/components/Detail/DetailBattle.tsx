@@ -24,6 +24,7 @@ import gold from "public/static/tier/gold.svg";
 import platinum from "public/static/tier/platinum.svg";
 import diamond from "public/static/tier/diamond.svg";
 import { pretreatModelUrl } from "@/app/utils/PretreatModelUrl";
+import { axiosRequestMatchBattle } from "@/api/repoBattle";
 
 const DetailBattle = ({
   battleInfo,
@@ -60,19 +61,19 @@ const DetailBattle = ({
   const [tierColor, setTierColor] = useState<string>("");
 
   useEffect(() => {
-    if (battleInfo.rating >= 1300) {
+    if (battleInfo.rating >= 1600) {
       setTier("Diamond");
       setTierImg(diamond);
       setTierColor("#CBD9FE");
-    } else if (battleInfo.rating >= 1150) {
+    } else if (battleInfo.rating >= 1400) {
       setTier("Platinum");
       setTierImg(platinum);
       setTierColor("#25BBA2");
-    } else if (battleInfo.rating >= 1050) {
+    } else if (battleInfo.rating >= 1200) {
       setTier("Gold");
       setTierImg(gold);
       setTierColor("#D7BC6A");
-    } else if (battleInfo.rating >= 950) {
+    } else if (battleInfo.rating >= 1000) {
       setTier("Silver");
       setTierImg(silver);
       setTierColor("#B1B1B1");
@@ -107,6 +108,7 @@ const DetailBattle = ({
       console.log("스탯 변경 응답: ", res);
       setStatChanged(false);
       setStatUpdated((prev) => !prev);
+      setPointStats(defaultPointStats);
     } catch (err) {
       console.error("스탯 변경 에러", err);
     }
@@ -118,6 +120,19 @@ const DetailBattle = ({
     }
 
     router.push(`/repo/${repoId}`);
+  };
+
+  const onClickMatchBtn = async () => {
+    requestMatchBattle();
+  };
+
+  const requestMatchBattle = async () => {
+    try {
+      const res = await axiosRequestMatchBattle(repoId);
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -158,7 +173,7 @@ const DetailBattle = ({
           </div>
         </div>
         {myRepo && (
-          <button>
+          <button onClick={onClickMatchBtn}>
             배틀 매칭
             <span>
               <ChevronDoubleRightIcon />

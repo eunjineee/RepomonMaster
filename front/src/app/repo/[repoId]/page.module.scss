@@ -5,7 +5,7 @@
   min-height: 100vh;
   margin: 0 auto 5rem auto;
   padding: 70px 0 0 0;
-  background: rgb(201, 226, 255);
+  background: rgb(225, 239, 255);
   box-shadow: 0 8px 20px rgb(240, 240, 240);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -21,7 +21,7 @@
       .repo-mon-card {
         margin: 0 0 0 4rem;
         width: 85%;
-        height: 620px;
+        height: 570px;
         background: rgba(255, 255, 255, 0.35);
         box-shadow: 0 8px 15px 0 rgba(31, 38, 135, 0.1);
         backdrop-filter: blur(20px);
@@ -32,15 +32,33 @@
         .repo-mon-info {
           position: absolute;
           width: 100%;
-          bottom: 2.7rem;
+          bottom: 1.5rem;
 
           & p {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0 0 1rem 0;
             text-align: center;
-            font-size: 2rem;
+            font-size: 1.75rem;
+
+            .lv {
+              width: 90px;
+              margin: 0 0.5rem 0 0;
+              font-family: "SUIT-Bold";
+              font-weight: bold;
+              font-style: italic;
+              background: linear-gradient(
+                to right,
+                rgb(178, 164, 255),
+                rgb(255, 170, 170)
+              );
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+            }
+
+            .repo-mon-name {
+              color: rgb(72, 72, 72);
+            }
           }
         }
       }
@@ -60,7 +78,30 @@
         justify-content: space-between;
 
         .title {
+          display: flex;
+          align-items: center;
           font-size: 3.5rem;
+
+          & button {
+            border-radius: 5px;
+            margin: 0.5rem 0 0 1rem;
+            font-size: 1.25rem;
+            padding: 0.3rem 0.7rem;
+            background-color: $second;
+            color: white;
+
+            @include desktop125 {
+              font-size: 1.125rem;
+            }
+
+            &:hover {
+              background-color: $sub;
+            }
+          }
+
+          .update {
+            margin: 0.5rem 0 0 2rem;
+          }
         }
 
         .icon-div {
@@ -76,6 +117,10 @@
           .share {
             display: flex;
             align-items: center;
+          }
+
+          & img {
+            margin: 0 0.3rem 0 0;
           }
         }
       }
@@ -124,7 +169,7 @@
           white-space: nowrap;
 
           &:hover {
-            background-color: $sub;
+            opacity: 0.8;
           }
         }
       }
@@ -154,7 +199,7 @@
       }
 
       .des {
-        margin: 2% 0 0 0;
+        margin: 1% 0 0 0;
         word-wrap: break-word;
       }
 
@@ -177,7 +222,7 @@
           transition: background-color 0.2s ease-in-out;
 
           @include desktop125 {
-            height: 140px;
+            height: 135px;
           }
 
           & svg {

@@ -27,6 +27,7 @@ import {
   axiosRequestRepoDetailBattleInfo,
   axiosRequestRepoDetailContribution,
   axiosRequestRepoDetailConvention,
+  axiosRequestRepoDetailUpdate,
 } from "@/api/repoDetail";
 import { axiosRequestRepoDetailResearch } from "@/api/repoDetail";
 import { pretreatDate } from "@/app/utils/PretreatDate";
@@ -36,6 +37,12 @@ import RenameModal from "@/components/Detail/RenameModal";
 import Loading from "@/app/loading";
 import DetailConvention from "@/components/Detail/DetailConvention";
 import DetailContribution from "@/components/Detail/DetailContribution";
+import starIcon from "public/static/icons/star.png";
+import forkIcon from "public/static/icons/fork.png";
+import Image from "next/image";
+import { languageColor } from "@/styles/colors";
+import { customAlert } from "@/app/utils/CustomAlert";
+import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
 
 function Page({ params }: { params: { userId: string; repoId: string } }) {
   const [loginUserId, setLoginUserId] = useState<string>();
@@ -55,6 +62,7 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
     useState<RepoDetailConventionInfoType>();
   const [repoDetailContributionInfo, setRepoDetailContributionInfo] =
     useState<RepoDetailContributionInfoType>();
+  const [updateLoading, setUpdateLoading] = useState<boolean>(false);
 
   /** =============================================== useEffect =============================================== */
   useEffect(() => {
@@ -131,6 +139,10 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
 
     setTabIndex(parseInt(target.id, 10));
     sessionStorage.setItem("tabIndex", target.id);
+  };
+
+  const onClickUpdateBtn = () => {
+    requestRepoDetailUpdate(parseInt(params.repoId, 10));
   };
 
   /** =============================================== Axios =============================================== */
@@ -219,6 +231,21 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
     }
   };
 
+  /** 레포 갱신 */
+  const requestRepoDetailUpdate = async (repoId: number) => {
+    try {
+      setUpdateLoading(true);
+      const res = await axiosRequestRepoDetailUpdate(repoId);
+      console.log("레포 정보 갱신: ", res);
+      setIsUpdated(!isUpdated);
+    } catch (err) {
+      console.error(err);
+      customAlert("잠시후 다시 시도해주세요.");
+    } finally {
+      setUpdateLoading(false);
+    }
+  };
+
   return (
     <div id="repo-detail">
       {!showPage && <Loading />}
@@ -230,29 +257,21 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
                 <DetailRepomon repomonUrl={repoDetailInfo.repomonUrl} />
                 <div className={styles["repo-mon-info"]}>
                   <p>
-                    {repoDetailInfo.repomonName}
-                    {repoDetailInfo.myRepo && (
-                      <RenameModal
-                        repoId={params.repoId}
-                        setIsUpdated={setIsUpdated}
-                      />
-                    )}
-                  </p>
-                  <p>
-                    <span
-                      style={{
-                        fontFamily: "SUIT-Bold",
-                        fontWeight: "bold",
-                        fontStyle: "italic",
-                        marginRight: "1rem",
-                        color: "rgb(124, 131, 255)",
-                      }}
-                    >
-                      LV
+                    <span className={styles.lv}>
+                      LV{" "}
+                      <span style={{ fontStyle: "normal" }}>
+                        {Math.floor(repoDetailInfo.repoExp / 100) + 1}
+                      </span>
                     </span>
-                    <span className={styles.exp}>
-                      {Math.floor(repoDetailInfo.repoExp / 100) + 1}
-                    </span>
+                    <p className={styles["repo-mon-name"]}>
+                      {repoDetailInfo.repomonName}
+                      {repoDetailInfo.myRepo && (
+                        <RenameModal
+                          repoId={params.repoId}
+                          setIsUpdated={setIsUpdated}
+                        />
+                      )}
+                    </p>
                   </p>
                   <ProgressBar restExp={repoDetailInfo.repoExp % 100} />
                 </div>
@@ -260,20 +279,33 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
             </div>
             <div className={styles["default-info-div"]}>
               <div className={styles.first}>
-                <span className={styles.title}>{repoDetailInfo.repoName}</span>
+                <p className={styles.title}>
+                  {repoDetailInfo.repoName}
+                  <button className={styles.update} onClick={onClickUpdateBtn}>
+                    {updateLoading ? <LoadingSpinner /> : <span>갱신하기</span>}
+                    {/* <LoadingSpinner /> */}
+                  </button>
+                  <button className={styles.export}>
+                    <p>추출하기</p>
+                  </button>
+                </p>
                 <div className={styles["icon-div"]}>
                   <span className={styles.star}>
-                    <StarIcon
-                      width="1.25rem"
-                      style={{ display: "inline", marginRight: "0.3rem" }}
-                    />
+                    <Image
+                      alt="startIcon"
+                      src={starIcon}
+                      width={22}
+                      height={22}
+                    ></Image>
                     {repoDetailInfo.starCnt}
                   </span>
                   <span className={styles.share}>
-                    <ShareIcon
-                      width="1.25rem"
-                      style={{ display: "inline", marginRight: "0.45rem" }}
-                    />
+                    <Image
+                      alt="forkIcon"
+                      src={forkIcon}
+                      width={19}
+                      height={19}
+                    ></Image>
                     {repoDetailInfo.forkCnt}
                   </span>
                 </div>
@@ -299,7 +331,18 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
               <div className={styles["lan-div"]}>
                 {repoDetailInfo.languages &&
                   repoDetailInfo.languages.map((lan, index) => (
-                    <span key={index}>{lan}</span>
+                    <>
+                      <span
+                        key={index}
+                        style={{
+                          backgroundColor: languageColor[lan].color
+                            ? (languageColor[lan].color as string)
+                            : "gray",
+                        }}
+                      >
+                        {lan}
+                      </span>
+                    </>
                   ))}
               </div>
               <div className={styles["tag-div"]}>

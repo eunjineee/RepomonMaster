@@ -39,7 +39,8 @@ function DetailContribution({
       <p className={styles["tab-des"]}>
         나와 팀원들의 커밋 수를 확인할 수 있어요.
       </p>
-      {!contributionInfo.committers && (
+      {(!contributionInfo.committers ||
+        contributionInfo.totalCommitCount === 0) && (
         <div className={styles["no-commiter"]}>
           <Lottie
             loop={true}
@@ -47,10 +48,13 @@ function DetailContribution({
             play
             style={{ width: "300px" }}
           />
-          <p>커밋 정보가 없어요.</p>
+          {!contributionInfo.committers && <p>커밋 정보를 불러올 수 없어요.</p>}
+          {contributionInfo.totalCommitCount === 0 && (
+            <p>커밋 정보가 없어요.</p>
+          )}
         </div>
       )}
-      {contributionInfo.committers && (
+      {contributionInfo.committers && contributionInfo.totalCommitCount > 0 && (
         <div style={{ display: "flex", marginTop: "4rem" }}>
           <div className={styles.left}>
             <ContributionChart commiters={contributionInfo.committers} />

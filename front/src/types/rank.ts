@@ -37,6 +37,7 @@ export type UserRankContentType = {
   userId: number;
   userRank: number;
   username: string;
+  avatarUrl: string;
 };
 
 export type RepoRankInfoType = RankInfoType & {

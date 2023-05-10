@@ -47,7 +47,7 @@ const Model = ({
     <primitive
       object={gltf.scene}
       scale={[2, 2, 2]}
-      position={[0, -1.5, 0]}
+      position={[0, -2, 0]}
       rotation={[0.3, -0.2, 0]}
       onClick={() => {
         setIsClicked(!isClicked);
@@ -60,7 +60,15 @@ function DetailRepomon({ repomonUrl }: { repomonUrl: string }) {
   const [isClicked, setIsClicked] = useState<boolean>(false);
 
   return (
-    <Canvas style={{ width: "100%", height: "500px" }}>
+    <Canvas
+      style={{
+        width: "97%",
+        height: "450px",
+        backgroundColor: "white",
+        margin: "0.5rem auto 0 auto",
+        borderRadius: "10px",
+      }}
+    >
       <ambientLight intensity={0.1} />
       <ambientLight intensity={0.1} />
       <directionalLight color="white" position={[0, 0, 5]} intensity={0.6} />

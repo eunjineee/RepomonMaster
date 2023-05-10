@@ -68,7 +68,7 @@ const UserRank = ({
             <div className={styles["img-div"]}>
               <Image
                 alt={`top${index + 1}`}
-                src={sessionStorage.getItem("avatarUrl") as string}
+                src={data.avatarUrl}
                 width={150}
                 height={120}
               ></Image>
@@ -103,7 +103,7 @@ const UserRank = ({
             <span>
               <Image
                 alt="유저"
-                src={sessionStorage.getItem("avatarUrl") as string}
+                src={item.avatarUrl}
                 width={30}
                 height={30}
               ></Image>

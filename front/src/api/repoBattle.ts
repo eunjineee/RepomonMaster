@@ -16,3 +16,9 @@ export const requestMatchResult = async (oppoId: number, myId: number) => {
 
   return res;
 };
+
+export const axiosRequestMatchBattle = async (repoId: number | string) => {
+  const res = await http.get(`/repomon/${repoId}/match`);
+
+  return res;
+};
