@@ -40,3 +40,10 @@ export type RandomRepo = {
   repomonUrl: string;
   repomonName: string;
 };
+
+// 커밋 컨벤션 타입
+
+export type conventionType = {
+  type: string;
+  desc: string;
+};

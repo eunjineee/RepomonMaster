@@ -37,7 +37,7 @@
     }
     & .diceContainer {
       width: 30%;
-      height: 60em;
+      height: 65em;
     }
   }
 }
@@ -52,11 +52,11 @@
   margin-top: 3%;
   background: linear-gradient(
     248deg,
-    #d6f6ff,
-    #c2ecff,
-    #badeff,
-    #c2cdff,
-    #d7b9ff
+    #bad2da,
+    #b1d1e2,
+    #adc7df,
+    #b5bde0,
+    #baa4d4
   );
   background-size: 1000% 1000%;
   -webkit-animation: AnimationName 7s ease infinite;
@@ -69,7 +69,7 @@
   -webkit-backdrop-filter: blur(14px);
   & .diceTitle {
     width: 100%;
-    height: 10%;
+    height: 5%;
     font-size: 3em;
     font-weight: 600;
     text-align: center;
@@ -130,17 +130,17 @@
 
 @keyframes blink {
   0% {
-    text-shadow: none;
-    opacity: 0.6;
+    // text-shadow: none;
+    opacity: 0;
   }
   50% {
-    text-shadow: 0px 0px 5px #81b7cc, 0px 0px 10px #83acc7, 0px 0px 10px #7ba3c9,
-      0px 0px 20px #81b6ce;
+    // text-shadow: 0px 0px 5px #81b7cc, 0px 0px 10px #83acc7, 0px 0px 10px #7ba3c9,
+    // 0px 0px 20px #81b6ce;
     opacity: 1;
   }
   100% {
-    text-shadow: none;
-    opacity: 0.6;
+    // text-shadow: none;
+    opacity: 0;
   }
 }
 

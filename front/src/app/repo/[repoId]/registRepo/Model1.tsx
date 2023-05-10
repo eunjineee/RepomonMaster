@@ -16,7 +16,6 @@ export const Model1 = (props: propsData) => {
   if (gltf.animations.length) {
     mixer = new THREE.AnimationMixer(gltf.scene);
     mixer.timeScale = 0.4;
-    console.log("animations: ", gltf.animations);
     if (isClicked) {
       const action = mixer.clipAction(gltf.animations[11]);
       action.clampWhenFinished = true;
@@ -45,7 +44,7 @@ export const Model1 = (props: propsData) => {
     <>
       <primitive
         object={gltf.scene}
-        scale={[4, 4, 4]}
+        scale={[5, 5, 5]}
         position={[0, -2, 0]}
         rotation={[0, -0.8, 0]}
         onClick={func}

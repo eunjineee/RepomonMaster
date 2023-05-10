@@ -2,25 +2,20 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
 import styles from "./page.module.scss";
 import RepositoryCard from "@/components/RepositoryCard";
 import { useRouter } from "next/navigation";
-import DropDown from "@/components/DropDown";
 import {
   getTotalRepoList,
   getUserDetail,
   refreshAllRepo,
 } from "@/api/userRepo";
 import { RepoListType, UserInfoType } from "@/types/repoInfo";
-import { useAppSelector } from "@/redux/hooks";
 import Paging from "@/components/UI/Pagination";
 import Modal from "react-modal";
 import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
 
 const Page = ({ params }: { params: { userId: string } }) => {
-  const router = useRouter();
-
   // 레포지토리 유저 정보 GET
   const [userInfo, setUserInfo] = useState<UserInfoType>();
   const [repoInfo, setRepoInfo] = useState<RepoListType>({

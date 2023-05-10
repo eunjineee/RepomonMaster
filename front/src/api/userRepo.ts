@@ -1,4 +1,4 @@
-import { RepoInitType } from "@/types/repoRegist";
+import { conventionType, RepoInitType } from "@/types/repoRegist";
 import { http } from "./axios";
 
 // 유저 정보 조회
@@ -76,6 +76,18 @@ export const getTotalRepoList = async (
 // 레포몬 초기 등록
 export const setRepoInit = async (data: RepoInitType) => {
   const res = await http.post(`/repomon/start`, data);
+  return res;
+};
+
+// 커밋 컨벤션 등록-수정
+export const setCommitConvention = async (
+  commitDataList: conventionType[],
+  repoId: number
+) => {
+  const putData = {
+    conventions: commitDataList,
+  };
+  const res = await http.put(`/repo/${repoId}/info/convention`, putData);
   return res;
 };
 

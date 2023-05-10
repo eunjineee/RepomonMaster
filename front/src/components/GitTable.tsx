@@ -1,25 +1,34 @@
 `use client`;
 
-import React, { useState } from "react";
+import { conventionType } from "@/types/repoRegist";
+import React, { useEffect, useState } from "react";
 
-type Commit = {
-  header: string;
-  description: string;
+type propsData = {
+  setConventionData: React.Dispatch<React.SetStateAction<conventionType[]>>;
 };
 
-function GitTable() {
-  const [commits, setCommits] = useState<Commit[]>([]);
-  const [header, setHeader] = useState("");
+function GitTable(props: propsData) {
+  const [commits, setCommits] = useState<conventionType[]>([
+    { type: "", desc: "" },
+  ]);
+  const [type, setType] = useState("");
   const [description, setDescription] = useState("");
+  useEffect(() => {
+    const convertedCommits = commits.slice(1).map((commit) => ({
+      type: commit.type,
+      desc: commit.desc,
+    }));
+    props.setConventionData(convertedCommits);
+  }, [commits]);
 
   const handleAddCommit = () => {
-    if (header.trim() !== "") {
-      const newCommit: Commit = {
-        header: header.trim(),
-        description: description.trim(),
+    if (type.trim() !== "") {
+      const newCommit: conventionType = {
+        type: type.trim(),
+        desc: description.trim(),
       };
       setCommits([...commits, newCommit]);
-      setHeader("");
+      setType("");
       setDescription("");
     }
     const lastRowIndex = commits.length;
@@ -32,9 +41,8 @@ function GitTable() {
   };
 
   const handleDeleteCommit = (index: number) => {
-    const updatedCommits = [...commits];
-    updatedCommits.splice(index, 1);
-    setCommits(updatedCommits);
+    const filteredCommits = commits.filter((_, i) => i !== index + 1);
+    setCommits(filteredCommits);
   };
 
   return (
@@ -63,16 +71,16 @@ function GitTable() {
             </tr>
           </thead>
           <tbody>
-            {commits.map((commit, index) => (
+            {commits.slice(1).map((commit, index) => (
               <tr key={index} className="border-b dark:border-neutral-500">
                 <td className="whitespace-nowrap  px-6 py-4 font-medium">
-                  {commit.header}
+                  {commit.type}
                 </td>
                 <td
                   className="whitespace-nowrap  px-6 py-4"
                   style={{ textAlign: "left" }}
                 >
-                  {commit.description}
+                  {commit.desc}
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4">
                   <button onClick={() => handleDeleteCommit(index)}>
@@ -90,8 +98,8 @@ function GitTable() {
                     width: "100%",
                     textAlign: "center",
                   }}
-                  value={header}
-                  onChange={(e) => setHeader(e.target.value)}
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
                   placeholder="헤더 입력(선택)"
                 />
               </td>
