@@ -1,6 +1,7 @@
 package com.repomon.rocketdan.domain.user.service;
 
 
+import com.repomon.rocketdan.common.utils.GHUtils;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
 import com.repomon.rocketdan.domain.repo.repository.ActiveRepoRepository;
 import com.repomon.rocketdan.domain.repo.repository.RepoRepository;
@@ -30,6 +31,7 @@ public class RankService {
 	private final UserRepository userRepository;
 	private final RepoRepository repoRepository;
 	private final ActiveRepoRepository activeRepoRepository;
+	private final GHUtils ghUtils;
 
 
 	/**
@@ -47,7 +49,8 @@ public class RankService {
 		for (UserEntity user : userEntityList) {
 			Long activeRepoCount = activeRepoRepository.countByUserAndRepoIsActive(user, true);
 			Long userRank = getUserRank(user);
-			userRankResponseDtoList.add(UserRankResponseDto.fromEntity(user, activeRepoCount, userRank));
+			String avatarUrl = ghUtils.getUser(user.getUserName()).get("avatarUrl");
+			userRankResponseDtoList.add(UserRankResponseDto.fromEntity(user, activeRepoCount, userRank, avatarUrl));
 		}
 		return new PageImpl<>(userRankResponseDtoList, pageable, userEntityList.getTotalElements());
 	}

@@ -15,9 +15,10 @@ public class UserRankResponseDto {
 	private String username;
 	private Long activeRepoCount;
 	private Long userRank;
+	private String avatarUrl;
 
 
-	public static UserRankResponseDto fromEntity(UserEntity user, Long activeRepoCount, Long userRank) {
+	public static UserRankResponseDto fromEntity(UserEntity user, Long activeRepoCount, Long userRank, String avatarUrl) {
 
 		return UserRankResponseDto.builder()
 			.userId(user.getUserId())
@@ -25,6 +26,7 @@ public class UserRankResponseDto {
 			.totalExp(user.getTotalExp())
 			.userRank(userRank)
 			.activeRepoCount(activeRepoCount)
+			.avatarUrl(avatarUrl)
 			.build();
 	}
 
