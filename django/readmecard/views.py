@@ -144,20 +144,6 @@ ELLIPSE_TYPE = {
     2 : 'elli2',
     3 : 'elli3',
 }
-print(COLOR_DICT)
-# COLOR_DICT = {
-# 'JavaScript' : '#F7DF1E',
-# 'Java' : '#007396',
-# 'Python' : '#3776AB',
-# 'HTML' : '#E34F26',
-# 'CSS' : '#1572B6',
-# 'TypeScript' : '#3178C6',
-# 'Shell' : '#FFD500',
-# 'SCSS' : '#1572B6',
-# 'Dockerfile' : '#2496ED',
-# 'Solidity' : '#363636',
-# 'Vue' : '#4FC08D',
-# }
 
 RANDOM_COLOR = {
 '0' : '#F7DF1E',
@@ -580,7 +566,7 @@ class RepoPersonalDefaultSettings(object):
                 self.gitname = self.json['userName'] 
                 self.avatarUrl = self.json['avatarUrl'] 
 
-                self.mycommits = self.json['mytotalcommit']
+                self.mycommits = self.json['mycommit']
                 self.myissues = self.json['myissues']
                 self.mymerges = self.json['mymerges']
                 self.myreviews = self.json['myreviews']
@@ -959,11 +945,12 @@ class UserDefaultSettings(object):
                 self.totalCodeLineCount = self.json['totalCodeLineCount']
                 self.languages = languageCount(self.json['languages'])
 
-                self.totalMergeCount = self.json['totalMergeCount']
-                self.totalReviewCount = self.json['totalReviewCount']
-                self.totalIssueCount = self.json['totalIssueCount']
-                self.starCount = self.json['starCount']
-                self.forkCount = self.json['forkCount']
+                self.totalCommitExp = self.json['totalCommitExp']
+                self.totalMergeExp = self.json['totalMergeExp']
+                self.totalReviewExp = self.json['totalReviewExp']
+                self.totalIssueExp = self.json['totalIssueExp']
+                self.starExp = self.json['starExp']
+                self.forkExp = self.json['forkExp']
 
                 self.avgContribution = int(self.json['avgContribution'])
                 self.avgContribution_percent = self.percent(self.avgContribution)
@@ -973,7 +960,7 @@ class UserDefaultSettings(object):
                 self.introduce = self.is_none(self.json['introduce']) 
                 self.repoCount = self.json['repoCount'] 
             
-                self.chart = svg_chart([self.totalCommitCount, self.totalMergeCount, self.totalIssueCount, self.totalReviewCount, self.starCount, self.forkCount])
+                self.chart = svg_chart([self.totalCommitExp, self.totalMergeExp, self.totalIssueExp, self.totalReviewExp, self.starExp, self.forkExp])
             else:
                 self.myrepomonId = 3
                 self.myrepoExp = 321
@@ -985,11 +972,12 @@ class UserDefaultSettings(object):
                 self.totalCodeLineCount = 1234567
                 self.languages = [('Java', '#007396', '0', '30'), ('Vue', '#4FC08D', '35', '25'), ('Python', '#3776AB', '65', '40'), ('TypeScript', '#3178C6', '0', '60'), ('CSS', '#1572B6', '65', '25'), ('HTML', '#E34F26', '95', '30'), ('', '0', '0', '0')]
 
-                self.totalMergeCount = 30
-                self.totalReviewCount = 20
-                self.totalIssueCount = 10
-                self.starCount = 5
-                self.forkCount = 3
+                self.totalCommitExp = 30
+                self.totalMergeExp = 30
+                self.totalReviewExp = 20
+                self.totalIssueExp = 10
+                self.starExp = 5
+                self.forkExp = 5
 
                 self.avgContribution = 77
                 self.avgContribution_percent = self.percent(self.avgContribution)
@@ -998,7 +986,7 @@ class UserDefaultSettings(object):
                 self.avatarUrl = IMG['img0']
                 self.introduce = '주소를 다시 확인해주세요'
                 self.repoCount = 0 
-                self.chart = svg_chart([self.totalCommitCount, self.totalMergeCount, self.totalIssueCount, self.totalReviewCount, self.starCount, self.forkCount])
+                self.chart = svg_chart([self.totalCommitExp, self.totalMergeExp, self.totalIssueExp, self.totalReviewExp, self.starExp, self.forkExp])
         
         except JSONDecodeError as e:
             logger.error(e)
@@ -1012,20 +1000,21 @@ class UserDefaultSettings(object):
             self.totalCodeLineCount = 1234567
             self.languages = [('Java', '#007396', '0', '30'), ('Vue', '#4FC08D', '35', '25'), ('Python', '#3776AB', '65', '40'), ('TypeScript', '#3178C6', '0', '60'), ('CSS', '#1572B6', '65', '25'), ('HTML', '#E34F26', '95', '30'), ('', '0', '0', '0')]
 
-            self.totalMergeCount = 30
-            self.totalReviewCount = 20
-            self.totalIssueCount = 10
-            self.starCount = 5
-            self.forkCount = 3
+            self.totalCommitExp = 30
+            self.totalMergeExp = 30
+            self.totalReviewExp = 20
+            self.totalIssueExp = 10
+            self.starExp = 5
+            self.forkExp = 5
 
             self.avgContribution = 77
             self.avgContribution_percent = self.percent(self.avgContribution)
 
             self.userName = '로켓단'
-            self.avatarUrl = IMG[img0]
+            self.avatarUrl = IMG['img0']
             self.introduce = '주소를 다시 확인해주세요'
             self.repoCount = 0 
-            self.chart = svg_chart([self.totalCommitCount, self.totalMergeCount, self.totalIssueCount, self.totalReviewCount, self.starCount, self.forkCount])
+            self.chart = svg_chart([self.totalCommitExp, self.totalMergeExp, self.totalIssueExp, self.totalReviewExp, self.starExp, self.forkExp])
         
     def percent(self, num):
         percent = round(num/100*80)
