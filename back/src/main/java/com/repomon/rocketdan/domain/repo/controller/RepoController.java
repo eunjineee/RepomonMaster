@@ -112,7 +112,7 @@ public class RepoController {
 
 	@ApiOperation(value = "레포지토리 컨벤션 설정")
 	@PutMapping("/{repoId}/info/convention")
-	public ResponseEntity<ResultDto> modifyRepoConvention(@PathVariable Long repoId, @ModelAttribute RepoConventionRequestDto requestDto, BindingResult bindingResult) {
+	public ResponseEntity<ResultDto> modifyRepoConvention(@PathVariable Long repoId, @RequestBody RepoConventionRequestDto requestDto, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new CustomException(DATA_CONVENTION_TOO_SHORT);
 		}
