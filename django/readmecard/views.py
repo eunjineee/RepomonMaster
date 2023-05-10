@@ -190,7 +190,7 @@ class RepoDefaultSettings(object):
             print(self.json)
             if 'status' not in self.json:
                 print('yes~')    
-                self.repomonId = self.repomonId(self.json['repomonId'])
+                self.repomonId = self.repomonIdZero(self.json['repomonId'])
                 self.repoExp = self.json['repoExp']
                 self.repomonTier = self.json['repomonTier']
                 self.repoName = self.json['repoName']
@@ -259,9 +259,11 @@ class RepoDefaultSettings(object):
         else:
             return ''
         
-    def repomonId(self, num):
+    def repomonIdZero(self, num):
         if num > 30: 
             return 0
+        else:
+            return num
         
     def percent(self, num):
         percent = round(num/100*90)
@@ -540,7 +542,7 @@ class RepoPersonalDefaultSettings(object):
             print(self.json)
             if 'status' not in self.json:
                 print('yes~')    
-                self.repomonId = self.json['repomonId']
+                self.repomonId = self.repomonIdZero(self.json['repomonId'])
                 self.repoExp = self.json['repoExp']
                 self.repomonTier = self.json['repomonTier']
                 self.contribution = self.json['conventionrate']
@@ -649,6 +651,12 @@ class RepoPersonalDefaultSettings(object):
             return new_day
         else:
             return ''
+    
+    def repomonIdZero(self, num):
+        if num > 30: 
+            return 0
+        else:
+            return num
         
     def percent(self, num):
         percent = round(num/100*90)
@@ -935,7 +943,7 @@ class UserDefaultSettings(object):
             print('🎀')
             print(self.json)
             if 'status' not in self.json:
-                self.myrepomonId = self.json['myrepomonId']
+                self.myrepomonId = self.repomonIdZero(self.json['myrepomonId'])
                 self.myrepoExp = self.json['myrepoExp']
                 self.myrepomonTier = self.json['myrepomonTier']
                 self.myrepoName = self.json['myrepoName']
@@ -1020,6 +1028,12 @@ class UserDefaultSettings(object):
         percent = round(num/100*80)
         return percent
     
+    def repomonIdZero(self, num):
+        if num > 30: 
+            return 0
+        else:
+            return num
+        
     def is_none(self, data):
         if data == None:
             return ''
