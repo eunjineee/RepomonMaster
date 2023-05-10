@@ -2,7 +2,6 @@ package com.repomon.rocketdan.domain.repomon.dto.response;
 
 
 import com.repomon.rocketdan.domain.repo.dto.response.RepomonResponseDto;
-import com.repomon.rocketdan.domain.repo.entity.RepomonEntity;
 import com.repomon.rocketdan.domain.repomon.app.BattleLogic;
 import com.repomon.rocketdan.domain.repomon.entity.RepomonStatusEntity;
 import lombok.*;
@@ -50,12 +49,11 @@ public class RepomonStatusResponseDto {
 
 
 	public static Integer remainStat(Long exp, int atk, int dodge, int def, int critical, int hit) {
-		return (int) (exp / 100) - (atk + dodge + def + critical + hit);
+		return (int) Math.min((exp / 100), BattleLogic.maxLevel) - (atk + dodge + def + critical + hit);
 	}
 
 
 	public static RepomonStatusResponseDto fromEntity(RepomonStatusEntity repomonStatus) {
-		RepomonEntity repomon = repomonStatus.getRepomon();
 		return RepomonStatusResponseDto.builder()
 			.repoId(repomonStatus.getRepoId())
 			.repoName(repomonStatus.getRepoName())
@@ -69,7 +67,7 @@ public class RepomonStatusResponseDto {
 				repomonStatus.getHitPoint()))
 			.winCnt(repomonStatus.getWinCnt())
 			.loseCnt(repomonStatus.getLoseCnt())
-			.repomon(RepomonResponseDto.fromEntity(repomon))
+			.repomon(RepomonResponseDto.fromEntity(repomonStatus.getRepomon()))
 			// 각 스탯에 찍은 포인트
 			.atkPoint(repomonStatus.getAtkPoint())
 			.dodgePoint(repomonStatus.getDodgePoint())

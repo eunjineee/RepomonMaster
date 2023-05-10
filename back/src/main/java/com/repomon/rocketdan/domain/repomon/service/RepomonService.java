@@ -29,6 +29,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.repomon.rocketdan.exception.ErrorCode.*;
+import static java.lang.Float.parseFloat;
 
 
 @Service
@@ -114,10 +115,10 @@ public class RepomonService {
 			() -> new CustomException(NOT_FOUND_REPOSITORY)
 		);
 
-		//		// 권한 검증
-		//		if (!SecurityUtils.getCurrentUserId().equals(repomonStatus.getRepoOwner())) {
-		//			throw new CustomException(NO_ACCESS);
-		//		}
+		// 권한 검증
+		if (!SecurityUtils.getCurrentUserId().equals(repomonStatus.getRepoOwner())) {
+			throw new CustomException(NO_ACCESS);
+		}
 
 		String repomonOwner = repomonStatus.getRepoOwner();
 		Integer userRating = repomonStatus.getRating();
@@ -153,10 +154,10 @@ public class RepomonService {
 			() -> new CustomException(NOT_FOUND_REPOSITORY)
 		);
 
-		//		// 권한 검증
-		//		if (!SecurityUtils.getCurrentUserId().equals(myRepomon.getRepoOwner())) {
-		//			throw new CustomException(NO_ACCESS);
-		//		}
+		// 권한 검증
+		if (!SecurityUtils.getCurrentUserId().equals(myRepomon.getRepoOwner())) {
+			throw new CustomException(NO_ACCESS);
+		}
 
 		RepomonStatusEntity yourRepomon = repomonStatusRepository.findById(
 			battleLogRequestDto.getOpponentRepoId()).orElseThrow(
@@ -182,13 +183,13 @@ public class RepomonService {
 				// 내 공격차례일 때
 				HashMap<String, Object> battleResult = BattleLogic.battle(turn, myRepomon,
 					yourRepomon, mySkillDmg);
-				yourHp -= Float.valueOf(battleResult.get("damage").toString());
+				yourHp -= parseFloat(battleResult.get("damage").toString());
 				battleLogList.add(battleResult);
 
 			} else {
 				HashMap<String, Object> battleResult = BattleLogic.battle(turn, yourRepomon,
 					myRepomon, yourSkillDmg);
-				myHp -= Float.valueOf(battleResult.get("damage").toString());
+				myHp -= parseFloat(battleResult.get("damage").toString());
 				battleLogList.add(battleResult);
 			}
 			turn++;

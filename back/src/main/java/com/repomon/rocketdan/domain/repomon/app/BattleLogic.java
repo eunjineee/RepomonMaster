@@ -37,6 +37,10 @@ public class BattleLogic {
 	// 스킬 발동 확률
 	public static final Integer skillProbability = 5;
 
+	// 맥스 레벨 설정
+	public static final Integer maxLevel = 1000;
+	public static final Integer maxExp = maxLevel * 100;
+
 
 	// 현재 해당 스텟 계산
 	public static Float createAtk(Integer startPoint, Integer atkPoint) {
@@ -65,7 +69,7 @@ public class BattleLogic {
 
 
 	public static Integer createHp(Long exp) {
-		return (int) (exp * hpValue) + defaultHp;
+		return (int) (Math.min(exp, maxExp) * hpValue) + defaultHp;
 	}
 
 
@@ -99,7 +103,7 @@ public class BattleLogic {
 	 */
 	public static Integer getAllStat(RepomonStatusEntity repomon) {
 		return Math.max((repomon.getAtkPoint() + repomon.getDefPoint() + repomon.getDodgePoint()
-			+ repomon.getCriticalPoint() + repomon.getHitPoint() + (int) ((repomon.getRepoExp()) / 100)) + 1, 2);
+			+ repomon.getCriticalPoint() + repomon.getHitPoint() + (int) ((Math.min(repomon.getRepoExp(), maxExp)) / 100)) + 1, 2);
 	}
 
 
