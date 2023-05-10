@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 type InputProps = {
   setRepoName: React.Dispatch<React.SetStateAction<string>>;
+  setIsReady: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function InputField(props: InputProps) {
@@ -47,6 +48,10 @@ function InputField(props: InputProps) {
       setIsGoodTouse(false);
     }
   }, [name]);
+
+  useEffect(() => {
+    props.setIsReady(isDisabled);
+  }, [isDisabled]);
 
   return (
     <form className="flex items-center" style={{ width: "70%" }}>

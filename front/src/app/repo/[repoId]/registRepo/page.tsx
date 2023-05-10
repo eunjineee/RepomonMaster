@@ -34,6 +34,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
 
   const [repoName, setRepoName] = useState<string>("");
   const [selectedChar, setSelectedChar] = useState<number>(0);
+  const [isReady, setIsReady] = useState<boolean>(false);
   const [repoInitData, setRepoInitData] = useState<RepoInitType>({
     repoId: parseInt(params.repoId),
     repomonId: 0,
@@ -52,14 +53,21 @@ const Page: NextPage<PageProps> = ({ params }) => {
   const localUserId = sessionStorage.getItem("userId");
 
   async function handlePostClick() {
-    setRepoInit(repoInitData);
-    setCommitConvention(conventionData, parseInt(params.repoId));
-    setIsOpen(true);
-    setTimeout(() => {
-      setIsOpen(false);
-      router.push(`/user/${localUserId}`);
-    }, 2000);
-    console.log("post done");
+    if (isReady && selectedChar !== 0) {
+      setRepoInit(repoInitData);
+      setCommitConvention(conventionData, parseInt(params.repoId));
+      setIsOpen(true);
+      setTimeout(() => {
+        setIsOpen(false);
+        router.push(`/user/${localUserId}`);
+      }, 2000);
+      console.log("post done");
+    } else {
+      setIsOpen(true);
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 2000);
+    }
   }
 
   useEffect(() => {
@@ -301,8 +309,16 @@ const Page: NextPage<PageProps> = ({ params }) => {
         style={customStyles}
         contentLabel=""
       >
-        <p className="text-center flex items-center justify-center text-2xl antialiased font-semibold text-sky-600">
-          레포몬이 등록되었습니다.
+        <p
+          className={`text-center flex items-center justify-center text-2xl antialiased font-semibold ${
+            isReady ? "text-sky-600" : "text-red-600"
+          }`}
+        >
+          {selectedChar === 0
+            ? "레포몬을 선택해주세요"
+            : isReady
+            ? "레포몬이 등록되었습니다."
+            : "레포몬 이름을 확정해주세요"}
         </p>
       </Modal>
       <div className={styles.selectBox}>
@@ -424,7 +440,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
             }}
           >
             <p style={{ width: "25%" }}>레포몬 이름 설정</p>
-            <InputField setRepoName={setRepoName} />
+            <InputField setRepoName={setRepoName} setIsReady={setIsReady} />
           </div>
           <GitTable setConventionData={setConventionData} />
         </div>
