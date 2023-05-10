@@ -170,7 +170,6 @@ export type ContributionChartType = {
   datasets: {
     data: number[];
     backgroundColor: string[];
-    borderColor: string[];
     borderWidth: number;
   }[];
 };

@@ -12,13 +12,22 @@ export function ConventionChart({
   obey: number;
 }) {
   const data = {
-    labels: ["컨벤션 좋아", "컨벤션 몰라"],
+    labels:
+      obey === 0
+        ? ["컨벤션 몰라"]
+        : total - obey === 0
+        ? ["컨벤션 좋아"]
+        : ["컨벤션 좋아", "컨벤션 몰라"],
     datasets: [
       {
-        data: [obey, total - obey],
+        data:
+          obey === 0
+            ? [total - obey]
+            : total - obey === 0
+            ? [obey]
+            : [obey, total - obey],
         backgroundColor: ["rgba(109, 130, 250, 0.2)", "rgba(255, 111, 0, 0.2)"],
-        borderColor: ["rgba(109, 130, 250, 1)", "rgba(255, 111, 0, 1)"],
-        borderWidth: 2,
+        borderWidth: 0,
       },
     ],
   };

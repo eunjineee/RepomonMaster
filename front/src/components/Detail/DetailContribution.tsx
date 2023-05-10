@@ -10,17 +10,21 @@ function DetailContribution({
 }: {
   contributionInfo: RepoDetailContributionInfoType;
 }) {
+  let len: number;
+  let commitDesc: number[] = [];
   let newCommitters: { rank: number; id: string; commitCnt: number }[] = [];
 
   if (contributionInfo.committers) {
-    const commitDesc = Object.values(contributionInfo.committers).sort(
-      function (a, b) {
-        return b - a;
-      }
-    );
+    commitDesc = Object.values(contributionInfo.committers).sort(function (
+      a,
+      b
+    ) {
+      return b - a;
+    });
 
-    for (let i = 0; i < commitDesc.length; i++) {
-      console.log(commitDesc[i]);
+    len = commitDesc.length > 10 ? 10 : commitDesc.length;
+
+    for (let i = 0; i < len; i++) {
       for (let commiter in contributionInfo.committers) {
         if (contributionInfo.committers[commiter] === commitDesc[i]) {
           newCommitters.push({
@@ -79,6 +83,7 @@ function DetailContribution({
                 <span>{data.commitCnt}</span>
               </div>
             ))}
+            {commitDesc?.length > 10 && <p className={styles.omis}>...</p>}
           </div>
         </div>
       )}
