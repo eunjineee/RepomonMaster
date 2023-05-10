@@ -40,6 +40,10 @@
         background-color: #141414;
         background-size: contain;
         margin-bottom: 2em;
+        @include desktop125 {
+          width: 14em;
+          height: 14em;
+        }
       }
     }
     & .bodyList {
@@ -110,5 +114,17 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+#repoListTitle {
+  @include desktop125 {
+    font-size: 1.2em !important;
+  }
+}
+
+#reposubtitle {
+  @include desktop125 {
+    font-size: 0.9em !important;
   }
 }

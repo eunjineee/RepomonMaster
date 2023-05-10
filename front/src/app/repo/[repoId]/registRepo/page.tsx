@@ -439,7 +439,9 @@ const Page: NextPage<PageProps> = ({ params }) => {
               justifyContent: "flex-start",
             }}
           >
-            <p style={{ width: "25%" }}>레포몬 이름 설정</p>
+            <p style={{ width: "25%" }} id={styles.repomonNameTitle}>
+              레포몬 이름 설정
+            </p>
             <InputField setRepoName={setRepoName} setIsReady={setIsReady} />
           </div>
           <GitTable setConventionData={setConventionData} />

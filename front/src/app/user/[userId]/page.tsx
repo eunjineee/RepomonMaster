@@ -14,6 +14,8 @@ import { RepoListType, UserInfoType } from "@/types/repoInfo";
 import Paging from "@/components/UI/Pagination";
 import Modal from "react-modal";
 import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
+import Ballon from "public/static/lotties/balloon.json";
+import Lottie from "react-lottie-player";
 
 const Page = ({ params }: { params: { userId: string } }) => {
   // 레포지토리 유저 정보 GET
@@ -112,13 +114,11 @@ const Page = ({ params }: { params: { userId: string } }) => {
       </Modal>
       <div className={styles.pageContainer}>
         <div className={styles.bannerBack}>
-          <iframe
-            src="https://embed.lottiefiles.com/animation/97144"
-            style={{
-              width: "30%",
-              height: "100%",
-              display: "flex",
-            }}
+          <Lottie
+            loop
+            animationData={Ballon}
+            play
+            style={{ width: 400, height: 400 }}
           />
         </div>
         <div className={styles.bodyContainer}>
@@ -160,7 +160,9 @@ const Page = ({ params }: { params: { userId: string } }) => {
                   marginLeft: "10%",
                 }}
               >
-                <p style={{ width: "7em" }}>레포지토리 목록</p>
+                <p style={{ width: "7em" }} id={styles.repoListTitle}>
+                  레포지토리 목록
+                </p>
                 <ArrowPathIcon
                   width="2rem"
                   style={{ marginLeft: "2%" }}
@@ -184,6 +186,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
                   marginLeft: "10%",
                   marginBlock: "1%",
                 }}
+                id={styles.reposubtitle}
               >
                 <span style={{ color: "red", fontWeight: "800" }}>*</span> 최초
                 로드 시, 리스트가 보이지 않을 때 갱신 버튼을 눌러주세요

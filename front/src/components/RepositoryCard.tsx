@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import CardSkeleton from "./Skeletons/CardSkeleton";
 import * as THREE from "three";
+import styles from "./RepositoryCard.module.scss";
 
 type propType = {
   title: string | undefined;
@@ -76,6 +77,7 @@ function RepositoryCard(props: propType) {
       style={{
         opacity: isActive ? "1" : "0.5",
       }}
+      id={styles.cardContainer}
     >
       <div
         style={{
@@ -83,6 +85,7 @@ function RepositoryCard(props: propType) {
           justifyContent: "flex-end",
           display: "flex",
           visibility: props.isSameUser ? "visible" : "hidden",
+          marginBottom: "1em",
         }}
       >
         <span className="mr-3 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -112,7 +115,6 @@ function RepositoryCard(props: propType) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            // border: "1px solid black",
             height: "100%",
           }}
         >
@@ -145,10 +147,14 @@ function RepositoryCard(props: propType) {
                 : "auto",
             }}
             onClick={handleRouting}
+            id={styles.repoTitle}
           >
             {props.title}
           </p>
-          <p style={{ fontSize: "1em", fontWeight: "500", marginBlock: "3%" }}>
+          <p
+            style={{ fontSize: "1em", fontWeight: "500", marginBlock: "3%" }}
+            id={styles.repoDesc}
+          >
             {props.desc === null ? "설명 없음" : props.desc}
           </p>
           {props.repomonId >= 9000 ? (
@@ -164,6 +170,8 @@ function RepositoryCard(props: propType) {
                 marginTop: "2em",
               }}
               onClick={handleBtnRegist}
+              disabled={!props.isActive}
+              id={styles.repoBtn}
             >
               레포몬 등록
             </button>

@@ -67,6 +67,9 @@
   border: 5px solid rgb(255, 255, 255);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  @include desktop125 {
+    height: 50em !important;
+  }
   & .diceTitle {
     width: 100%;
     height: 5%;
@@ -77,11 +80,17 @@
     color: white;
     text-shadow: 0 0 10px #898bff;
     margin-bottom: 5%;
+    @include desktop125 {
+      font-size: 2em;
+    }
   }
   & .diceBox {
     width: 100%;
     height: 30%;
     position: relative;
+    @include desktop125 {
+      height: 20% !important;
+    }
     & .dice {
       width: auto;
       height: auto;
@@ -95,6 +104,9 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+      @include desktop125 {
+        width: 20%;
+      }
     }
     & .diceShadow {
       position: absolute;
@@ -107,6 +119,11 @@
       left: 50%;
       transform: translate(-50%, -50%);
       transition: all 0.2s ease-in-out;
+      @include desktop125 {
+        width: 4em;
+        height: 1em;
+        bottom: -4em;
+      }
     }
   }
   & .statusBox {
@@ -126,6 +143,9 @@
   color: #fdfdfe;
   transition: all 1s ease-in-out;
   animation: blink 3s ease-in-out infinite;
+  @include desktop125 {
+    font-size: 2.5em;
+  }
 }
 
 @keyframes blink {
@@ -149,6 +169,19 @@
   text-shadow: 0 0 5px #191930;
   font-size: large;
   font-weight: 700;
+}
+
+#tableBody {
+  @include desktop125 {
+    font-size: 0.9em !important;
+    font-weight: 500 !important;
+  }
+}
+
+#repomonNameTitle {
+  @include desktop125 {
+    font-size: 0.8em !important;
+  }
 }
 
 .shake {
