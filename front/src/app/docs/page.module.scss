@@ -6,9 +6,11 @@
 }
 
 .navDiv {
-  width: 230px;
-  // margin-left: 30px;
+  width: 290px;
   position: fixed;
+  max-height: calc(100vh - 130px - 10vh);
+  overflow-y: auto;
+  margin-top: 40px;
 }
 
 .navBarListItem {
@@ -37,7 +39,7 @@
 }
 
 .descriptionDiv {
-  margin: 0 0 0 270px;
+  margin: 0 0 0 300px;
   width: auto;
 }
 

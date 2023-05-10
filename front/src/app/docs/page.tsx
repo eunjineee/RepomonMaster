@@ -26,7 +26,7 @@ function Page() {
   return (
     <div className={`${styles.docsDiv} flex `}>
       {/* 네브바 */}
-      <div className={`${styles.navDiv} pt-10 pb-10`}>
+      <div className={`${styles.navDiv} `}>
         {/* 노트 */}
         <div>
           <div className={`${styles.navBarListItem} flex`} onClick={noteNavToggle}>
