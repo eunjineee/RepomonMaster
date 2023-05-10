@@ -1,0 +1,62 @@
+@import '@/styles/variables.scss';
+
+.docsDiv {
+  width: 70%;
+  margin: auto;
+}
+
+.navDiv {
+  width: 230px;
+  // margin-left: 30px;
+  position: fixed;
+}
+
+.navBarListItem {
+  padding-left: 10px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-radius: 10px;
+}
+
+.navBarListItem:hover {
+  background-color: $primary;
+}
+.navBarItem {
+  border-radius: 8px;
+  & a {
+    display: inline-block;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 12px;
+    margin-left: 5px;
+  }
+}
+.navBarItem:hover {
+  background-color: $primary;
+}
+
+.descriptionDiv {
+  margin: 0 0 0 270px;
+  width: auto;
+}
+
+.menu {
+  padding-left: 40px;
+}
+
+.table {
+  & table {
+    border-collapse: collapse;
+    width: 80%;
+  }
+  & th,
+  td {
+    border: 1px solid black;
+    padding: 8px;
+    width: 100px;
+    text-align: center;
+  }
+  & th {
+    background-color: #dddddd;
+  }
+}

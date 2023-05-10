@@ -1,7 +1,7 @@
-@import "./variables.scss";
+@import './variables.scss';
 
 body {
-  font-family: "SUIT-Regular";
+  font-family: 'SUIT-Regular';
   color: rgb(50, 50, 50);
 }
 
@@ -16,6 +16,10 @@ a {
 html {
   overflow-y: scroll;
   scroll-behavior: smooth;
+}
+
+:target {
+  scroll-margin-top: 90px;
 }
 
 * {
