@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { StarIcon, ShareIcon } from "@heroicons/react/24/outline";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import DetailRepomon from "@/components/Detail/DetailRepomon";
 import ProgressBar from "@/components/Detail/ProgressBar";
 import styles from "./page.module.scss";
@@ -37,12 +38,11 @@ import RenameModal from "@/components/Detail/RenameModal";
 import Loading from "@/app/loading";
 import DetailConvention from "@/components/Detail/DetailConvention";
 import DetailContribution from "@/components/Detail/DetailContribution";
-import starIcon from "public/static/icons/star.png";
-import forkIcon from "public/static/icons/fork.png";
 import Image from "next/image";
 import { languageColor } from "@/styles/colors";
 import { customAlert } from "@/app/utils/CustomAlert";
 import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
+import { useRouter } from "next/navigation";
 
 function Page({ params }: { params: { userId: string; repoId: string } }) {
   const [loginUserId, setLoginUserId] = useState<string>();
@@ -63,6 +63,7 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
   const [repoDetailContributionInfo, setRepoDetailContributionInfo] =
     useState<RepoDetailContributionInfoType>();
   const [updateLoading, setUpdateLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   /** =============================================== useEffect =============================================== */
   useEffect(() => {
@@ -143,6 +144,10 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
 
   const onClickUpdateBtn = () => {
     requestRepoDetailUpdate(parseInt(params.repoId, 10));
+  };
+
+  const onClickExportBtn = () => {
+    router.push(`repo/${params.repoId}/export`);
   };
 
   /** =============================================== Axios =============================================== */
@@ -281,34 +286,29 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
               <div className={styles.first}>
                 <p className={styles.title}>
                   {repoDetailInfo.repoName}
-                  <button className={styles.update} onClick={onClickUpdateBtn}>
-                    {updateLoading ? <LoadingSpinner /> : <span>갱신하기</span>}
-                    {/* <LoadingSpinner /> */}
-                  </button>
-                  <button className={styles.export}>
-                    <p>추출하기</p>
-                  </button>
+                  <ArrowPathIcon />
                 </p>
                 <div className={styles["icon-div"]}>
                   <span className={styles.star}>
-                    <Image
-                      alt="startIcon"
-                      src={starIcon}
-                      width={22}
-                      height={22}
-                    ></Image>
+                    <StarIcon />
                     {repoDetailInfo.starCnt}
                   </span>
                   <span className={styles.share}>
-                    <Image
-                      alt="forkIcon"
-                      src={forkIcon}
-                      width={19}
-                      height={19}
-                    ></Image>
+                    <ShareIcon />
                     {repoDetailInfo.forkCnt}
                   </span>
                 </div>
+              </div>
+              <div className={styles["btn-div"]}>
+                <button
+                  className={updateLoading ? styles.loading : styles.update}
+                  onClick={onClickUpdateBtn}
+                >
+                  {updateLoading ? <LoadingSpinner /> : <span>갱신하기</span>}
+                </button>
+                <button className={styles.export} onClick={onClickExportBtn}>
+                  <p>추출하기</p>
+                </button>
               </div>
               <p className={styles.date}>
                 <span>{pretreatDate(repoDetailInfo.repoStart)}</span>
@@ -331,26 +331,24 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
               <div className={styles["lan-div"]}>
                 {repoDetailInfo.languages &&
                   repoDetailInfo.languages.map((lan, index) => (
-                    <>
-                      <span
-                        key={index}
-                        style={{
-                          backgroundColor: languageColor[lan].color
-                            ? (languageColor[lan].color as string)
-                            : "gray",
-                        }}
-                      >
-                        {lan}
-                      </span>
-                    </>
+                    <span
+                      key={index}
+                      style={{
+                        backgroundColor: languageColor[lan].color
+                          ? (languageColor[lan].color as string)
+                          : "gray",
+                      }}
+                    >
+                      {lan}
+                    </span>
                   ))}
               </div>
-              <div className={styles["tag-div"]}>
+              {/* <div className={styles["tag-div"]}>
                 {repoDetailInfo.tags &&
                   repoDetailInfo.tags.map((tag, index) => (
                     <span key={index}>{tag}</span>
                   ))}
-              </div>
+              </div> */}
               <p className={styles.des}>{repoDetailInfo.repoDescription}</p>
               <div className={styles.tab}>
                 <button
@@ -366,17 +364,7 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
                   onClick={onClickTabBtn}
                   className={tabIndex === 2 ? styles.selected : ""}
                 >
-                  <p
-                    id="2"
-                    style={{
-                      textAlign: "center",
-                      fontFamily: "SUIT-Bold",
-                      fontStyle: "italic",
-                      fontSize: "40px",
-                      padding: "0 0.8rem 0.5rem 0",
-                    }}
-                    onClick={onClickTabBtn}
-                  >
+                  <p id="2" className={styles.vs} onClick={onClickTabBtn}>
                     VS
                   </p>
                   배틀

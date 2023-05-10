@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { Suspense } from "react";
 import Loading from "./loading";
 import Providers from "@/redux/provider";
+import styles from "./layout.module.scss";
 
 export const metadata = {
   title: "Repomon",
@@ -19,7 +20,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <body style={{ backgroundColor: "78acde" }}>
           <Header />
           <Suspense fallback={<Loading />}>
-            <div style={{ marginTop: "90px" }}>{children}</div>
+            <div className={styles.children}>{children}</div>
           </Suspense>
           <Footer />
         </body>

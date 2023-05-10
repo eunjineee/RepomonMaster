@@ -154,9 +154,9 @@ const DetailBattle = ({
             <span>{battleInfo.rating}</span>
             <span
               style={{
-                fontSize: "14px",
                 color: tierColor,
               }}
+              className={styles.tier}
             >
               <Image
                 src={tierImg}
@@ -302,12 +302,10 @@ const DetailBattle = ({
           </div>
         </div>
         <div className={styles.right}>
-          <p style={{ margin: "6rem 0 1.5rem 0", fontSize: "1.75rem" }}>
-            최근 전적
-          </p>
+          <p className={styles["record-title"]}>최근 전적</p>
           <div>
             {battleRecords.length === 0 && (
-              <p style={{ color: "grey", fontSize: "1.5rem" }}>
+              <p style={{ color: "grey", fontSize: "1.25rem" }}>
                 배틀 기록이 없어요.
               </p>
             )}

@@ -1,13 +1,21 @@
 @import "@/styles/variables.scss";
 
 .tab-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
+
+  @include desktop125 {
+    font-size: 1.75rem;
+  }
 }
 
 .tab-des {
   margin-left: 0.1%;
   font-size: 1.5rem;
   color: rgb(126, 126, 126);
+
+  @include desktop125 {
+    font-size: 1.25rem;
+  }
 }
 
 .left {

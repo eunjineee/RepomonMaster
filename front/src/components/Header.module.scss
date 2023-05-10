@@ -12,15 +12,23 @@
   background-color: white;
   position: fixed;
   top: 0;
-  box-shadow: 1px 9px 15px -2px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 1px 9px 15px -2px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 1px 9px 15px -2px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 9px 15px -2px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 1px 9px 15px -2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 1px 9px 15px -2px rgba(0, 0, 0, 0.05);
+
+  @include desktop125 {
+    height: 70px;
+  }
 
   .item {
     font-size: 24px;
     margin-left: 3rem;
     color: $highlight;
     transition: all 0.2s ease-in-out;
+
+    @include desktop125 {
+      font-size: 22px;
+    }
 
     &:hover {
       color: rgb(13, 111, 224);
@@ -35,6 +43,10 @@
       width: 80px;
       height: auto;
 
+      @include desktop125 {
+        width: 70px;
+      }
+
       .logo {
         cursor: pointer;
       }
@@ -46,6 +58,10 @@
 
     .avatar {
       border-radius: 100%;
+
+      @include desktop125 {
+        width: 45px;
+      }
 
       &:hover {
         cursor: pointer;

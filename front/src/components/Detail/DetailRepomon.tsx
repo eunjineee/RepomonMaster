@@ -63,7 +63,7 @@ function DetailRepomon({ repomonUrl }: { repomonUrl: string }) {
     <Canvas
       style={{
         width: "97%",
-        height: "450px",
+        height: "75%",
         backgroundColor: "white",
         margin: "0.5rem auto 0 auto",
         borderRadius: "10px",

@@ -172,7 +172,7 @@ const Home = () => {
         <div className={styles.left}>
           <h1 className={styles.title}>REPOMON</h1>
           <p className={styles.comment}>
-            당신의 프로젝트에 함께할 레포몬은 무엇인가요?
+            당신의 프로젝트와 함께할 레포몬은 무엇인가요?
           </p>
         </div>
         <div className={styles.right}>

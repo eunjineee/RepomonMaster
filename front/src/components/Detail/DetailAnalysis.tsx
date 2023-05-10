@@ -21,7 +21,7 @@ function DetailAnalysis({
       <p className={styles["tab-des"]}>
         레포몬 성장의 근거와 일기를 볼 수 있어요.
       </p>
-      <div style={{ margin: "4rem 0 0 0" }}>
+      <div style={{ margin: "3rem 0 0 0" }}>
         <div className={styles.att}>
           <span>총 경험치</span>
           <span>레포지토리 랭킹</span>

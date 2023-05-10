@@ -1,38 +1,51 @@
 @import "@/styles/variables.scss";
 
 .pageContainer {
-  width: 85%;
+  width: 75%;
   min-height: 100vh;
   margin: 0 auto 5rem auto;
-  padding: 70px 0 0 0;
-  background: rgb(225, 239, 255);
+  padding: 30px 0 0 0;
+  background: rgb(228, 239, 255);
   box-shadow: 0 8px 20px rgb(240, 240, 240);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+
+  @include desktop125 {
+    font-size: 16px;
+  }
 
   .info {
     display: flex;
 
     .repo-mon-card-div {
       position: relative;
-      width: 50%;
+      width: 45%;
       height: 90%;
 
       .repo-mon-card {
-        margin: 0 0 0 4rem;
+        margin: 0 0 0 3rem;
         width: 85%;
-        height: 570px;
-        background: rgba(255, 255, 255, 0.35);
+        height: 500px;
+        background: rgba(255, 255, 255, 0.5);
         box-shadow: 0 8px 15px 0 rgba(31, 38, 135, 0.1);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-radius: 10px;
         border: 1px solid rgba(255, 255, 255, 0.18);
 
+        @include desktop125 {
+          margin: 0 0 0 2.5rem;
+          height: 400px;
+        }
+
         .repo-mon-info {
           position: absolute;
           width: 100%;
           bottom: 1.5rem;
+
+          @include desktop125 {
+            bottom: 1.125rem;
+          }
 
           & p {
             display: flex;
@@ -41,8 +54,11 @@
             text-align: center;
             font-size: 1.75rem;
 
+            @include desktop125 {
+              font-size: 1.5rem;
+            }
+
             .lv {
-              width: 90px;
               margin: 0 0.5rem 0 0;
               font-family: "SUIT-Bold";
               font-weight: bold;
@@ -69,7 +85,7 @@
       flex-direction: column;
       width: calc(55% - 1rem);
       margin: 0 auto;
-      padding: 0 4rem 0.5rem 0;
+      padding: 0 3rem 0.5rem 0;
       font-size: 1.5rem;
 
       .first {
@@ -78,35 +94,30 @@
         justify-content: space-between;
 
         .title {
+          position: relative;
+          max-width: 500px;
           display: flex;
           align-items: center;
-          font-size: 3.5rem;
+          font-size: 3rem;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
 
-          & button {
-            border-radius: 5px;
-            margin: 0.5rem 0 0 1rem;
-            font-size: 1.25rem;
-            padding: 0.3rem 0.7rem;
-            background-color: $second;
-            color: white;
-
-            @include desktop125 {
-              font-size: 1.125rem;
-            }
-
-            &:hover {
-              background-color: $sub;
-            }
-          }
-
-          .update {
-            margin: 0.5rem 0 0 2rem;
+          @include desktop125 {
+            max-width: 410px;
+            font-size: 2.125rem;
           }
         }
 
         .icon-div {
           display: flex;
           align-items: center;
+          margin: 1rem 0 0 0;
+          font-size: 1.125rem;
+
+          @include desktop125 {
+            font-size: 1rem;
+          }
 
           .star {
             display: flex;
@@ -119,8 +130,33 @@
             align-items: center;
           }
 
-          & img {
+          & svg {
+            width: 20px;
             margin: 0 0.3rem 0 0;
+
+            @include desktop125 {
+              width: 18px;
+            }
+          }
+        }
+      }
+
+      .btn-div {
+        & button {
+          border-radius: 5px;
+          margin: 0 1rem 0 0;
+          font-size: 1.125rem;
+          padding: 0.3rem 0.7rem;
+          background-color: $second;
+          color: white;
+
+          @include desktop125 {
+            margin: 0 0.7rem 0 0;
+            font-size: 1rem;
+          }
+
+          &:hover {
+            background-color: $sub;
           }
         }
       }
@@ -132,9 +168,17 @@
         font-size: 1.5rem;
         color: rgb(87, 87, 87);
 
+        @include desktop125 {
+          font-size: 1.125rem;
+        }
+
         .end {
           font-size: 1.25rem;
           animation: twinkle 4s ease-in-out infinite;
+
+          @include desktop125 {
+            font-size: 1rem;
+          }
 
           @keyframes twinkle {
             0% {
@@ -155,6 +199,10 @@
         overflow-x: auto;
         margin: 0.7rem 0 0 0;
 
+        @include desktop125 {
+          font-size: 0.9rem;
+        }
+
         &::-webkit-scrollbar {
           display: none;
         }
@@ -167,6 +215,10 @@
           color: white;
           font-size: 0.9rem;
           white-space: nowrap;
+
+          @include desktop125 {
+            font-size: 0.8rem;
+          }
 
           &:hover {
             opacity: 0.8;
@@ -201,6 +253,11 @@
       .des {
         margin: 1% 0 0 0;
         word-wrap: break-word;
+        font-size: 1.125rem;
+
+        @include desktop125 {
+          font-size: 1rem;
+        }
       }
 
       .tab {
@@ -220,17 +277,35 @@
           box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
           color: white;
           transition: background-color 0.2s ease-in-out;
+          font-size: 1.5rem;
 
           @include desktop125 {
-            height: 135px;
+            height: 125px;
+            font-size: 1.25rem;
           }
 
           & svg {
             margin: 0 0 0.5rem 0;
             width: 60px;
 
+            @include desktop125 {
+              width: 40px;
+            }
+
             & path {
               pointer-events: none;
+            }
+          }
+
+          .vs {
+            text-align: center;
+            font-family: SUIT-Bold;
+            font-style: italic;
+            font-size: 40px;
+            padding: 0 0.8rem 0.5rem 0;
+
+            @include desktop125 {
+              font-size: 30px;
             }
           }
         }

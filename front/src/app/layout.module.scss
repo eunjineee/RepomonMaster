@@ -1,0 +1,9 @@
+@import "@/styles/variables.scss";
+
+.children {
+  margin-top: 90px;
+
+  @include desktop125 {
+    margin-top: 70px;
+  }
+}

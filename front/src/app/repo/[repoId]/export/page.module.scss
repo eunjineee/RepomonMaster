@@ -1,1 +1,120 @@
 @import "@/styles/variables.scss";
+
+.banner {
+  height: 400px;
+  background-color: $second;
+
+  .banner-inner {
+    position: relative;
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+
+    .banner-text {
+      position: absolute;
+      top: 10%;
+      color: white;
+
+      .banner-title {
+        font-size: 3rem;
+
+        @include desktop125 {
+          font-size: 2.5rem;
+        }
+      }
+
+      .banner-comment {
+        margin: 0 0 0 0.1rem;
+        font-size: 1.75rem;
+        font-family: "SUIT-Thin";
+
+        @include desktop125 {
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    .banner-lottie {
+      position: absolute;
+      width: 450px;
+      top: -10%;
+      right: -5%;
+
+      @include desktop125 {
+        width: 450px;
+      }
+    }
+  }
+}
+
+.content {
+  width: 70%;
+  margin: 0 auto;
+
+  .kind {
+    margin: 2rem 0 0 0;
+
+    .kind-title {
+      font-size: 1.75rem;
+    }
+
+    .kind-select {
+      position: relative;
+
+      .cur-kind {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 170px;
+        margin: 0.5rem 0 0 0;
+        padding: 0.6rem 1.5rem;
+        font-size: 1.125rem;
+        background-color: $second;
+        color: white;
+
+        @include desktop125 {
+          font-size: 1rem;
+          padding: 0.4rem 1.2rem;
+        }
+
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+
+        & svg {
+          width: 1.5rem;
+          margin: 0 0 0 0.5rem;
+
+          @include desktop125 {
+            width: 1.125rem;
+          }
+        }
+      }
+
+      .option {
+        position: absolute;
+        width: 170px;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(9.5px);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+
+        & li {
+          display: flex;
+          padding: 0.3rem 1.5rem;
+          font-size: 1.125rem;
+
+          @include desktop125 {
+            padding: 0.3rem 1.2rem;
+            font-size: 1rem;
+          }
+
+          &:hover {
+            cursor: pointer;
+            background-color: rgb(245, 245, 245);
+          }
+        }
+      }
+    }
+  }
+}
