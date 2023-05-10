@@ -1,0 +1,106 @@
+@import '@/styles/variables.scss';
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul.pagination li {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #e2e2e2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  border-radius: 30px;
+  margin: 2px;
+}
+
+ul.pagination li:first-child a {
+  font-size: 1.5rem;
+  margin-bottom: 3px;
+}
+ul.pagination li:nth-child(2) a {
+  font-size: 1.5rem;
+  margin-bottom: 3px;
+}
+
+ul.pagination li:last-child a {
+  font-size: 1.5rem;
+  margin-bottom: 3px;
+}
+ul.pagination li:nth-last-child(2) a {
+  font-size: 1.5rem;
+  margin-bottom: 3px;
+}
+
+ul.pagination li a {
+  text-decoration: none;
+  color: #337ab7;
+  font-size: 1rem;
+}
+
+ul.pagination li.active a {
+  color: white;
+}
+
+ul.pagination li.active {
+  background-color: #337ab7;
+}
+
+ul.pagination li:hover,
+ul.pagination li.active {
+  & a {
+    color: white;
+  }
+  background-color: $sub;
+}
+
+.page-selection {
+  width: 48px;
+  height: 30px;
+  color: #337ab7;
+}
+
+/* .pagination {
+  margin: 2px;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  width: 35px;
+  height: 35px;
+  padding: 5px 10px;
+  background-color: white;
+  color: black;
+  border-radius: 30px;
+  border: var(--thin-color) 1px solid;
+  cursor: pointer;
+  text-align: center;
+}
+
+.pagination li:hover {
+  background-color: var(--main-color);
+  color: white;
+}
+
+.pagination li.disabled {
+  color: green;
+  cursor: not-allowed;
+}
+
+.pagination ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+} */

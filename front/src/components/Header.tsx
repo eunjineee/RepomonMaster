@@ -77,7 +77,7 @@ const Header = () => {
           </Link>
         </div>
         <Link href='/docs' className={styles.item}>
-          docs
+          Docs
         </Link>
         <Link href='/rank' className={styles.item}>
           랭킹

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import "./Pagination.css";
-import Pagination from "react-js-pagination";
+import React, { useState } from 'react';
+import './Pagination.scss';
+import Pagination from 'react-js-pagination';
 
 type pageProps = {
   currentPage: number;
@@ -15,7 +15,7 @@ const Paging = (props: pageProps) => {
   const handlePageChange = (page: number) => {
     props.setCurrentPage(page);
     setPage(page);
-    console.log("page changed to ", page);
+    console.log('page changed to ', page);
   };
 
   return (
@@ -24,8 +24,8 @@ const Paging = (props: pageProps) => {
       itemsCountPerPage={props.size}
       totalItemsCount={props.totalElement}
       pageRangeDisplayed={5}
-      prevPageText={"‹"}
-      nextPageText={"›"}
+      prevPageText={'‹'}
+      nextPageText={'›'}
       onChange={handlePageChange}
     />
   );

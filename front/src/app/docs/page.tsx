@@ -352,7 +352,7 @@ function Page() {
         </div>
 
         {/* 레포몬 */}
-        <div id='Repomon' className={`${styles.menu} border-b pt-5`}>
+        <div id='Repomon' className={`${styles.menu} pt-5`}>
           <p className='text-3xl font-bold pb-5' style={{ color: `rgba(109, 130, 250, 1)` }}>
             Repomon
           </p>
@@ -416,6 +416,7 @@ function Page() {
             <li>10턴이 경과할 시, 남은 체력의 비율에 따라 승/패가 결정됩니다.</li>
           </div>
         </div>
+        <div className='pb-10'></div>
       </div>
     </div>
   );
