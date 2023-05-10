@@ -588,11 +588,12 @@ public class GHUtils {
         userCardInfo.setTotalCodeLineCount(getTotalCodeLineCountByUser(repos, userName));
 
         userCardInfo.setAvgContribution(getAvgContributionByUser(repos, userName));
-        userCardInfo.setTotalIssueCount(getTotalIssueCountByUser(userName));
-        userCardInfo.setStarCount(getStarAndForkByUser(repos).get(0));
-        userCardInfo.setForkCount(getStarAndForkByUser(repos).get(1));
-        userCardInfo.setTotalMergeCount(getMergeAndReviewByUser(repos, userName).get(0));
-        userCardInfo.setTotalReviewCount(getMergeAndReviewByUser(repos, userName).get(1));
+        userCardInfo.setTotalIssueExp(getTotalIssueCountByUser(userName)* GrowthFactor.idxToEnum(3).getExp());
+        userCardInfo.setStarExp(getStarAndForkByUser(repos).get(0)* GrowthFactor.idxToEnum(5).getExp());
+        userCardInfo.setForkExp(getStarAndForkByUser(repos).get(1)* GrowthFactor.idxToEnum(6).getExp());
+        userCardInfo.setTotalMergeExp(getMergeAndReviewByUser(repos, userName).get(0)* GrowthFactor.idxToEnum(2).getExp());
+        userCardInfo.setTotalReviewExp(getMergeAndReviewByUser(repos, userName).get(1)* GrowthFactor.idxToEnum(4).getExp());
+        userCardInfo.setTotalCommitExp(getTotalCommitCountByUser(repos, userName)* GrowthFactor.idxToEnum(1).getExp());
 
         return userCardInfo;
     }

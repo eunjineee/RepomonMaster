@@ -41,11 +41,13 @@ public class UserCardResponseDto {
 	private final Long totalCodeLineCount;
 	private final List<String> languages;
 	private final Long avgContribution;
-	private final Long totalMergeCount;
-	private final Long totalReviewCount;
-	private final Long totalIssueCount;
-	private final Long starCount;
-	private final Long forkCount;
+
+	private final Long totalCommitExp;
+	private final Long totalMergeExp;
+	private final Long totalReviewExp;
+	private final Long totalIssueExp;
+	private final Long starExp;
+	private final Long forkExp;
 
 
 	public static UserCardResponseDto fromEntity(UserCardDetail userCardDetail, UserEntity user, RepoEntity representrepo, List<String> languages) throws IOException {
@@ -65,11 +67,12 @@ public class UserCardResponseDto {
 			.totalCodeLineCount(userCardDetail.getTotalCodeLineCount())
 			.languages(languages)
 			.avgContribution(userCardDetail.getAvgContribution())
-			.totalMergeCount(userCardDetail.getTotalMergeCount())
-			.totalReviewCount(userCardDetail.getTotalReviewCount())
-			.totalIssueCount(userCardDetail.getTotalIssueCount())
-			.starCount(userCardDetail.getStarCount())
-			.forkCount(userCardDetail.getForkCount())
+			.totalCommitExp(userCardDetail.getTotalCommitExp())
+			.totalMergeExp(userCardDetail.getTotalMergeExp())
+			.totalReviewExp(userCardDetail.getTotalReviewExp())
+			.totalIssueExp(userCardDetail.getTotalIssueExp())
+			.starExp(userCardDetail.getStarExp())
+			.forkExp(userCardDetail.getForkExp())
 			.build();
 	}
 

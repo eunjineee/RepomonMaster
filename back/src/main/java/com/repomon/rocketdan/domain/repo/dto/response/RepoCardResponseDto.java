@@ -91,6 +91,8 @@ import org.kohsuke.github.GHRepository;
                             break;
                     }
                 }
+                int starCnt = (int) (ghRepository.getStargazersCount() * GrowthFactor.idxToEnum(5).getExp());
+                int forkCnt = (int) (ghRepository.getForksCount() * GrowthFactor.idxToEnum(6).getExp());
                 int convention = (int) Math.round(conventionrate);
                 return RepoCardResponseDto.builder()
                         .repomonId(repoEntity.getRepomon().getRepomonId())
@@ -104,8 +106,8 @@ import org.kohsuke.github.GHRepository;
                         .totalcommit(totalCommit)
                         .totalcode(totalcode)
                         .conventionrate(convention)
-                        .starCnt(ghRepository.getStargazersCount())
-                        .forkCnt(ghRepository.getForksCount())
+                        .starCnt(starCnt)
+                        .forkCnt(forkCnt)
                         .commits(commitsExp)
                         .issues(issuesExp)
                         .merges(mergesExp)

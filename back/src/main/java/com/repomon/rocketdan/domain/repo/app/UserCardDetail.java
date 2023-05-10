@@ -29,9 +29,10 @@ public class UserCardDetail {
 	private Long totalCodeLineCount;
 	private List<String> languages;
 	private Long avgContribution;
-	private Long totalMergeCount;
-	private Long totalReviewCount;
-	private Long totalIssueCount;
-	private Long starCount;
-	private Long forkCount;
+	private Long totalCommitExp;
+	private Long totalMergeExp;
+	private Long totalReviewExp;
+	private Long totalIssueExp;
+	private Long starExp;
+	private Long forkExp;
 }

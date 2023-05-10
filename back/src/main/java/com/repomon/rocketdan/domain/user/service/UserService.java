@@ -125,7 +125,7 @@ public class UserService {
 	public UserCardResponseDto getUserCard(Long userId) {
 		UserEntity user = userRepository.findById(userId).orElseThrow(() -> {throw new CustomException(NOT_FOUND_USER);});
 		ActiveRepoEntity representActiveRepo = user.getRepresentRepo().orElseThrow(
-				() -> new CustomException(NOT_FOUND_REPRESENT_REPOSITORY)
+				() -> new CustomException(NOT_FOUND_ACTIVE_REPOSITORY)
 		);
 		List<UserLanguageEntity> userLanguages = userLanguageRepository.findAllByUser(user);
 		List<String> userLanguage = new ArrayList<>();

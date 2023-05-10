@@ -573,7 +573,7 @@ public class RepoService {
 			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
 		});
 
-		List<PersonalLanguageEntity> pastLanguage = languageRepository.findAllByActiveRepoEntity(activeRepoEntity);
+		List<PersonalLanguageEntity> pastLanguage = languageRepository.findAllByActiveRepoEntity(activeRepoEntity).orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);});
 		if (null != pastLanguage){
 			for (PersonalLanguageEntity item : pastLanguage){
 				languageRepository.delete(item);
@@ -662,10 +662,12 @@ public class RepoService {
 
 		//언어 설정
 		ActiveRepoEntity activeRepo = activeRepoRepository.findByRepoAndUser(repoEntity, user).orElseThrow(()-> {throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);});
-		List<PersonalLanguageEntity> language = languageRepository.findAllByActiveRepoEntity(activeRepo);
+		List<PersonalLanguageEntity> language = languageRepository.findAllByActiveRepoEntity(activeRepo).orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);});
 		List<String> languages = new ArrayList<>();
-		for (PersonalLanguageEntity item : language){
-			languages.add(item.getLanguageCode());
+		if (language.size() != 0){
+			for (PersonalLanguageEntity item : language){
+				languages.add(item.getLanguageCode());
+			}
 		}
 
 		//기여도

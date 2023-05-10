@@ -6,7 +6,8 @@ import com.repomon.rocketdan.domain.repo.entity.PersonalLanguageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonalLanguageRepository extends JpaRepository<PersonalLanguageEntity, Long> {
-    List<PersonalLanguageEntity> findAllByActiveRepoEntity(ActiveRepoEntity entity);
+    Optional<List<PersonalLanguageEntity>> findAllByActiveRepoEntity(ActiveRepoEntity entity);
 }
