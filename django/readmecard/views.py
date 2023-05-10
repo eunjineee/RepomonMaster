@@ -172,7 +172,7 @@ class UrlSettings(object):
             self.api_server = 'https://repomon.kr/api/v1/repo/'
             self.repo_handle = request.GET.get("repoId", "1")
             self.user_handle = request.GET.get("userId", "1")
-            self.repo_information_url = self.api_server + self.repo_handle + '/card/personal?userId=' + self.user_handle
+            self.repo_information_url = self.api_server + self.repo_handle + '/card/personal/' + self.user_handle
             print('🎨🖼',self.repo_information_url)
         elif repo_type == 'user':
             print('🎨',repo_type)
