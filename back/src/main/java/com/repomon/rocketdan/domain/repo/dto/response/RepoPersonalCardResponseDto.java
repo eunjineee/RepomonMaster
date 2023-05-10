@@ -154,7 +154,7 @@ return RepoPersonalCardResponseDto.builder()
                 .mytotalcode(mytotalcode)
                 .conventionrate(convention)
 
-                .userName(userInfo.get("nickname"))
+                .userName(userInfo.get("username"))
                 .avatarUrl(userInfo.get("avatarUrl"))
                 .build();
     }
