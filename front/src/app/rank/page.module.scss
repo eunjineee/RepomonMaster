@@ -36,7 +36,7 @@
 
     .banner-search-div {
       position: absolute;
-      bottom: 5%;
+      bottom: 10%;
       left: 50%;
       transform: translateX(-50%);
       width: 35%;
@@ -69,6 +69,18 @@
 
       .clear-icon {
         width: 35px;
+      }
+    }
+
+    .clear {
+      position: absolute;
+      bottom: 2.5%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+
+      &:hover {
+        color: rgb(240, 240, 240);
       }
     }
 

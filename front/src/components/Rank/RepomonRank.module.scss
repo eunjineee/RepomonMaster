@@ -3,7 +3,7 @@
 .top-3-div {
   margin: 2rem 0;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 
   & > div {
     position: relative;
@@ -13,7 +13,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 1rem;
     padding: 1rem 2rem 0 2.5rem;
     font-size: 18px;
     overflow: hidden;
