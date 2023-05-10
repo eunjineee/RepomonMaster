@@ -58,7 +58,7 @@ public class UserCardResponseDto {
 			.introduce(userCardDetail.getIntroduce())
 			.repoCount(userCardDetail.getRepoCount())
 				.myrepoExp(representrepo.getRepoExp())
-				.myrepomonId(representrepo.getRepoId())
+				.myrepomonId(representrepo.getRepomon().getRepomonId())
 				.myrepoName(representrepo.getRepoName())
 				.myrepomonTier(representrepo.getRepomon().getRepomonTier())
 			.totalCommitCount(userCardDetail.getTotalCommitCount())
