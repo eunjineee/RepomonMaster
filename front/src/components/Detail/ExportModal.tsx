@@ -78,26 +78,29 @@ const ExportModal = ({
         style={customStyles}
         contentLabel=""
       >
-        <button
-          onClick={() => setShowKind(!showKind)}
-          className={styles["cur-kind"]}
-        >
-          {kind}
-          {!showKind && <ChevronDownIcon />}
-          {showKind && <ChevronUpIcon />}
-        </button>
-        {showKind && (
-          <ul className={styles.option}>
-            <li id="레포 카드" onClick={onClickKindItem}>
-              레포 카드
-            </li>
-            {isTeam && (
-              <li id="개인 레포 카드" onClick={onClickKindItem}>
-                개인 레포 카드
+        <div className={styles["kind-select"]}>
+          {" "}
+          <button
+            onClick={() => setShowKind(!showKind)}
+            className={styles["cur-kind"]}
+          >
+            {kind}
+            {!showKind && <ChevronDownIcon />}
+            {showKind && <ChevronUpIcon />}
+          </button>
+          {showKind && (
+            <ul className={styles.option}>
+              <li id="레포 카드" onClick={onClickKindItem}>
+                레포 카드
               </li>
-            )}
-          </ul>
-        )}
+              {isTeam && (
+                <li id="개인 레포 카드" onClick={onClickKindItem}>
+                  개인 레포 카드
+                </li>
+              )}
+            </ul>
+          )}
+        </div>
       </Modal>
     </div>
   );
