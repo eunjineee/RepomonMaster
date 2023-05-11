@@ -24,6 +24,13 @@ export type BattleLogType = {
   defender: number;
 };
 
+export type ScriptType = {
+  turn: string;
+  attackerScript: string;
+  defenderScript: string;
+  damageScript: string;
+};
+
 export type RepoDataType = {
   repoName: string;
   repomonNickname: string;
