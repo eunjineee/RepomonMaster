@@ -70,48 +70,8 @@ const Page = ({ params }: { params: { userId: string } }) => {
   // 동일 유저 체크
   const [isSameUser, setIsSameUser] = useState<boolean>();
 
-  // Loading Modal
-  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
-
-  const customStyles = {
-    content: {
-      zIndex: "10_000_000",
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      width: "370px",
-      height: "190px",
-      display: "flex",
-      justifyContent: "center",
-    },
-  };
-  const afterOpenModal = () => {};
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-
-  useEffect(() => {
-    Modal.setAppElement("#pageContainer");
-  }, []);
-
   return (
     <div id="pageContainer">
-      <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel=""
-      >
-        <p className="text-center flex items-center justify-center text-2xl antialiased font-semibold text-sky-600">
-          레포지토리 리스트 로딩중
-        </p>
-        <LoadingSpinner ml={4} mr={2} size={6} />
-      </Modal>
       <div className={styles.pageContainer}>
         <div className={styles.bannerBack}>
           <Lottie
@@ -163,21 +123,26 @@ const Page = ({ params }: { params: { userId: string } }) => {
                 <p style={{ width: "7em" }} id={styles.repoListTitle}>
                   레포지토리 목록
                 </p>
-                <ArrowPathIcon
-                  width="2rem"
-                  style={{ marginLeft: "2%" }}
-                  className={styles.arrow}
-                  ref={arrowRef}
-                  onClick={async () => {
-                    setIsListLoaded(false);
-                    setIsOpen(true);
-                    userInfo?.userId && (await refreshAllRepo(userInfo.userId));
-                    setIsListLoaded(true);
-                    setIsOpen(false);
-                    setIsLoaded(false);
-                    setIsReloaded(!isReloaded);
-                  }}
-                />
+                {isListLoaded === false ? (
+                  <p style={{ fontSize: "1em", opacity: "0.5" }}>
+                    레포 리스트 로딩중...
+                  </p>
+                ) : (
+                  <ArrowPathIcon
+                    width="2rem"
+                    style={{ marginLeft: "2%" }}
+                    className={styles.arrow}
+                    ref={arrowRef}
+                    onClick={async () => {
+                      setIsListLoaded(false);
+                      userInfo?.userId &&
+                        (await refreshAllRepo(userInfo.userId));
+                      setIsListLoaded(true);
+                      setIsLoaded(false);
+                      setIsReloaded(!isReloaded);
+                    }}
+                  />
+                )}
               </div>
               <p
                 style={{

@@ -147,6 +147,16 @@
     font-size: 2.5em;
   }
 }
+.repoTitleSelected {
+  font-weight: 700;
+  margin-bottom: 2em;
+  font-size: 4em;
+  color: #fdfdfe;
+  transition: all 1s ease-in-out;
+  @include desktop125 {
+    font-size: 2.5em;
+  }
+}
 
 @keyframes blink {
   0% {
@@ -181,6 +191,20 @@
 #repomonNameTitle {
   @include desktop125 {
     font-size: 0.8em !important;
+  }
+}
+
+#arrowDown {
+  animation: arrowDownMove 1.5s ease-in-out infinite;
+}
+@keyframes arrowDownMove {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(15px);
+    opacity: 0;
   }
 }
 

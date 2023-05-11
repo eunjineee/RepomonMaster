@@ -12,7 +12,7 @@ function ArrowDown(num: ArrowDownProps) {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className={`w-${num.num} h-${num.num}`}
+      className={`w-${num.num} h-${num.num} mt-5 ml-3 mr-3`}
     >
       <path
         strokeLinecap="round"
