@@ -1,7 +1,7 @@
 @import "@/styles/variables.scss";
 
 .pageContainer {
-  width: 75%;
+  width: 70%;
   min-height: 100vh;
   margin: 0 auto 5rem auto;
   padding: 30px 0 0 0;
@@ -85,7 +85,7 @@
       flex-direction: column;
       width: calc(55% - 1rem);
       margin: 0 auto;
-      padding: 0 3rem 0.5rem 0;
+      padding: 0 2rem 0.5rem 0;
       font-size: 1.5rem;
 
       .first {
@@ -158,6 +158,10 @@
           &:hover {
             background-color: $sub;
           }
+        }
+
+        .loading {
+          padding: 0;
         }
       }
 
@@ -271,7 +275,7 @@
           justify-content: center;
           align-items: center;
           width: 23%;
-          height: 160px;
+          height: 130px;
           border-radius: 15px;
           background-color: $second;
           box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
@@ -280,7 +284,7 @@
           font-size: 1.5rem;
 
           @include desktop125 {
-            height: 125px;
+            height: 115px;
             font-size: 1.25rem;
           }
 

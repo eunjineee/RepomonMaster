@@ -1,0 +1,79 @@
+@import "@/styles/variables.scss";
+
+.kind {
+  margin: 2rem 0 0 0;
+
+  .kind-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .kind-select {
+    position: relative;
+
+    .cur-kind {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 160px;
+      margin: 0.5rem 0 0 0;
+      padding: 0.6rem 1rem;
+      font-size: 1.125rem;
+      background-color: $second;
+      color: white;
+
+      @include desktop125 {
+        width: 150px;
+        font-size: 1rem;
+        padding: 0.4rem 0.8rem;
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+
+      & svg {
+        width: 1.5rem;
+        margin: 0 0 0 0.5rem;
+
+        @include desktop125 {
+          width: 1.125rem;
+        }
+      }
+    }
+
+    .option {
+      position: absolute;
+      width: 160px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(3px);
+      box-shadow: 0 8px 20px 0 rgba(31, 38, 135, 0.1);
+
+      @include desktop125 {
+        width: 150px;
+      }
+
+      & li {
+        display: flex;
+        padding: 0.3rem 1.5rem;
+        font-size: 1.125rem;
+        transform: translateX(8%);
+
+        @include desktop125 {
+          padding: 0.3rem 1.2rem;
+          font-size: 1rem;
+        }
+
+        &:hover {
+          color: rgb(117, 117, 117);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+.comment {
+  margin: 1rem 0 0 0;
+}

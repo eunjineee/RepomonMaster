@@ -6,7 +6,7 @@
 
   .banner-inner {
     position: relative;
-    width: 80%;
+    width: 70%;
     height: 100%;
     margin: 0 auto;
 
@@ -36,12 +36,12 @@
 
     .banner-lottie {
       position: absolute;
-      width: 450px;
-      top: -10%;
+      width: 350px;
+      top: -5%;
       right: -5%;
 
       @include desktop125 {
-        width: 450px;
+        width: 350px;
       }
     }
   }
@@ -55,7 +55,8 @@
     margin: 2rem 0 0 0;
 
     .kind-title {
-      font-size: 1.75rem;
+      font-size: 1.25rem;
+      font-weight: bold;
     }
 
     .kind-select {
@@ -65,16 +66,17 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 170px;
+        width: 160px;
         margin: 0.5rem 0 0 0;
-        padding: 0.6rem 1.5rem;
+        padding: 0.6rem 1rem;
         font-size: 1.125rem;
         background-color: $second;
         color: white;
 
         @include desktop125 {
+          width: 150px;
           font-size: 1rem;
-          padding: 0.4rem 1.2rem;
+          padding: 0.4rem 0.8rem;
         }
 
         &:focus {
@@ -94,15 +96,20 @@
 
       .option {
         position: absolute;
-        width: 170px;
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(9.5px);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        width: 160px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(3px);
+        box-shadow: 0 8px 20px 0 rgba(31, 38, 135, 0.1);
+
+        @include desktop125 {
+          width: 150px;
+        }
 
         & li {
           display: flex;
           padding: 0.3rem 1.5rem;
           font-size: 1.125rem;
+          transform: translateX(8%);
 
           @include desktop125 {
             padding: 0.3rem 1.2rem;
@@ -110,11 +117,15 @@
           }
 
           &:hover {
+            color: rgb(117, 117, 117);
             cursor: pointer;
-            background-color: rgb(245, 245, 245);
           }
         }
       }
     }
+  }
+
+  .comment {
+    margin: 1rem 0 0 0;
   }
 }

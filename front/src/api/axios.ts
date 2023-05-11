@@ -51,8 +51,7 @@ http.interceptors.response.use(
       } catch (err: any) {
         if (err.response && err.response.status === 403) {
           sessionStorage.clear();
-          window.location.href =
-            "https://repomon.kr/api/v1/oauth2/authorization/github";
+          window.location.href = `${getBaseURL()}/oauth2/authorization/github`;
         }
       }
       return Promise.reject(err);

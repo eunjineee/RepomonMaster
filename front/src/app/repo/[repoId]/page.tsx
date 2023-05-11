@@ -43,7 +43,7 @@ import { customAlert } from "@/app/utils/CustomAlert";
 import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
 import { useRouter } from "next/navigation";
 
-function Page({ params }: { params: { userId: string; repoId: string } }) {
+function Page({ params }: { params: { repoId: string } }) {
   const [loginUserId, setLoginUserId] = useState<string>();
   const [repoDetailInfo, setRepoDetailInfo] = useState<RepoDetailType>();
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -63,6 +63,7 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
     useState<RepoDetailContributionInfoType>();
   const [updateLoading, setUpdateLoading] = useState<boolean>(false);
   const router = useRouter();
+  const [isTeam, setIsTeam] = useState<boolean>(false);
 
   /** =============================================== useEffect =============================================== */
   useEffect(() => {
@@ -105,6 +106,12 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
       repoDetailContributionInfo
     ) {
       setShowPage(true);
+      if (
+        repoDetailContributionInfo.committers &&
+        Object.keys(repoDetailContributionInfo.committers).length > 1
+      ) {
+        setIsTeam(true);
+      }
     }
   }, [
     repoDetailInfo,
@@ -146,7 +153,7 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
   };
 
   const onClickExportBtn = () => {
-    router.push(`repo/${params.repoId}/export`);
+    router.push(`repo/${params.repoId}/export/${loginUserId}/${isTeam}`);
   };
 
   /** =============================================== Axios =============================================== */
@@ -308,11 +315,17 @@ function Page({ params }: { params: { userId: string; repoId: string } }) {
                   className={updateLoading ? styles.loading : styles.update}
                   onClick={onClickUpdateBtn}
                 >
-                  {updateLoading ? <LoadingSpinner /> : <span>갱신하기</span>}
+                  {updateLoading ? (
+                    <LoadingSpinner ml={5} mr={5} size={6} />
+                  ) : (
+                    <span>갱신하기</span>
+                  )}
                 </button>
-                <button className={styles.export} onClick={onClickExportBtn}>
-                  <p>추출하기</p>
-                </button>
+                {repoDetailInfo.myRepo && (
+                  <button className={styles.export} onClick={onClickExportBtn}>
+                    <p>추출하기</p>
+                  </button>
+                )}
               </div>
               <p className={styles.date}>
                 <span>{pretreatDate(repoDetailInfo.repoStart)}</span>
