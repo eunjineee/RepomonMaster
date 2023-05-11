@@ -10,6 +10,7 @@ import lombok.Data;
 @Builder
 public class RepomonRankResponseDto {
 	private Long repoId;
+	private Long userId;
 	private String repoName;
 	private Long repoExp;
 	private String repoOwner;
@@ -20,9 +21,10 @@ public class RepomonRankResponseDto {
 	private String repomonUrl;
 
 
-	public static RepomonRankResponseDto fromEntity(RepoEntity repo, Long repomonRank) {
+	public static RepomonRankResponseDto fromEntity(RepoEntity repo, Long repomonRank, Long repoOwnerId) {
 		return RepomonRankResponseDto.builder()
 			.repoId(repo.getRepoId())
+			.userId(repoOwnerId)
 			.repoName(repo.getRepoName())
 			.repoExp(repo.getRepoExp())
 			.repoOwner(repo.getRepoOwner())

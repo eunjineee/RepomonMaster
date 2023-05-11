@@ -11,6 +11,7 @@ import lombok.Data;
 public class RepoRankResponseDto {
 
 	private Long repoId;
+	private Long userId;
 	private String repoName;
 	private Long repoExp;
 	private String repoOwner;
@@ -21,9 +22,10 @@ public class RepoRankResponseDto {
 	private String repomonUrl;
 
 
-	public static RepoRankResponseDto fromEntity(RepoEntity repo, Long repoRank) {
+	public static RepoRankResponseDto fromEntity(RepoEntity repo, Long repoRank, Long repoOwnerId) {
 		return RepoRankResponseDto.builder()
 			.repoId(repo.getRepoId())
+			.userId(repoOwnerId)
 			.repoName(repo.getRepoName())
 			.repoExp(repo.getRepoExp())
 			.repoOwner(repo.getRepoOwner())

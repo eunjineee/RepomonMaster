@@ -10,6 +10,7 @@ import com.repomon.rocketdan.domain.user.dto.response.RepomonRankResponseDto;
 import com.repomon.rocketdan.domain.user.dto.response.UserRankResponseDto;
 import com.repomon.rocketdan.domain.user.entity.UserEntity;
 import com.repomon.rocketdan.domain.user.repository.UserRepository;
+import com.repomon.rocketdan.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.repomon.rocketdan.exception.ErrorCode.NOT_FOUND_ENTITY;
 
 
 @Service
@@ -70,7 +73,10 @@ public class RankService {
 
 		for (RepoEntity repo : repoEntityList) {
 			Long repoRank = getRepoRank(repo);
-			repoRankResponseDtoList.add(RepoRankResponseDto.fromEntity(repo, repoRank));
+			UserEntity repoOwnerEntity = userRepository.findByUserName(repo.getRepoOwner()).orElseThrow(() -> {
+				throw new CustomException(NOT_FOUND_ENTITY);
+			});
+			repoRankResponseDtoList.add(RepoRankResponseDto.fromEntity(repo, repoRank, repoOwnerEntity.getUserId()));
 		}
 		return new PageImpl<>(repoRankResponseDtoList, pageable, repoEntityList.getTotalElements());
 	}
@@ -90,7 +96,10 @@ public class RankService {
 
 		for (RepoEntity repo : repoEntityList) {
 			Long repomonRank = getRepomonRank(repo);
-			repomonRankResponseDtoList.add(RepomonRankResponseDto.fromEntity(repo, repomonRank));
+			UserEntity repoOwnerEntity = userRepository.findByUserName(repo.getRepoOwner()).orElseThrow(() -> {
+				throw new CustomException(NOT_FOUND_ENTITY);
+			});
+			repomonRankResponseDtoList.add(RepomonRankResponseDto.fromEntity(repo, repomonRank, repoOwnerEntity.getUserId()));
 		}
 		return new PageImpl<>(repomonRankResponseDtoList, pageable, repoEntityList.getTotalElements());
 	}
