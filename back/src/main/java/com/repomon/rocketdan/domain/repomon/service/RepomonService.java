@@ -113,7 +113,9 @@ public class RepomonService {
 			.collect(Collectors.toList());
 
 		userEntities.forEach(userEntity -> {
-			redisListRepository.deleteAllByUserName(userEntity.getUserName());
+			redisListRepository.findAllByUserName(userEntity.getUserName()).forEach(repoListResponseDto -> {
+				redisListRepository.delete(repoListResponseDto);
+			});
 		});
 	}
 

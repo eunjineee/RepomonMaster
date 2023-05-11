@@ -8,5 +8,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface RepoRedisListRepository extends CrudRepository<RepoListResponseDto, Long> {
 
     List<RepoListResponseDto> findByUserName(String userName, Pageable pageable);
-    void deleteAllByUserName(String userName);
+    List<RepoListResponseDto> findAllByUserName(String userName);
 }

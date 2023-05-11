@@ -251,7 +251,10 @@ public class RepoService {
 		Map<String, GHRepository> repositories = ghUtils.getRepositoriesWithName(userName);
 
 		saveAndUpdateRepo(repositories, userEntity);
-		redisListRepository.deleteAllByUserName(userName);
+
+		redisListRepository.findAllByUserName(userEntity.getUserName()).forEach(repoListResponseDto -> {
+			redisListRepository.delete(repoListResponseDto);
+		});
 	}
 
 	/**
@@ -358,7 +361,9 @@ public class RepoService {
 		}
 
 		for(UserEntity userEntity : userEntities){
-			redisListRepository.deleteAllByUserName(userEntity.getUserName());
+			redisListRepository.findAllByUserName(userEntity.getUserName()).forEach(repoListResponseDto -> {
+				redisListRepository.delete(repoListResponseDto);
+			});
 			userEntity.updateTotalExp(repoExp);
 		}
 	}
@@ -367,8 +372,14 @@ public class RepoService {
 	private void saveAndUpdateRepo(Map<String, GHRepository> repositories, UserEntity userEntity) {
 		repositories.forEach((repoKey, ghRepository) -> {
 			repoRepository.findByRepoKey(repoKey).ifPresentOrElse(repoEntity -> {
-					redisConventionRepository.deleteByRepoId(repoEntity.getRepoId());
-					redisContributeRepository.deleteByRepoId(repoEntity.getRepoId());
+					redisConventionRepository.findByRepoId(repoEntity.getRepoId()).ifPresent(dto -> {
+						redisConventionRepository.delete(dto);
+					});
+
+					redisContributeRepository.findByRepoId(repoEntity.getRepoId()).ifPresent(dto -> {
+						redisContributeRepository.delete(dto);
+					});
+
 					updateRepositoryInfo(repoEntity, ghRepository, List.of(userEntity));
 				},
 				() -> {
@@ -526,7 +537,11 @@ public class RepoService {
 
 			if(repoEntity.getIsActive()) {
 				userEntities.forEach(userEntity -> {
-					redisListRepository.deleteAllByUserName(userEntity.getUserName());
+
+					redisListRepository.findAllByUserName(userEntity.getUserName()).forEach(repoListResponseDto -> {
+						redisListRepository.delete(repoListResponseDto);
+					});
+
 					userEntity.updateTotalExp(exp);
 				});
 			}
@@ -535,14 +550,23 @@ public class RepoService {
 
 			if(repoEntity.getIsActive()) {
 				userEntities.forEach(userEntity -> {
-					redisListRepository.deleteAllByUserName(userEntity.getUserName());
+
+					redisListRepository.findAllByUserName(userEntity.getUserName()).forEach(repoListResponseDto -> {
+						redisListRepository.delete(repoListResponseDto);
+					});
+
 					userEntity.updateTotalExp(exp);
 				});
 			}
 		});
 
-		redisConventionRepository.deleteByRepoId(repoEntity.getRepoId());
-		redisContributeRepository.deleteByRepoId(repoEntity.getRepoId());
+		redisConventionRepository.findByRepoId(repoEntity.getRepoId()).ifPresent(dto -> {
+			redisConventionRepository.delete(dto);
+		});
+
+		redisContributeRepository.findByRepoId(repoEntity.getRepoId()).ifPresent(dto -> {
+			redisContributeRepository.delete(dto);
+		});
 		log.info("기존 레포지토리 업데이트 종료 => {}", repoEntity.getRepoName());
 
 	}

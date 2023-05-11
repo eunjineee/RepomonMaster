@@ -7,6 +7,4 @@ import org.springframework.data.repository.CrudRepository;
 public interface RepoRedisContributeRepository extends CrudRepository<RepoContributeResponseDto, Long> {
 
     Optional<RepoContributeResponseDto> findByRepoId(Long repoId);
-
-    void deleteByRepoId(Long repoId);
 }
