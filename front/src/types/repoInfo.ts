@@ -1,8 +1,20 @@
+export type RepresentRepoType = {
+  battleRank: number;
+  repoExp: number;
+  repoId: number;
+  repoName: string;
+  repoRank: number;
+  repoRating: number;
+  repomonNickName: string;
+  repomon: RepomonType;
+};
+
 export type UserInfoType = {
   avatarUrl: string;
   nickname: string;
-  representRepo: string;
+  representRepo: RepresentRepoType;
   totalExp: number;
+  userDescription: string;
   userId: number;
   username: string;
   userRank: number;
@@ -25,4 +37,13 @@ export type RepoListItemType = {
   repoDescription: string;
   repoRating: number;
   repomonUrl: string;
+};
+
+export type RepomonType = {
+  repomonId: number;
+  repomonUrl: string;
+  repomonName: string;
+  repomonSkillUrl: number;
+  repomonSkillName: string;
+  repomonTier: number;
 };
