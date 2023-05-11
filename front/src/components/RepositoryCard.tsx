@@ -107,6 +107,7 @@ function RepositoryCard(props: propType) {
           justifyContent: "space-around",
           alignItems: "center",
           height: "80%",
+          marginBottom: "5%",
         }}
       >
         <div
@@ -170,7 +171,7 @@ function RepositoryCard(props: propType) {
                 marginTop: "2em",
               }}
               onClick={handleBtnRegist}
-              disabled={!props.isActive}
+              disabled={!isActive}
               id={styles.repoBtn}
             >
               레포몬 등록

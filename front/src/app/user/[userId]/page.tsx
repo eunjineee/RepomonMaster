@@ -110,7 +110,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
         <p className="text-center flex items-center justify-center text-2xl antialiased font-semibold text-sky-600">
           레포지토리 리스트 로딩중
         </p>
-        <LoadingSpinner />
+        <LoadingSpinner ml={4} mr={2} size={6} />
       </Modal>
       <div className={styles.pageContainer}>
         <div className={styles.bannerBack}>
