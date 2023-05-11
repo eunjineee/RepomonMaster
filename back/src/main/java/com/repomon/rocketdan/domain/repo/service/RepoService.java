@@ -36,7 +36,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -88,8 +87,8 @@ public class RepoService {
 			Page<ActiveRepoEntity> activeRepoPage = activeRepoRepository.findByUser(userEntity,
 				pageable);
 
-			if(activeRepoPage.getNumberOfElements() != responseDto.getRepoListItems().size()) {
-				if(responseDto.getId() != null){
+			if (activeRepoPage.getNumberOfElements() != responseDto.getRepoListItems().size()) {
+				if (responseDto.getId() != null) {
 					redisListRepository.delete(responseDto);
 				}
 
@@ -206,7 +205,7 @@ public class RepoService {
 		RepoConventionResponseDto responseDto = redisConventionRepository.findByRepoId(repoId)
 			.orElseGet(() -> findConventionDtoWithGHApi(repoEntity));
 
-		if(responseDto.getConventions().isEmpty()){
+		if (responseDto.getConventions().isEmpty()) {
 			redisConventionRepository.delete(responseDto);
 			responseDto = findConventionDtoWithGHApi(repoEntity);
 		}
@@ -230,7 +229,7 @@ public class RepoService {
 		RepoContributeResponseDto responseDto = redisContributeRepository.findByRepoId(repoId)
 			.orElseGet(() -> findContributeDtoWithGHApi(repoEntity));
 
-		if(responseDto.getCommitters().isEmpty()){
+		if (responseDto.getCommitters().isEmpty()) {
 			redisContributeRepository.delete(responseDto);
 			responseDto = findContributeDtoWithGHApi(repoEntity);
 		}
@@ -330,7 +329,7 @@ public class RepoService {
 
 		List<RepoConventionEntity> entities = requestDto.toEntities(repoEntity);
 
-		redisConventionRepository.findByRepoId(repoId).ifPresent(dto ->{
+		redisConventionRepository.findByRepoId(repoId).ifPresent(dto -> {
 			redisConventionRepository.delete(dto);
 		});
 
@@ -367,7 +366,7 @@ public class RepoService {
 			repoEntity.activate();
 		}
 
-		for(UserEntity userEntity : userEntities){
+		for (UserEntity userEntity : userEntities) {
 			redisListRepository.findAllByUserName(userEntity.getUserName()).forEach(repoListResponseDto -> {
 				redisListRepository.delete(repoListResponseDto);
 			});
@@ -466,7 +465,6 @@ public class RepoService {
 			RepoHistoryEntity history = repoHistoryRepository.findFirstByRepoOrderByWorkedAtDesc(
 				repoEntity).orElseGet(null);
 
-
 			try {
 				PagedIterable<GHCommit> ghCommits = history == null ? ghRepository.queryCommits().list()
 					: ghRepository.queryCommits()
@@ -542,7 +540,7 @@ public class RepoService {
 			workDate = DateUtils.fewDateAgo(workDate, 1);
 			Long exp = initRepositoryInfo(repoEntity, ghRepository, workDate);
 
-			if(repoEntity.getIsActive()) {
+			if (repoEntity.getIsActive()) {
 				userEntities.forEach(userEntity -> {
 
 					redisListRepository.findAllByUserName(userEntity.getUserName()).forEach(repoListResponseDto -> {
@@ -555,7 +553,7 @@ public class RepoService {
 		}, () -> {
 			Long exp = initRepositoryInfo(repoEntity, ghRepository, null);
 
-			if(repoEntity.getIsActive()) {
+			if (repoEntity.getIsActive()) {
 				userEntities.forEach(userEntity -> {
 
 					redisListRepository.findAllByUserName(userEntity.getUserName()).forEach(repoListResponseDto -> {
@@ -627,7 +625,7 @@ public class RepoService {
 				languageRepository.delete(item);
 			}
 		}
-		for (String item : requestDto.getLangueges()) {
+		for (String item : requestDto.getLanguages()) {
 			languageRepository.save(PersonalLanguageEntity.of(item, activeRepoEntity));
 		}
 	}
@@ -749,7 +747,7 @@ public class RepoService {
 			conventionrate = conventionDto.getCollectCnt() / conventionDto.getTotalCnt() * 100;
 		}
 
-		return RepoPersonalCardResponseDto.fromEntityAndOthers(repoEntity, historyEntityList, contributers, userInfo, contributeResponse, myIssue ,mytotalcode, myMerges, conventionrate, languages);
+		return RepoPersonalCardResponseDto.fromEntityAndOthers(repoEntity, historyEntityList, contributers, userInfo, contributeResponse, myIssue, mytotalcode, myMerges, conventionrate, languages);
 	}
 
 }

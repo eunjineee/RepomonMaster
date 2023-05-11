@@ -165,7 +165,7 @@ public class UserService {
 				userLanguageRepository.delete(item);
 			}
 		}
-		for (String item : requestDto.getLangueges()) {
+		for (String item : requestDto.getLanguages()) {
 			userLanguageRepository.save(UserLanguageEntity.of(item, user));
 		}
 	}
