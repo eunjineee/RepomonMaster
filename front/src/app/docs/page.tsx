@@ -37,30 +37,31 @@ function Page() {
           </div>
           {isNoteNavOpened ? (
             <>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#Patch'>패치노트</a>
+              <a href='#Patch'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>패치노트</p>
                 </div>
-              </div>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#Exp'>경험치 시스템</a>
+              </a>
+
+              <a href='#Exp'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>경험치 시스템</p>
                 </div>
-              </div>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#Score'>레이팅 시스템</a>
+              </a>
+              <a href='#Score'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>레이팅 시스템</p>
                 </div>
-              </div>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#Tier'>등급 시스템</a>
+              </a>
+              <a href='#Tier'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>등급 시스템</p>
                 </div>
-              </div>
+              </a>
             </>
           ) : (
             <></>
@@ -77,30 +78,30 @@ function Page() {
           </div>
           {isRepositoryNavOpened ? (
             <>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#RepositoryRenew'>Repository 갱신</a>
+              <a href='#RepositoryRenew'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>Repository 갱신</p>
                 </div>
-              </div>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#RepositoryActive'>Repository 활성화 / 비활성화</a>
+              </a>
+              <a href='#RepositoryActive'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>Repository 활성화 / 비활성화</p>
                 </div>
-              </div>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#RepositoryCreateRepomon'>Repository 레포몬 생성</a>
+              </a>
+              <a href='#RepositoryCreateRepomon'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>Repository 레포몬 생성</p>
                 </div>
-              </div>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#RepositoryAnalysis'>Repository 분석</a>
+              </a>
+              <a href='#RepositoryAnalysis'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>Repository 분석</p>
                 </div>
-              </div>
+              </a>
             </>
           ) : (
             <></>
@@ -109,32 +110,32 @@ function Page() {
 
         {/* 카드 */}
         <div>
-          <div className={`${styles.navBarListItem} flex`} onClick={cardNavToggle}>
-            {isCardNavOpened ? <ChevronDownIcon width='1rem' /> : <ChevronRightIcon width='1rem' />}
-            <div className={`ps-2`}>
-              <a className='text-lg font-bold'>Card</a>
+          <a className='text-lg font-bold'>
+            <div className={`${styles.navBarListItem} flex`} onClick={cardNavToggle}>
+              {isCardNavOpened ? <ChevronDownIcon width='1rem' /> : <ChevronRightIcon width='1rem' />}
+              <p className={`ps-2`}>Card</p>
             </div>
-          </div>
+          </a>
           {isCardNavOpened ? (
             <>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#UserCard'>User Card</a>
+              <a href='#UserCard'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>User Card</p>
                 </div>
-              </div>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#RepoTeamCard'>Repo Team Card</a>
+              </a>
+              <a href='#RepoTeamCard'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>Repo Team Card</p>
                 </div>
-              </div>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#RepoRersonalCard'>Repo Personal Card</a>
+              </a>
+              <a href='#RepoRersonalCard'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>Repo Personal Card</p>
                 </div>
-              </div>
+              </a>
             </>
           ) : (
             <></>
@@ -151,18 +152,18 @@ function Page() {
           </div>
           {isRepomonNavOpened ? (
             <>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#Status'>Status</a>
+              <a href='#Status'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>Status</p>
                 </div>
-              </div>
-              <div className={`${styles.navBarItem} flex`}>
-                <div className='border-r' style={{ paddingLeft: '17px' }}></div>
-                <div>
-                  <a href='#Battle'>Battle</a>
+              </a>
+              <a href='#Battle'>
+                <div className={`${styles.navBarItem} flex`}>
+                  <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
+                  <p>Battle</p>
                 </div>
-              </div>
+              </a>
             </>
           ) : (
             <></>
@@ -174,7 +175,7 @@ function Page() {
       <div className={`${styles.descriptionDiv} border-l pt-10  grow`}>
         {/* 노트 */}
         <div id='Note' className={`${styles.menu} border-b pb-5`}>
-          <p className='text-3xl font-bold pb-5' style={{ color: `rgba(109, 130, 250, 1)` }}>
+          <p className='text-4xl  pb-5' style={{ color: `rgba(109, 130, 250, 1)`, fontWeight: '1000' }}>
             Note
           </p>
           <div id='Patch' className={`${styles.menuItem} pb-5`}>
@@ -237,8 +238,8 @@ function Page() {
         </div>
 
         {/* 레포지터리 */}
-        <div id='Repository' className={`${styles.menu} border-b pt-5 pb-5`}>
-          <p className='text-3xl font-bold pb-5 pb-5 ' style={{ color: `rgba(109, 130, 250, 1)` }}>
+        <div id='Repository' className={`${styles.menu} border-b pt-8 pb-5`}>
+          <p className='text-4xl  pb-5 pb-5 ' style={{ color: `rgba(109, 130, 250, 1)`, fontWeight: '1000' }}>
             Repository
           </p>
           <div id='RepositoryRenew' className={`${styles.menuItem} pb-5`}>
@@ -288,8 +289,8 @@ function Page() {
         </div>
 
         {/* 카드 */}
-        <div id='Card' className={`${styles.menu} border-b pt-5 pb-5`}>
-          <p className='text-3xl font-bold pb-5 pb-5' style={{ color: `rgba(109, 130, 250, 1)` }}>
+        <div id='Card' className={`${styles.menu} border-b pt-8 pb-5`}>
+          <p className='text-4xl  pb-5 pb-5' style={{ color: `rgba(109, 130, 250, 1)`, fontWeight: '1000' }}>
             Card
           </p>
           <div id='UserCard' className={`${styles.menuItem} pb-5`}>
@@ -352,8 +353,8 @@ function Page() {
         </div>
 
         {/* 레포몬 */}
-        <div id='Repomon' className={`${styles.menu} pt-5`}>
-          <p className='text-3xl font-bold pb-5' style={{ color: `rgba(109, 130, 250, 1)` }}>
+        <div id='Repomon' className={`${styles.menu} pt-8`}>
+          <p className='text-4xl  pb-5' style={{ color: `rgba(109, 130, 250, 1)`, fontWeight: '1000' }}>
             Repomon
           </p>
           <div id='Status' className={`${styles.menuItem} pb-5`}>
