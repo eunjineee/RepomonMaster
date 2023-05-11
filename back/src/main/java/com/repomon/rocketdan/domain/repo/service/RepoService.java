@@ -609,7 +609,9 @@ public class RepoService {
 	public void modifyPersonalRepo(Long repoId, RepoCardRequestDto requestDto) {
 		String userName = SecurityUtils.getCurrentUserId();
 		UserEntity user = userRepository.findByUserName(userName).orElseThrow(
-			() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);}
+				() -> {
+					throw new CustomException(ErrorCode.NOT_FOUND_USER);
+				}
 		);
 		RepoEntity repo = repoRepository.findById(repoId).orElseThrow(() -> {
 			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
@@ -619,7 +621,9 @@ public class RepoService {
 		});
 
 		List<PersonalLanguageEntity> pastLanguage = languageRepository.findAllByActiveRepoEntity(activeRepoEntity)
-			.orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);});
+				.orElseThrow(() -> {
+					throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);
+				});
 		if (null != pastLanguage) {
 			for (PersonalLanguageEntity item : pastLanguage) {
 				languageRepository.delete(item);
@@ -628,6 +632,28 @@ public class RepoService {
 		for (String item : requestDto.getLanguages()) {
 			languageRepository.save(PersonalLanguageEntity.of(item, activeRepoEntity));
 		}
+	}
+
+	public List<String> modifyPersonalRepoNow(Long repoId) {
+		String userName = SecurityUtils.getCurrentUserId();
+		UserEntity user = userRepository.findByUserName(userName).orElseThrow(
+				() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);}
+		);
+		RepoEntity repo = repoRepository.findById(repoId).orElseThrow(() -> {
+			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
+		});
+		ActiveRepoEntity activeRepoEntity = activeRepoRepository.findByRepoAndUser(repo, user).orElseThrow(() -> {
+			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
+		});
+
+		List<PersonalLanguageEntity> pastLanguage = languageRepository.findAllByActiveRepoEntity(activeRepoEntity)
+				.orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);});
+
+		List<String> personalLanguageNow = pastLanguage.stream()
+				.map(item -> item.getLanguageCode())
+				.collect(Collectors.toList());
+
+		return personalLanguageNow;
 	}
 
 

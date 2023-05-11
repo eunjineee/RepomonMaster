@@ -19,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.repomon.rocketdan.exception.ErrorCode.DATA_CONVENTION_TOO_SHORT;
 import static com.repomon.rocketdan.exception.ErrorCode.DUPLICATE_RESOURCE;
@@ -144,11 +145,17 @@ public class RepoController {
 		return ResponseEntity.ok(responseDto);
 	}
 
+	@ApiOperation(value = "레포개인카드 현재 설정된 언어 조회")
+	@GetMapping("/{repoId}/card/personal")
+	public ResponseEntity<ResultDto<List<String>>> modifyPersonalRepoCardNow(@PathVariable Long repoId) {
+		List<String> responseDto = repoService.modifyPersonalRepoNow(repoId);
+		return ResponseEntity.ok().body(ResultDto.of(responseDto));
+	}
 
 	@ApiOperation(value = "레포개인카드 언어설정")
 	@PutMapping("/{repoId}/card/personal")
 	public ResponseEntity<ResultDto> modifyPersonalRepoCard(@PathVariable Long repoId, @RequestBody RepoCardRequestDto requestDto) {
-		repoService.modifyPersonalRepo(repoId,requestDto);
+		repoService.modifyPersonalRepo(repoId, requestDto);
 		return ResponseEntity.ok(ResultDto.ofSuccess());
 	}
 

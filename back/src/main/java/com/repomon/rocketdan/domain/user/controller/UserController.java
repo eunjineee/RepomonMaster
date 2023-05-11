@@ -54,7 +54,13 @@ public class UserController {
 	@GetMapping("/{userId}/card/language")
 	public ResponseEntity<ResultDto<List<String>>> getUserLanguage(@PathVariable Long userId) throws IOException {
 		List<String> responseDto = userService.getUserRepoLanguage(userId);
-		System.out.println("responseDto = " + responseDto);
+		return ResponseEntity.ok().body(ResultDto.of(responseDto));
+	}
+
+	@ApiOperation(value = "유저카드 현재 설정된 언어 조회")
+	@GetMapping("/{userId}/card/language/now")
+	public ResponseEntity<ResultDto<List<String>>> getUserLanguageNow(@PathVariable Long userId){
+		List<String> responseDto = userService.getUserRepoLanguageNow(userId);
 		return ResponseEntity.ok().body(ResultDto.of(responseDto));
 	}
 
