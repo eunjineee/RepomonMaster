@@ -249,7 +249,9 @@ public class RepoService {
 
 		String userName = userEntity.getUserName();
 		Map<String, GHRepository> repositories = ghUtils.getRepositoriesWithName(userName);
+
 		saveAndUpdateRepo(repositories, userEntity);
+		redisListRepository.deleteAllByUserName(userName);
 	}
 
 	/**
@@ -356,6 +358,7 @@ public class RepoService {
 		}
 
 		for(UserEntity userEntity : userEntities){
+			redisListRepository.deleteAllByUserName(userEntity.getUserName());
 			userEntity.updateTotalExp(repoExp);
 		}
 	}
@@ -364,6 +367,8 @@ public class RepoService {
 	private void saveAndUpdateRepo(Map<String, GHRepository> repositories, UserEntity userEntity) {
 		repositories.forEach((repoKey, ghRepository) -> {
 			repoRepository.findByRepoKey(repoKey).ifPresentOrElse(repoEntity -> {
+					redisConventionRepository.deleteByRepoId(repoEntity.getRepoId());
+					redisContributeRepository.deleteByRepoId(repoEntity.getRepoId());
 					updateRepositoryInfo(repoEntity, ghRepository, List.of(userEntity));
 				},
 				() -> {
@@ -520,16 +525,24 @@ public class RepoService {
 			Long exp = initRepositoryInfo(repoEntity, ghRepository, workDate);
 
 			if(repoEntity.getIsActive()) {
-				userEntities.forEach(userEntity -> userEntity.updateTotalExp(exp));
+				userEntities.forEach(userEntity -> {
+					redisListRepository.deleteAllByUserName(userEntity.getUserName());
+					userEntity.updateTotalExp(exp);
+				});
 			}
 		}, () -> {
 			Long exp = initRepositoryInfo(repoEntity, ghRepository, null);
 
 			if(repoEntity.getIsActive()) {
-				userEntities.forEach(userEntity -> userEntity.updateTotalExp(exp));
+				userEntities.forEach(userEntity -> {
+					redisListRepository.deleteAllByUserName(userEntity.getUserName());
+					userEntity.updateTotalExp(exp);
+				});
 			}
 		});
 
+		redisConventionRepository.deleteByRepoId(repoEntity.getRepoId());
+		redisContributeRepository.deleteByRepoId(repoEntity.getRepoId());
 		log.info("기존 레포지토리 업데이트 종료 => {}", repoEntity.getRepoName());
 
 	}

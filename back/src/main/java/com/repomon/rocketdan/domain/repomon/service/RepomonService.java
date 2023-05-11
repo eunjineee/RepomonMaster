@@ -2,8 +2,11 @@ package com.repomon.rocketdan.domain.repomon.service;
 
 
 import com.repomon.rocketdan.common.utils.SecurityUtils;
+import com.repomon.rocketdan.domain.repo.entity.ActiveRepoEntity;
 import com.repomon.rocketdan.domain.repo.entity.RepomonEntity;
+import com.repomon.rocketdan.domain.repo.repository.ActiveRepoRepository;
 import com.repomon.rocketdan.domain.repo.repository.RepomonRepository;
+import com.repomon.rocketdan.domain.repo.repository.redis.RepoRedisListRepository;
 import com.repomon.rocketdan.domain.repo.service.RepoService;
 import com.repomon.rocketdan.domain.repomon.app.BattleLogic;
 import com.repomon.rocketdan.domain.repomon.dto.request.BattleLogRequestDto;
@@ -18,6 +21,7 @@ import com.repomon.rocketdan.domain.repomon.entity.BattleLogEntity;
 import com.repomon.rocketdan.domain.repomon.entity.RepomonStatusEntity;
 import com.repomon.rocketdan.domain.repomon.repository.BattleLogRepository;
 import com.repomon.rocketdan.domain.repomon.repository.RepomonStatusRepository;
+import com.repomon.rocketdan.domain.user.entity.UserEntity;
 import com.repomon.rocketdan.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +46,9 @@ public class RepomonService {
 	private final BattleLogRepository battleLogRepository;
 	private final RepomonStatusRepository repomonStatusRepository;
 	private final RepoService repoService;
+
+	private final RepoRedisListRepository redisListRepository;
+	private final ActiveRepoRepository activeRepoRepository;
 
 
 	/**
@@ -100,6 +107,14 @@ public class RepomonService {
 		);
 		repomon.updateRepomon(selectedRepomon);
 		repomonStatusRepository.save(repomon);
+
+		List<UserEntity> userEntities = activeRepoRepository.findAllByRepo(repomon).stream()
+			.map(ActiveRepoEntity::getUser)
+			.collect(Collectors.toList());
+
+		userEntities.forEach(userEntity -> {
+			redisListRepository.deleteAllByUserName(userEntity.getUserName());
+		});
 	}
 
 
