@@ -52,6 +52,8 @@ public class GHUtilsAop {
             if (core.getRemaining() == 0) {
                 LocalDateTime resetDate = LocalDateTime.ofInstant(core.getResetDate().toInstant(),
                     ZoneId.systemDefault());
+
+                log.warn("토큰 재활성 시간 => {}", resetDate);
                 Duration between = Duration.between(LocalDateTime.now(), resetDate);
                 long seconds = between.getSeconds();
                 Thread.sleep(seconds);
