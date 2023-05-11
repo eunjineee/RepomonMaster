@@ -1,31 +1,31 @@
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 .pageContainer {
   width: 100%;
   height: 160vh;
   & .bannerBack {
     width: 100%;
-    height: 35vh;
+    height: 15vh;
     background-color: $primary;
     display: flex;
     justify-content: flex-end;
   }
   & .bodyContainer {
-    width: 100%;
+    width: 70%;
+    margin: auto;
     height: 120vh;
     display: flex;
     position: relative;
+    display: flex;
     & .sideProfile {
-      position: absolute;
-      width: 30%;
+      position: inherit;
+      width: 18em;
       height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-around;
-      text-align: center;
-      top: -15%;
-      left: 4%;
+      text-align: start;
+      top: -7vh;
       & .charaterDiv {
         width: 18em;
         height: 18em;
@@ -39,7 +39,7 @@
         border-radius: 50%;
         background-color: #141414;
         background-size: contain;
-        margin-bottom: 2em;
+        margin-bottom: 1em;
         @include desktop125 {
           width: 14em;
           height: 14em;
@@ -47,14 +47,13 @@
       }
     }
     & .bodyList {
-      position: absolute;
       right: 2%;
-      width: 70%;
+      width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      padding-left: 100px;
+      padding-top: 30px;
       & .listTitle {
         width: 100%;
         height: 10%;
@@ -66,8 +65,7 @@
         }
       }
       & .listCards {
-        width: 80%;
-        height: 80%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: start;
@@ -75,7 +73,6 @@
 
       & .paginations {
         width: 100%;
-        height: 10%;
         display: flex;
         justify-content: center;
         align-items: center;

@@ -1,9 +1,10 @@
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 #cardContainer {
+  height: 200px;
   @include desktop125 {
     width: 100%;
-    height: 90%;
+    height: 100%;
   }
   #repoTitle {
     @include desktop125 {

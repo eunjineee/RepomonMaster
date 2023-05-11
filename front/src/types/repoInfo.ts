@@ -15,6 +15,7 @@ export type UserInfoType = {
   representRepo: RepresentRepoType;
   totalExp: number;
   userDescription: string;
+  activeRepoCnt: number;
   userId: number;
   username: string;
   userRank: number;
