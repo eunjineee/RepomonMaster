@@ -2,7 +2,7 @@
 
 import { requestMatchResult } from "@/api/repoBattle";
 import Spinner from "@/components/Spinner";
-import { BattleResultResponseDataType } from "@/types/repoBattle";
+import { BattleResultResponseDataType, ScriptType } from "@/types/repoBattle";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -13,7 +13,14 @@ import Loader from "@/components/threeLoader";
 import HpBar from "@/components/HpBar";
 import Image from "next/image";
 import Lottie from "react-lottie-player";
-import lottieJson from "../../../../../public/static/lotties/battle.json";
+import lottieJson from "public/static/lotties/battle.json";
+import { BattleLogType } from "@/types/repoBattle";
+import SoundOff from "@/components/UI/SoundOff";
+import SoundOn from "@/components/UI/SoundOn";
+import SkipArrow from "@/components/UI/SkipArrow";
+import Versus from "public/static/icons/versus.png";
+import Badge from "@/components/UI/Badge";
+import BadgeChall from "@/components/UI/BadgeChall";
 
 const Page = () => {
   const [loadData, setLoadData] = useState<boolean>(false);
@@ -60,7 +67,6 @@ const Page = () => {
 
     let mixer: THREE.AnimationMixer | undefined;
 
-    console.log("animations: ", gltf.animations);
     if (gltf.animations.length) {
       mixer = new THREE.AnimationMixer(gltf.scene);
       mixer.timeScale = 1;
@@ -162,7 +168,7 @@ const Page = () => {
         const data = response.data;
         setMatchData(data);
         setLoadData(true);
-        console.log(data);
+        console.log("매치 정보", data);
       })
       .catch((error) => {
         console.error(error);
@@ -185,6 +191,8 @@ const Page = () => {
     document.addEventListener("keydown", playAudio);
   }, []);
 
+  const [soundOn, setSoundOn] = useState<boolean>(true);
+
   // 초기화면
   const gameWrapper = useRef<HTMLDivElement>(null);
 
@@ -205,41 +213,61 @@ const Page = () => {
 
   const handleAnimationComplete = () => {
     setIsAnimationFinished(true);
-    if (playerRef.current) {
-      playerRef.current.stop();
-    }
   };
+
+  // 배틀 게임 로직
+
+  const initialState: ScriptType[] =
+    matchData?.data?.battleLog?.map((log: BattleLogType) => ({
+      turn: `${log.turn}번째 턴!`,
+      attackerScript: `${log.attacker}는 ${log.attack_act}으로 공격!`,
+      defenderScript: `${log.defender}는 ${log.defense_act}를 사용..!`,
+      damageScript: `${log.defender}는 ${Math.ceil(
+        log.damage
+      )}의 피해를 입었다..`,
+    })) ?? [];
 
   return (
     <>
-      <audio ref={audioRef} src="/static/sound/battle.mp3" autoPlay />
+      {soundOn && (
+        <audio ref={audioRef} src="/static/sound/battle.mp3" autoPlay />
+      )}
       <div className={styles.pageContainer}>
-        <Lottie
-          ref={playerRef}
-          loop={false}
-          animationData={lottieJson}
-          play
-          onComplete={handleAnimationComplete}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-          }}
-        />
+        {!isAnimationFinished && (
+          <Lottie
+            ref={playerRef}
+            loop={false}
+            animationData={lottieJson}
+            play
+            onComplete={handleAnimationComplete}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        )}
         <>
-          <p className={styles.headerTitle}>
-            <strong>{matchData?.data.attackRepo.repomonNickname}</strong>
-            &nbsp;vs&nbsp;
-            <strong>{matchData?.data.defenseRepo.repomonNickname}</strong>{" "}
-            레포몬 배틀
-          </p>
           <div className={styles.gameWrapper} ref={gameWrapper}>
             <div className={styles.gameBox}>
+              <div
+                onClick={() => setSoundOn(!soundOn)}
+                style={{
+                  cursor: "pointer",
+                  marginLeft: "2em",
+                  position: "absolute",
+                  zIndex: 9999999999999,
+                  top: "1em",
+                  right: "2em",
+                }}
+              >
+                {soundOn ? <SoundOn /> : <SoundOff />}
+              </div>
               <Canvas
                 style={{
-                  backgroundImage: `url('/static/images/forestBack.jpg')`,
+                  // backgroundImage: `url('/static/images/forestBack.jpg')`,
                   position: "relative",
                 }}
               >
@@ -258,60 +286,31 @@ const Page = () => {
               </Canvas>
             </div>
             <div className={styles.gameLogBox}>
-              <div style={{ height: "200px", overflowY: "auto" }}>
+              <div
+                style={{
+                  overflowY: "auto",
+                  position: "relative",
+                }}
+              >
                 {loadData ? (
-                  <>
-                    {matchData?.data.battleLog.map((resData, index, array) => {
-                      return (
-                        <React.Fragment key={resData.turn}>
-                          {index === 0 && (
-                            <>
-                              <p>&lt;system&gt;{resData.attacker}의 선공</p>
-                              <p>
-                                &lt;system&gt;
-                                {matchData?.data.attackRepo.repomonNickname}의
-                                시작 체력: {myHp}
-                              </p>
-                              <p>
-                                &lt;system&gt;
-                                {matchData?.data.defenseRepo.repomonNickname}의
-                                시작 체력: {opHp}
-                              </p>
-                              <br />
-                            </>
-                          )}
-
-                          <p key={resData.turn}>{resData.turn}번째 턴!</p>
-                          <p>
-                            플레이어 {resData.attacker}의{" "}
-                            {resData.attack_act === 1
-                              ? "무지성"
-                              : resData.attack_act === 2
-                              ? "나름 치명적인"
-                              : matchData.data.attackRepo.repomon
-                                  .repomonSkillName}{" "}
-                            공격!
-                          </p>
-                          <p>
-                            개쳐맞던 플레이어 {resData.defender}는{" "}
-                            {resData.defense_act}를 취하고 {resData.damage}의
-                            데미지를 입었다..!
-                          </p>
-                          <br />
-                          {index === array.length - 1 && (
-                            <>
-                              {matchData.resultCode === "SUCCESS" ? (
-                                <p>승리..!</p>
-                              ) : (
-                                <p>개같이 패배...!</p>
-                              )}
-                              <p>&lt;system&gt;배틀 종료...</p>
-                            </>
-                          )}
-                        </React.Fragment>
-                      );
-                    })}
-                  </>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <p>{initialState[0].damageScript}</p>
+                    <p
+                      id={styles.triangle}
+                      style={{
+                        fontSize: "0.7em",
+                        marginLeft: "1em",
+                      }}
+                    >
+                      ▼
+                    </p>
+                  </div>
                 ) : (
                   <Spinner />
                 )}

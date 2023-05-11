@@ -602,7 +602,13 @@ const Page: NextPage<PageProps> = ({ params }) => {
         <div onClick={handlePostClick}>
           <Button_OK msg={"결정하기"} />
         </div>
-        <Button_NO msg={"취소하기"} />
+        <div
+          onClick={() => {
+            router.push(`/user/${localUserId}`);
+          }}
+        >
+          <Button_NO msg={"취소하기"} />
+        </div>
       </div>
     </div>
   );

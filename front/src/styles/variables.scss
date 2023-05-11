@@ -24,6 +24,14 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "KOTRA_BOLD-Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.1/KOTRA_BOLD-Bold.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 $primary: rgba(161, 205, 255, 1);
 $second: rgba(142, 167, 233, 1);
 $highlight: rgba(90, 167, 255, 1);
