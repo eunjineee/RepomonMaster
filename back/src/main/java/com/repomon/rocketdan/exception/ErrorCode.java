@@ -11,6 +11,11 @@ import static org.springframework.http.HttpStatus.*;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
+
+	/* 208 */
+	ALREADY_WORKED(ALREADY_REPORTED, "이미 수행중인 작업입니다."),
+
+	/* 404 */
 	ERROR_NAME(NOT_FOUND, "에러 메세지 입니다")
 
 	/* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */,

@@ -5,9 +5,17 @@ import com.repomon.rocketdan.domain.repo.app.GrowthFactor;
 import com.repomon.rocketdan.domain.repo.app.UserCardDetail;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
 import com.repomon.rocketdan.domain.repo.entity.RepoHistoryEntity;
+import com.repomon.rocketdan.domain.repo.repository.RepoHistoryRepository;
+import com.repomon.rocketdan.domain.repo.repository.RepoRepository;
+import com.repomon.rocketdan.exception.CustomException;
+import com.repomon.rocketdan.exception.ErrorCode;
+import java.util.List;
+
+import java.util.*;
+import lombok.RequiredArgsConstructor;
 import org.kohsuke.github.*;
+import org.kohsuke.github.GHIssueQueryBuilder.Sort;
 import org.kohsuke.github.GHRepositoryStatistics.CodeFrequency;
-import org.kohsuke.github.GHRepositoryStatistics.CommitActivity;
 import org.kohsuke.github.GHRepositoryStatistics.ContributorStats;
 import org.kohsuke.github.GHRepositoryStatistics.ContributorStats.Week;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,19 +24,31 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.*;
+
+
+import org.kohsuke.github.GHIssue;
+import org.kohsuke.github.GHOrganization;
+import org.kohsuke.github.GHPersonSet;
+import org.kohsuke.github.GHPullRequest;
+import org.kohsuke.github.GHPullRequestReviewComment;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHUser;
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
+import org.kohsuke.github.PagedIterable;
 
 
 @Component
+@RequiredArgsConstructor
 public class GHUtils {
 
 	@Value("${github.accessToken}")
 	private String accessToken;
 	public GitHub gitHub;
 
-	private final Integer maxStarAndFork = 5000;
-
+	private final Integer maxStarAndFork = 200;
+	private final RepoRepository repoRepository;
+	private final RepoHistoryRepository repoHistoryRepository;
 
 	@PostConstruct
 	private void init() throws IOException {
@@ -88,79 +108,67 @@ public class GHUtils {
 		return new HashMap<>();
 	}
 
-
-	public Collection<RepoHistoryEntity> GHCommitToHistory(GHRepositoryStatistics statistics, RepoEntity repoEntity, Date date)
+    public Collection<RepoHistoryEntity> GHCommitToHistory(GHRepository ghRepository, RepoEntity repoEntity, Date date)
 		throws IOException, InterruptedException {
-		Map<LocalDate, RepoHistoryEntity> histories = new HashMap<>();
+        Map<LocalDate, RepoHistoryEntity> histories = new HashMap<>();
 
-		List<CommitActivity> commitActivities = statistics
-			.getCommitActivity().toList();
+        PagedIterable<GHCommit> ghCommits = date == null
+            ? ghRepository.queryCommits().list()
+            : ghRepository.queryCommits()
+                .since(date)
+                .list();
 
-		for (CommitActivity commitActivity : commitActivities) {
-			long week = commitActivity.getWeek();
-			Date weekAt = new Date(week * 1000L);
+        PagedIterator<GHCommit> iterator = ghCommits._iterator(100);
 
-			Calendar instance = Calendar.getInstance();
-			instance.setTime(weekAt);
-			instance.add(Calendar.DATE, 6);
-			weekAt = Date.from(instance.toInstant());
 
-			if (weekAt.before(date)) continue;
-
-			List<Integer> days = commitActivity.getDays();
-			for (int i = 0; i < 7; i++) {
-				Integer commitCount = days.get(i);
-				Date createdAt = new Date(week * 1000L);
-
-				instance = Calendar.getInstance();
-				instance.setTime(createdAt);
-				instance.add(Calendar.DATE, i);
-				createdAt = Date.from(instance.toInstant());
-
-				if (createdAt.after(date) && commitCount > 0) {
-					LocalDate commitDate = createdAt.toInstant()
-						.atZone(ZoneId.systemDefault())
-						.toLocalDate();
-
-					configureRepoInfo(histories, commitDate, repoEntity, GrowthFactor.COMMIT, commitCount);
-				}
-			}
-		}
-
+        while(iterator.hasNext()){
+            List<GHCommit> commitList = iterator.nextPage();
+            for(GHCommit commit : commitList){
+                if(commit.getParentSHA1s().size() > 1) continue;
+				LocalDate commitAt = DateUtils.dateToLocalDate(commit.getCommitDate());
+				configureRepoInfo(histories, commitAt, repoEntity, GrowthFactor.COMMIT, 1);
+            }
+        }
 		return histories.values();
 	}
 
-
-	public Collection<RepoHistoryEntity> GHPullRequestToHistory(GHRepository ghRepository, RepoEntity repoEntity, Date date)
+	public Collection<RepoHistoryEntity> GHPullRequestAndReviewAndIssueToHistory(GHRepository ghRepository, RepoEntity repoEntity, Date date)
 		throws IOException {
 		Map<LocalDate, RepoHistoryEntity> histories = new HashMap<>();
 
-		PagedIterable<GHPullRequest> pullRequests = ghRepository.queryPullRequests()
-			.state(GHIssueState.CLOSED)
-			.direction(GHDirection.DESC)
-			.list();
+        PagedIterable<GHIssue> issues = date == null
+            ? ghRepository.queryIssues()
+                .direction((GHDirection.DESC))
+                .state(GHIssueState.CLOSED)
+                .list()
+            : ghRepository.queryIssues()
+                .direction(GHDirection.DESC)
+                .state(GHIssueState.CLOSED)
+                .since(date)
+                .list();
 
-		for (GHPullRequest pr : pullRequests) {
-			Date closedAt = pr.getClosedAt();
-			if (closedAt.after(date)) {
-				LocalDate prDate = pr.getClosedAt().toInstant()
-					.atZone(ZoneId.systemDefault())
-					.toLocalDate();
+        for (GHIssue issue : issues) {
+            Date closedAt = issue.getClosedAt();
+            if (date == null || closedAt.after(date)) {
+				if(issue.isPullRequest()){
+					GHPullRequest pullRequest = ghRepository.getPullRequest(issue.getNumber());
+					LocalDate prDate = DateUtils.dateToLocalDate(pullRequest.getClosedAt());
 
-				configureRepoInfo(histories, prDate, repoEntity, GrowthFactor.MERGE, 1);
+					configureRepoInfo(histories, prDate, repoEntity, GrowthFactor.MERGE, 1);
+					PagedIterable<GHPullRequestReviewComment> reviewComments = pullRequest.listReviewComments();
 
-				PagedIterable<GHPullRequestReviewComment> reviewComments = pr.listReviewComments();
+					for (GHPullRequestReviewComment reviewComment : reviewComments) {
+						Date reviewCreatedAt = reviewComment.getCreatedAt();
+						if (date == null || reviewCreatedAt.after(date)) {
+							LocalDate reviewDate = DateUtils.dateToLocalDate(reviewComment.getCreatedAt());
 
-				for (GHPullRequestReviewComment reviewComment : reviewComments) {
-					Date reviewCreatedAt = reviewComment.getCreatedAt();
-					if (reviewCreatedAt.after(date)) {
-						LocalDate reviewDate = reviewComment.getCreatedAt().toInstant()
-							.atZone(ZoneId.systemDefault())
-							.toLocalDate();
-
-						configureRepoInfo(histories, reviewDate, repoEntity, GrowthFactor.REVIEW,
-							1);
+							configureRepoInfo(histories, reviewDate, repoEntity, GrowthFactor.REVIEW, 1);
+						}
 					}
+				}else {
+					LocalDate issueClosedAt = DateUtils.dateToLocalDate(issue.getClosedAt());
+
+					configureRepoInfo(histories, issueClosedAt, repoEntity, GrowthFactor.ISSUE, 1);
 				}
 			} else {
 				return histories.values();
@@ -171,76 +179,45 @@ public class GHUtils {
 	}
 
 
-	public Collection<RepoHistoryEntity> GHIssueToHistory(GHRepository ghRepository, RepoEntity repoEntity, Date date)
-		throws IOException {
-		Map<LocalDate, RepoHistoryEntity> histories = new HashMap<>();
-
-		PagedIterable<GHIssue> issues = ghRepository.queryIssues()
-			.direction(GHDirection.DESC)
-			.state(GHIssueState.CLOSED)
-			.since(date)
-			.list();
-
-		for (GHIssue issue : issues) {
-			Date closedAt = issue.getClosedAt();
-			if (closedAt.after(date)) {
-
-				LocalDate issueClosedAt = issue.getClosedAt().toInstant()
-					.atZone(ZoneId.systemDefault())
-					.toLocalDate();
-
-				configureRepoInfo(histories, issueClosedAt, repoEntity, GrowthFactor.ISSUE, 1);
-			} else {
-				return histories.values();
-			}
-		}
-
-		return histories.values();
-	}
-
-
-	public Collection<RepoHistoryEntity> GHForkToHistory(GHRepository ghRepository, RepoEntity repoEntity, Date fromDate)
-		throws IOException {
-		Map<LocalDate, RepoHistoryEntity> histories = new HashMap<>();
+    public Collection<RepoHistoryEntity> GHForkToHistory(GHRepository ghRepository, RepoEntity repoEntity, LocalDate fromDate)
+        throws IOException {
+        Map<LocalDate, RepoHistoryEntity> histories = new HashMap<>();
 
 		Integer forkCnt = repoEntity.getForkCnt();
 		int forksCount = ghRepository.getForksCount();
 
-		if (forkCnt >= forksCount) return histories.values();
-		forksCount -= forkCnt;
-		LocalDate date = fromDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        if(forkCnt >= forksCount) return histories.values();
+        forksCount -= forkCnt;
 
-		if (forkCnt + forksCount >= maxStarAndFork && forkCnt >= maxStarAndFork) {
-			configureRepoInfo(histories, date, repoEntity, GrowthFactor.FORK, 0);
-		} else {
-			int tmp = forksCount;
-			if (tmp >= maxStarAndFork) tmp = maxStarAndFork;
-			configureRepoInfo(histories, date, repoEntity, GrowthFactor.FORK, tmp);
-		}
+        if (forkCnt + forksCount >= maxStarAndFork && forkCnt >= maxStarAndFork) {
+            configureRepoInfo(histories, fromDate, repoEntity, GrowthFactor.FORK, 0);
+        } else {
+            int tmp = forksCount;
+            if (tmp >= maxStarAndFork) tmp = maxStarAndFork;
+            configureRepoInfo(histories, fromDate, repoEntity, GrowthFactor.FORK, tmp);
+        }
 
 		repoEntity.updateForkCnt(forksCount);
 
 		return histories.values();
 	}
 
-
-	public Collection<RepoHistoryEntity> GHStarToHistory(GHRepository ghRepository, RepoEntity repoEntity, Date fromDate)
-		throws IOException {
-		Map<LocalDate, RepoHistoryEntity> histories = new HashMap<>();
+    public Collection<RepoHistoryEntity> GHStarToHistory(GHRepository ghRepository, RepoEntity repoEntity, LocalDate fromDate)
+        throws IOException {
+        Map<LocalDate, RepoHistoryEntity> histories = new HashMap<>();
 
 		Integer starCnt = repoEntity.getStarCnt();
 		int stargazersCount = ghRepository.getStargazersCount();
 
-		if (starCnt >= stargazersCount) return histories.values();
-		stargazersCount -= starCnt;
-		LocalDate date = fromDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        if(starCnt >= stargazersCount) return histories.values();
+        stargazersCount -= starCnt;
 
 		if (starCnt + stargazersCount >= maxStarAndFork && starCnt >= maxStarAndFork) {
-			configureRepoInfo(histories, date, repoEntity, GrowthFactor.STAR, 0);
+            configureRepoInfo(histories, fromDate, repoEntity, GrowthFactor.STAR, 0);
 		} else {
 			int tmp = stargazersCount;
 			if (tmp >= maxStarAndFork) tmp = maxStarAndFork;
-			configureRepoInfo(histories, date, repoEntity, GrowthFactor.STAR, tmp);
+            configureRepoInfo(histories, fromDate, repoEntity, GrowthFactor.STAR, tmp);
 		}
 
 		repoEntity.updateStarCnt(stargazersCount);
@@ -284,47 +261,47 @@ public class GHUtils {
 		return totalLineCount;
 	}
 
+    public int getTotalCommitCount(GHRepositoryStatistics statistics)
+        throws IOException, InterruptedException {
+        List<ContributorStats> contributorStats = statistics.getContributorStats()
+            .toList();
 
-	public int getTotalCommitCount(GHRepositoryStatistics statistics) throws IOException {
-		PagedIterable<CommitActivity> commitActivities = statistics.getCommitActivity();
+        int totalCommitCount = 0;
+        for(ContributorStats contributorStat : contributorStats){
+			totalCommitCount += contributorStat.getTotal();
+        }
 
-		int totalCommitCount = 0;
-		for (CommitActivity commitActivity : commitActivities) {
-			totalCommitCount += commitActivity.getTotal();
-		}
+        return totalCommitCount;
+    }
+    public Map<String, Integer> getCommitterInfoMap(GHRepositoryStatistics statistics) throws IOException, InterruptedException {
+        Map<String, Integer> commitCountMap = new HashMap<>();
+        List<ContributorStats> contributorStatList = statistics
+            .getContributorStats().toList();
 
-		return totalCommitCount;
-	}
-
-
-	public Map<String, Integer> getCommitterInfoMap(GHRepositoryStatistics statistics) throws IOException, InterruptedException {
-		Map<String, Integer> commitCountMap = new HashMap<>();
-		PagedIterable<ContributorStats> contributorStatList = statistics
-			.getContributorStats();
-
-		for (ContributorStats contributorStats : contributorStatList) {
+        for (ContributorStats contributorStats : contributorStatList) {
 			String author = contributorStats.getAuthor().getLogin();
 			int authorCommitCnt = contributorStats.getTotal();
 			commitCountMap.put(author, authorCommitCnt);
-		}
+
+        }
 
 		return commitCountMap;
 	}
 
 
-	/**
-	 * 유저 이름의 총 라인 수
-	 *
-	 * @param statistics
-	 * @param userName
-	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	public Long getLineCountWithUser(GHRepositoryStatistics statistics, String userName) throws IOException, InterruptedException {
-		long lineCount = 0L;
-		PagedIterable<ContributorStats> contributorStatList = statistics
-			.getContributorStats();
+    /**
+     * 유저 이름의 총 라인 수
+     *
+     * @param statistics
+     * @param userName
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public Long getLineCountWithUser(GHRepositoryStatistics statistics, String userName) throws IOException, InterruptedException {
+        long lineCount = 0L;
+        List<ContributorStats> contributorStatList = statistics
+            .getContributorStats().toList();
 
 		for (ContributorStats contributorStats : contributorStatList) {
 			String author = contributorStats.getAuthor().getLogin();
@@ -339,26 +316,28 @@ public class GHUtils {
 	}
 
 
-	/**
-	 * 유저 이름의 총 커밋 수
-	 *
-	 * @param statistics
-	 * @param userName
-	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	public Long getCommitCountWithUser(GHRepositoryStatistics statistics, String userName)
-		throws IOException, InterruptedException {
-		Long commitCount = 0L;
-		PagedIterable<ContributorStats> contributorStatList = statistics.getContributorStats();
-		for (ContributorStats contributorStats : contributorStatList) {
-			String author = contributorStats.getAuthor().getLogin();
-			if (author.equals(userName)) {
-				commitCount = (long) contributorStats.getTotal();
-				break;
-			}
-		}
+    /**
+     * 유저 이름의 총 커밋 수
+     *
+     * @param statistics
+     * @param userName
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public Long getCommitCountWithUser(GHRepositoryStatistics statistics, String userName)
+        throws IOException, InterruptedException {
+        Long commitCount = 0L;
+        List<ContributorStats> contributorStatList = statistics.getContributorStats()
+            .toList();
+
+        for (ContributorStats contributorStats : contributorStatList) {
+            String author = contributorStats.getAuthor().getLogin();
+            if (author.equals(userName)) {
+                commitCount = Long.valueOf(contributorStats.getTotal());
+                break;
+            }
+        }
 
 		return commitCount;
 	}
@@ -370,47 +349,61 @@ public class GHUtils {
 	public Integer getMyIssueToHistory(GHRepository ghRepository, Date date, String username) throws IOException {
 
 		int issueCount = 0;
-		List<GHIssue> allIssues = ghRepository.queryIssues().list()
+		List<GHIssue> allIssues = ghRepository.queryIssues()
+			.creator(username)
+			.sort(Sort.CREATED)
+			.list()
 			.toList();
 
-		for (GHIssue issue : allIssues) {
-			if (issue.getCreatedAt().after(date) && issue.getUser().getName().equals(username)) {
-				issueCount++;
-			}
-		}
-		return issueCount;
-	}
+		if(date == null) return allIssues.size();
+        for (GHIssue issue : allIssues) {
+            Date createdAt = issue.getCreatedAt();
+            if (createdAt.before(date)) {
+                issueCount++;
+				continue;
+            }
+			break;
+        }
+        return issueCount;
+    }
 
 
 	/**
 	 * 유저 이름의 총 머지, 리뷰 수
 	 */
 	public List<Integer> getMyMergeToHistory(GHRepository ghRepository, Date date, String username) throws IOException {
-		int mymerge = 0;
-		int myreview = 0;
+		int myMerge = 0;
+		int myReview = 0;
 
-		PagedIterable<GHPullRequest> pullRequests = ghRepository.queryPullRequests()
+		PagedIterable<GHIssue> ghIssues = ghRepository.queryIssues()
+			.creator(username)
+			.direction(GHDirection.ASC)
+			.state(GHIssueState.CLOSED)
 			.list();
 
-		for (GHPullRequest pr : pullRequests) {
-			Date prDate = pr.getMergedAt();
+		PagedIterator<GHIssue> iterator = ghIssues._iterator(100);
 
-			if (prDate.before(date)) {
-				if (pr.getUser().getLogin().equals(username)) {
-					mymerge += 1;
+		while(iterator.hasNext()){
+			List<GHIssue> issues = iterator.nextPage();
+			for (GHIssue ghIssue : issues) {
+				if(!ghIssue.isPullRequest()) continue;
+				if(date == null || date.after(ghIssue.getClosedAt())) {
+					myMerge++;
 				}
 
-				PagedIterable<GHPullRequestReviewComment> reviewComments = pr.listReviewComments();
+				GHPullRequest pr = ghRepository.getPullRequest(ghIssue.getNumber());
 
-				for (GHPullRequestReviewComment reviewComment : reviewComments) {
-					if (reviewComment.getUser().getLogin().equals(username)) {
-						myreview += 1;
+				List<GHPullRequestReviewComment> reviewComments = pr.listReviewComments().toList();
+				for(GHPullRequestReviewComment reviewComment : reviewComments){
+					String author = reviewComment.getUser().getLogin();
+					if (author.equals(username) && (date == null || date.after(reviewComment.getCreatedAt()))){
+						myReview++;
 					}
 				}
 			}
 		}
 
-		return List.of(mymerge, myreview);
+		return List.of(myMerge, myReview);
 	}
 
 
@@ -443,18 +436,19 @@ public class GHUtils {
 		Map<String, GHRepository> map = getRepositoriesInPublicOrganization(user);
 		map.putAll(getRepositories(user));
 
-		Long totalIssueCount = 0L;
-		for (GHRepository repo : map.values()) {
-			List<GHIssue> issues = repo.getIssues(GHIssueState.CLOSED);
-			for (GHIssue issue : issues) {
-				if (issue.getAssignee() != null && issue.getAssignee().getLogin().equals(userName)) {
-					totalIssueCount++;
-				}
-			}
-		}
-		System.out.println("totalIssueCount = " + totalIssueCount);
-		return totalIssueCount;
-	}
+            Long totalIssueCount = 0L;
+            for (GHRepository repo : map.values()) {
+                List<GHIssue> issues = repo.getIssues(GHIssueState.CLOSED);
+                for (GHIssue issue : issues) {
+                    if(issue.isPullRequest()) continue;
+                    String author = issue.getAssignee().getLogin();
+                    if (author.equals(userName)) {
+                            totalIssueCount++;
+                    }
+                }
+            }
+            return totalIssueCount;
+        }
 
 
 	/**
@@ -476,13 +470,13 @@ public class GHUtils {
 	}
 
 
-	/**
-	 * 유저 모든 레포지터리에서 언어 조회
-	 */
-	public List<String> getLanguagesByUser(String userName) throws IOException {
-		GHUser user = gitHub.getUser(userName);
-		Map<String, GHRepository> repos = getRepositoriesInPublicOrganization(user);
-		repos.putAll(getRepositories(user));
+    /**
+     * 유저 모든 레포지터리에서 언어 조회
+     */
+    public List<String> getLanguagesByUser(String userName) throws IOException {
+        GHUser user = gitHub.getUser(userName);
+        Map<String, GHRepository> repos = getRepositoriesInPublicOrganization(user);
+        repos.putAll(getRepositories(user));
 
 		Set<String> languages = new HashSet<>();
 		for (GHRepository repo : repos.values()) {
@@ -516,42 +510,54 @@ public class GHUtils {
 		return Math.round(avgContribution / repos.size());
 	}
 
+    /**
+     * 유저 모든 레포지터리에서 스타, 포크 조회
+     */
 
-	/**
-	 * 유저 모든 레포지터리에서 스타, 포크 조회
-	 */
-	public List<Long> getStarAndForkByUser(Map<String, GHRepository> repos) {
-		Long StarCount = 0L;
-		Long ForkCount = 0L;
+    public List<Long> getStarAndForkByUser(Map<String, GHRepository> repos){
+        Long StarCount = 0L;
+        Long ForkCount = 0L;
+
+        for (GHRepository repo : repos.values()) {
+			String nodeId = repo.getNodeId();
+			RepoEntity repoEntity = repoRepository.findByRepoKey(nodeId).orElseThrow(() -> {
+				throw new CustomException(ErrorCode.NOT_FOUND_PUBLIC_REPOSITORY);
+			});
+			StarCount += repoEntity.getStarCnt();
+            ForkCount += repoEntity.getForkCnt();
+        }
+        return List.of(StarCount,ForkCount);
+    }
+
+    /**
+     * 유저 모든 레포지터리에서 머지, 리뷰 조회
+     *
+     * @param repos
+     * @param userName
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public List<Long> getMergeAndReviewByUser(Map<String, GHRepository> repos, String userName) throws IOException {
+        Long totalMergeCount = 0L;
+        Long totalReviewCount = 0L;
+
 		for (GHRepository repo : repos.values()) {
-			StarCount += repo.getStargazersCount();
-			ForkCount += repo.getForksCount();
-		}
-		return List.of(StarCount, ForkCount);
-	}
+			String nodeId = repo.getNodeId();
+			RepoEntity repoEntity = repoRepository.findByRepoKey(nodeId).orElseThrow(() -> {
+				throw new CustomException(ErrorCode.NOT_FOUND_PUBLIC_REPOSITORY);
+			});
 
+			RepoHistoryEntity history = repoHistoryRepository.findFirstByRepoOrderByWorkedAtDesc(
+				repoEntity).orElseGet(null);
 
-	/**
-	 * 유저 모든 레포지터리에서 머지, 리뷰 조회
-	 *
-	 * @param repos
-	 * @param userName
-	 * @return
-	 * @throws IOException
-	 */
-	public List<Long> getMergeAndReviewByUser(Map<String, GHRepository> repos, String userName) throws IOException {
-		Long totalMergeCount = 0L;
-		Long totalReviewCount = 0L;
-		for (GHRepository repo : repos.values()) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.add(Calendar.YEAR, -1);
-			Date date = calendar.getTime();
-
-			totalMergeCount += getMyMergeToHistory(repo, date, userName).get(0);
-			totalReviewCount += getMyMergeToHistory(repo, date, userName).get(1);
-		}
-		return List.of(totalMergeCount, totalReviewCount);
-	}
+			Date lastDate = history == null ? null : DateUtils.LocalDateToDate(history.getWorkedAt());
+			List<Integer> myMergeToHistory = getMyMergeToHistory(repo, lastDate, userName);
+            totalMergeCount += myMergeToHistory.get(0);
+            totalReviewCount += myMergeToHistory.get(1);
+        }
+        return List.of(totalMergeCount, totalReviewCount);
+    }
 
 
 	/**
@@ -577,12 +583,12 @@ public class GHUtils {
 		userCardInfo.setTotalCodeLineCount(getTotalCodeLineCountByUser(repos, userName));
 
 		userCardInfo.setAvgContribution(getAvgContributionByUser(repos, userName));
-		userCardInfo.setTotalIssueExp(getTotalIssueCountByUser(userName) * GrowthFactor.idxToEnum(3).getExp());
-		userCardInfo.setStarExp(getStarAndForkByUser(repos).get(0) * GrowthFactor.idxToEnum(5).getExp());
-		userCardInfo.setForkExp(getStarAndForkByUser(repos).get(1) * GrowthFactor.idxToEnum(6).getExp());
-		userCardInfo.setTotalMergeExp(getMergeAndReviewByUser(repos, userName).get(0) * GrowthFactor.idxToEnum(2).getExp());
-		userCardInfo.setTotalReviewExp(getMergeAndReviewByUser(repos, userName).get(1) * GrowthFactor.idxToEnum(4).getExp());
-		userCardInfo.setTotalCommitExp(getTotalCommitCountByUser(repos, userName) * GrowthFactor.idxToEnum(1).getExp());
+		userCardInfo.setTotalIssueExp(getTotalIssueCountByUser(userName) * GrowthFactor.ISSUE.getExp());
+		userCardInfo.setStarExp(getStarAndForkByUser(repos).get(0) * GrowthFactor.STAR.getExp());
+		userCardInfo.setForkExp(getStarAndForkByUser(repos).get(1) * GrowthFactor.FORK.getExp());
+		userCardInfo.setTotalMergeExp(getMergeAndReviewByUser(repos, userName).get(0) * GrowthFactor.MERGE.getExp());
+		userCardInfo.setTotalReviewExp(getMergeAndReviewByUser(repos, userName).get(1) * GrowthFactor.REVIEW.getExp());
+		userCardInfo.setTotalCommitExp(getTotalCommitCountByUser(repos, userName) * GrowthFactor.COMMIT.getExp());
 
 		return userCardInfo;
 	}

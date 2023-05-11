@@ -24,6 +24,7 @@ import org.kohsuke.github.GHRateLimit;
 import org.kohsuke.github.GHRateLimit.Record;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Aspect @Slf4j
@@ -62,7 +63,7 @@ public class GHUtilsAop {
         } finally {
             long finish = System.currentTimeMillis();
             long timeMs = finish - start;
-            log.info("END: " + methodName + " " + timeMs + "ms");
+            log.info("END: " + methodName + " " + (timeMs / 1000.0) + "s");
         }
     }
 
@@ -76,7 +77,7 @@ public class GHUtilsAop {
 
         if(usingUsers.contains(userId)){
             log.warn("이미 탐색중인 유저입니다.");
-            throw new CustomException(ErrorCode.NO_ACCESS);
+            throw new CustomException(ErrorCode.ALREADY_WORKED);
         }
 
         usingUsers.add(userId);
@@ -94,7 +95,7 @@ public class GHUtilsAop {
                 Long repoId = repoEntity.getRepoId();
                 if(usingKeys.contains(repoId)){
                     log.warn("이미 사용중인 repoId 입니다.");
-                    throw new CustomException(ErrorCode.NO_ACCESS);
+                    throw new CustomException(ErrorCode.ALREADY_WORKED);
                 }
 
                 repoIds.add(repoId);
@@ -124,7 +125,7 @@ public class GHUtilsAop {
 
         if(usingKeys.contains(repoId)){
             log.warn("이미 사용중인 repoId 입니다.");
-            throw new CustomException(ErrorCode.NO_ACCESS);
+            throw new CustomException(ErrorCode.ALREADY_WORKED);
         }
 
         try {

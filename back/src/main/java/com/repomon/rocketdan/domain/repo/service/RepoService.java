@@ -1,6 +1,7 @@
 package com.repomon.rocketdan.domain.repo.service;
 
 
+import com.repomon.rocketdan.common.utils.DateUtils;
 import com.repomon.rocketdan.common.utils.GHUtils;
 import com.repomon.rocketdan.common.utils.SecurityUtils;
 import com.repomon.rocketdan.domain.repo.app.RepoDetail;
@@ -25,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHRepositoryStatistics;
+import org.kohsuke.github.PagedIterable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -200,7 +202,8 @@ public class RepoService {
 		RepoConventionResponseDto responseDto = redisConventionRepository.findByRepoId(repoId)
 			.orElseGet(() -> findConventionDtoWithGHApi(repoEntity));
 
-		for(int retries = 5; retries > 0 && responseDto.getConventions().isEmpty(); retries--){
+		if(responseDto.getConventions().isEmpty()){
+			redisConventionRepository.delete(responseDto);
 			responseDto = findConventionDtoWithGHApi(repoEntity);
 		}
 
@@ -223,7 +226,7 @@ public class RepoService {
 		RepoContributeResponseDto responseDto = redisContributeRepository.findByRepoId(repoId)
 			.orElseGet(() -> findContributeDtoWithGHApi(repoEntity));
 
-		for(int retries = 5; retries > 0 && responseDto.getCommitters().isEmpty(); retries--){
+		if(responseDto.getCommitters().isEmpty()){
 			redisContributeRepository.delete(responseDto);
 			responseDto = findContributeDtoWithGHApi(repoEntity);
 		}
@@ -375,12 +378,7 @@ public class RepoService {
 					repomonStatusRepository.save(repomonStatusEntity);
 					activeRepoRepository.save(ActiveRepoEntity.of(userEntity, repomonStatusEntity));
 
-
-					Calendar calendar = Calendar.getInstance();
-					calendar.add(Calendar.YEAR, -1);
-					Date date = calendar.getTime();
-
-					initRepositoryInfo(repomonStatusEntity, ghRepository, date);
+					initRepositoryInfo(repomonStatusEntity, ghRepository, null);
 				});
 		});
 	}
@@ -398,14 +396,12 @@ public class RepoService {
 		try {
 			GHRepositoryStatistics statistics = ghRepository.getStatistics();
 			long totalLineCount = ghUtils.getTotalLineCount(statistics);
+
 			Map<String, Integer> commitCountMap = ghUtils.getCommitterInfoMap(statistics);
 
 			String mvp = null;
 
-			int totalCommitCount = 0;
-			while(totalCommitCount == 0 && !commitCountMap.isEmpty()) {
-				totalCommitCount = ghUtils.getTotalCommitCount(statistics);
-			}
+			int totalCommitCount = ghUtils.getTotalCommitCount(statistics);
 
 			for (String user : commitCountMap.keySet()) {
 				if (mvp == null || commitCountMap.get(user) > commitCountMap.get(mvp)) {
@@ -440,8 +436,16 @@ public class RepoService {
 				throw new CustomException(ErrorCode.NOT_FOUND_PUBLIC_REPOSITORY);
 			}
 
+			RepoHistoryEntity history = repoHistoryRepository.findFirstByRepoOrderByWorkedAtDesc(
+				repoEntity).orElseGet(null);
+
+
 			try {
-				List<GHCommit> ghCommits = ghRepository.listCommits().toList();
+				PagedIterable<GHCommit> ghCommits = history == null ? ghRepository.queryCommits().list()
+					: ghRepository.queryCommits()
+						.until(DateUtils.LocalDateToDate(history.getWorkedAt()))
+						.list();
+
 				for (GHCommit commit : ghCommits) {
 					if (commit.getParentSHA1s().size() > 1) continue;
 
@@ -475,12 +479,12 @@ public class RepoService {
 		try {
 			List<RepoHistoryEntity> list = new ArrayList<>();
 
-			GHRepositoryStatistics statistics = ghRepository.getStatistics();
-			list.addAll(ghUtils.GHCommitToHistory(statistics, repoEntity, fromDate));
-			list.addAll(ghUtils.GHPullRequestToHistory(ghRepository, repoEntity, fromDate));
-			list.addAll(ghUtils.GHIssueToHistory(ghRepository, repoEntity, fromDate));
-			list.addAll(ghUtils.GHForkToHistory(ghRepository, repoEntity, fromDate));
-			list.addAll(ghUtils.GHStarToHistory(ghRepository, repoEntity, fromDate));
+			list.addAll(ghUtils.GHCommitToHistory(ghRepository, repoEntity, fromDate));
+			list.addAll(ghUtils.GHPullRequestAndReviewAndIssueToHistory(ghRepository, repoEntity, fromDate));
+
+			LocalDate now = LocalDate.now();
+			list.addAll(ghUtils.GHForkToHistory(ghRepository, repoEntity, now));
+			list.addAll(ghUtils.GHStarToHistory(ghRepository, repoEntity, now));
 
 			Long totalExp = 0L;
 			for (RepoHistoryEntity item : list) {
@@ -506,22 +510,16 @@ public class RepoService {
 
 		repoHistoryRepository.findFirstByRepoOrderByWorkedAtDesc(repoEntity).ifPresentOrElse(historyEntity -> {
 			LocalDate workedAt = historyEntity.getWorkedAt();
-			Date workDate = Date.from(workedAt.atStartOfDay(ZoneId.systemDefault()).toInstant());
+			Date workDate = DateUtils.LocalDateToDate(workedAt);
 
-			Calendar instance = Calendar.getInstance();
-			instance.setTime(workDate);
-			instance.add(Calendar.DATE, 1);
-
-			Long exp = initRepositoryInfo(repoEntity, ghRepository, Date.from(instance.toInstant()));
+			workDate = DateUtils.fewDateAgo(workDate, 1);
+			Long exp = initRepositoryInfo(repoEntity, ghRepository, workDate);
 
 			if(repoEntity.getIsActive()) {
 				userEntities.forEach(userEntity -> userEntity.updateTotalExp(exp));
 			}
 		}, () -> {
-			Calendar calendar = Calendar.getInstance();
-			calendar.add(Calendar.YEAR, -1);
-			Date date = calendar.getTime();
-			Long exp = initRepositoryInfo(repoEntity, ghRepository, date);
+			Long exp = initRepositoryInfo(repoEntity, ghRepository, null);
 
 			if(repoEntity.getIsActive()) {
 				userEntities.forEach(userEntity -> userEntity.updateTotalExp(exp));
@@ -612,7 +610,7 @@ public class RepoService {
 
 		try {
 			totalLineCount = ghUtils.getTotalLineCount(statistics);
-			contributers = ghRepository.listContributors().toList().size();
+			contributers = statistics.getContributorStats().toList().size();
 		} catch (IOException | InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -675,24 +673,18 @@ public class RepoService {
 				.orElseGet(() -> findContributeDtoWithGHApi(repoEntity));
 
 		//내 이슈, 머지, 리뷰 가져오기 >> 깃유틸에 넣기 째(getMyIssueToHistory)는 프라이빗, 예는 퍼블릭
-		Integer myissue = 0;
-		List<Integer> mymerges = new ArrayList<>();
-		Optional<RepoHistoryEntity> repoHistoryOptional = repoHistoryRepository.findFirstByRepoOrderByWorkedAtDesc(repoEntity);
-		if (repoHistoryOptional.isPresent()) {
-			LocalDate workedAt = repoHistoryOptional.get().getWorkedAt();
-			Date workDate = Date.from(workedAt.atStartOfDay(ZoneId.systemDefault()).toInstant());
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(workDate);
-			cal.add(Calendar.DATE, 1);
-			myissue = ghUtils.getMyIssueToHistory(ghRepository, Date.from(cal.toInstant()), user.getUserName());
-			mymerges = ghUtils.getMyMergeToHistory(ghRepository, Date.from(cal.toInstant()), user.getUserName());
+		Integer myIssue;
+		List<Integer> myMerges;
+		RepoHistoryEntity history = repoHistoryRepository.findFirstByRepoOrderByWorkedAtDesc(repoEntity).orElseGet(null);
+		if (history != null) {
+			LocalDate workedAt = history.getWorkedAt();
+			Date workDate = DateUtils.LocalDateToDate(workedAt);
+			workDate = DateUtils.fewDateAgo(workDate, 1);
+			myIssue = ghUtils.getMyIssueToHistory(ghRepository, workDate, user.getUserName());
+			myMerges = ghUtils.getMyMergeToHistory(ghRepository, workDate, user.getUserName());
 		} else {
-			Calendar calendar = Calendar.getInstance();
-			calendar.add(Calendar.YEAR, -1);
-			Date date = calendar.getTime();
-
-			myissue = ghUtils.getMyIssueToHistory(ghRepository, date, user.getUserName());
-			mymerges = ghUtils.getMyMergeToHistory(ghRepository, date, user.getUserName());
+			myIssue = ghUtils.getMyIssueToHistory(ghRepository, null, user.getUserName());
+			myMerges = ghUtils.getMyMergeToHistory(ghRepository, null, user.getUserName());
 		}
 
 		//내 코드 수
@@ -705,6 +697,6 @@ public class RepoService {
 			conventionrate = conventionDto.getCollectCnt()/conventionDto.getTotalCnt()*100;
 		}
 
-		return RepoPersonalCardResponseDto.fromEntityAndGHRepository(repoEntity, ghRepository, historyEntityList, contributers, userInfo, contributeResponse, myissue ,mytotalcode, mymerges, conventionrate, languages);
+		return RepoPersonalCardResponseDto.fromEntityAndOthers(repoEntity, historyEntityList, contributers, userInfo, contributeResponse, myIssue ,mytotalcode, myMerges, conventionrate, languages);
 	}
 }

@@ -7,11 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import org.kohsuke.github.GHRepository;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +78,7 @@ public class RepoPersonalCardResponseDto {
     private String avatarUrl;
 
 
-    public static RepoPersonalCardResponseDto fromEntityAndGHRepository(RepoEntity repoEntity, GHRepository ghRepository, List<RepoHistoryEntity> historyEntityList, Integer contributers, Map<String, String> userInfo, RepoContributeResponseDto contributeResponse,Integer myissue, Long mytotalcode, List<Integer> mymerges, Double conventionrate, List<String> languages) {
+    public static RepoPersonalCardResponseDto fromEntityAndOthers(RepoEntity repoEntity, List<RepoHistoryEntity> historyEntityList, Integer contributers, Map<String, String> userInfo, RepoContributeResponseDto contributeResponse,Integer myissue, Long mytotalcode, List<Integer> mymerges, Double conventionrate, List<String> languages) {
         Long commitsExp = 0L;
         Long mergesExp = 0L;
         Long issuesExp = 0L;
@@ -109,25 +106,26 @@ public class RepoPersonalCardResponseDto {
 
         int convention = (int) Math.round(conventionrate);
 
-        long mycontribution = 0L;
-        int mytotalcommit = 0;
-        if (null == contributeResponse.getCommitters().get(userInfo.get("username")) | contributeResponse.getTotalCommitCount()==0) {
-            mycontribution = 0;
-            mytotalcommit = 0;
+        long myContribution;
+        int myTotalCommit;
+        String username = userInfo.get("username");
+        if (null == contributeResponse.getCommitters().get(username) | contributeResponse.getTotalCommitCount()==0) {
+            myContribution = 0;
+            myTotalCommit = 0;
         }else{
-            mytotalcommit = contributeResponse.getCommitters().get(userInfo.get("username"));
-            Double contribution = ((double) mytotalcommit/ (double) contributeResponse.getTotalCommitCount())*100 ;
-            mycontribution = (long) Math.round(contribution);
+            myTotalCommit = contributeResponse.getCommitters().get(username);
+            Double contribution = ((double) myTotalCommit/ (double) contributeResponse.getTotalCommitCount())*100 ;
+            myContribution = Math.round(contribution);
         }
-        int mycommitexp = (int) (mytotalcommit * GrowthFactor.idxToEnum(1).getExp());
-        int myissueexp = (int) (myissue * GrowthFactor.idxToEnum(3).getExp());
-        int mymergeexp = (int) (mymerges.get(0) * GrowthFactor.idxToEnum(2).getExp());
-        int myreviewexp = (int) (mymerges.get(1) * GrowthFactor.idxToEnum(4).getExp());
+        int myCommitExp = (int) (myTotalCommit * GrowthFactor.idxToEnum(1).getExp());
+        int myIssueExp = (int) (myissue * GrowthFactor.idxToEnum(3).getExp());
+        int myMergeExp = (int) (mymerges.get(0) * GrowthFactor.idxToEnum(2).getExp());
+        int myReviewExp = (int) (mymerges.get(1) * GrowthFactor.idxToEnum(4).getExp());
 
 return RepoPersonalCardResponseDto.builder()
                 .repomonId(repoEntity.getRepomon().getRepomonId())
                 .repomonTier(repoEntity.getRepomon().getRepomonTier())
-                .contribution(mycontribution)
+                .contribution(myContribution)
                 .repoExp(repoEntity.getRepoExp())
 
                 .repoName(repoEntity.getRepoName())
@@ -143,18 +141,18 @@ return RepoPersonalCardResponseDto.builder()
                 .merges(mergesExp)
                 .reviews(reviewsExp)
 
-                .mycommit(mycommitexp)
-                .myissues(myissueexp)
-                .mymerges(mymergeexp)
-                .myreviews(myreviewexp)
+                .mycommit(myCommitExp)
+                .myissues(myIssueExp)
+                .mymerges(myMergeExp)
+                .myreviews(myReviewExp)
 
                 .totalcommit(contributeResponse.getTotalCommitCount())
                 .totalcode(contributeResponse.getTotalLineCount())
-                .mytotalcommit(mytotalcommit)
+                .mytotalcommit(myTotalCommit)
                 .mytotalcode(mytotalcode)
                 .conventionrate(convention)
 
-                .userName(userInfo.get("username"))
+                .userName(username)
                 .avatarUrl(userInfo.get("avatarUrl"))
                 .build();
     }
