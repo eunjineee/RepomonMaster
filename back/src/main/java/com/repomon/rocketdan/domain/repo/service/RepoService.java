@@ -328,6 +328,12 @@ public class RepoService {
 		}
 
 		List<RepoConventionEntity> entities = requestDto.toEntities(repoEntity);
+
+		redisConventionRepository.findByRepoId(repoId).ifPresent(dto ->{
+			redisConventionRepository.delete(dto);
+		});
+		
+		conventionRepository.deleteAllByRepo(repoEntity);
 		conventionRepository.saveAll(entities);
 	}
 
