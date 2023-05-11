@@ -84,28 +84,28 @@ public class RepoService {
 			RepoListResponseDto.empty(userName) :
 			dtoList.get(0);
 
-		if (responseDto.getRepoListItems().size() < pageable.getPageSize()) {
+		if (responseDto.getRepoListItems().size() != pageable.getPageSize()) {
 			Page<ActiveRepoEntity> activeRepoPage = activeRepoRepository.findByUser(userEntity,
 				pageable);
 
-			if(activeRepoPage.getNumberOfElements() == responseDto.getRepoListItems().size()) {
-				return responseDto;
-			}
+			if(activeRepoPage.getNumberOfElements() != responseDto.getRepoListItems().size()) {
+				if(responseDto.getId() != null){
+					redisListRepository.delete(responseDto);
+				}
 
-			Map<String, GHRepository> repositories = ghUtils.getRepositoriesWithName(userName);
-			List<RepoDetail> repoDetails = activeRepoPage.stream()
-				.map(activeRepoEntity -> {
-					RepoEntity repoEntity = activeRepoEntity.getRepo();
-					GHRepository ghRepository = repositories.get(repoEntity.getRepoKey());
-					return ActiveRepoEntity.convertToRepo(activeRepoEntity, ghRepository);
-				}).collect(Collectors.toList());
+				Map<String, GHRepository> repositories = ghUtils.getRepositoriesWithName(userName);
+				List<RepoDetail> repoDetails = activeRepoPage.stream()
+					.map(activeRepoEntity -> {
+						RepoEntity repoEntity = activeRepoEntity.getRepo();
+						GHRepository ghRepository = repositories.get(repoEntity.getRepoKey());
+						return ActiveRepoEntity.convertToRepo(activeRepoEntity, ghRepository);
+					}).collect(Collectors.toList());
 
-			long totalElements = activeRepoPage.getTotalElements();
-			int totalPages = activeRepoPage.getTotalPages();
+				long totalElements = activeRepoPage.getTotalElements();
+				int totalPages = activeRepoPage.getTotalPages();
 
-			responseDto.updateFromDetails(repoDetails, totalElements, totalPages);
+				responseDto.updateFromDetails(repoDetails, totalElements, totalPages);
 
-			if (responseDto.getId() == null) {
 				redisListRepository.save(responseDto);
 			}
 		}
@@ -332,7 +332,7 @@ public class RepoService {
 		redisConventionRepository.findByRepoId(repoId).ifPresent(dto ->{
 			redisConventionRepository.delete(dto);
 		});
-		
+
 		conventionRepository.deleteAllByRepo(repoEntity);
 		conventionRepository.saveAll(entities);
 	}
