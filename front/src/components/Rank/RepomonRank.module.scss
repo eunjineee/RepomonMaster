@@ -79,6 +79,7 @@
       }
 
       .repomon-name {
+        z-index: 10;
         margin: 0.5rem 0 0 0;
         text-align: center;
         font-weight: bold;
@@ -216,14 +217,16 @@
     border-radius: 5px;
     background-color: rgba(142, 167, 233, 0.1);
 
-    &:hover {
-      cursor: pointer;
-      background-color: rgba(142, 167, 233, 0.05);
-    }
-
     & img {
       border-radius: 100%;
       margin: 0 0.5rem 0 0;
+    }
+
+    .hover {
+      &:hover {
+        cursor: pointer;
+        color: $sub;
+      }
     }
   }
 }

@@ -44,7 +44,7 @@ $sub: rgba(109, 130, 250, 1);
 }
 
 @mixin desktop125 {
-  @media (min-width: 1160px) and (max-width: 1600px) {
+  @media (min-width: 0px) and (max-width: 1600px) {
     @content;
   }
 }

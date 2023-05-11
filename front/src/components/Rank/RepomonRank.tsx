@@ -68,11 +68,7 @@ const RepomonRank = ({
         <div>
           <div className={styles["top-3-div"]}>
             {top3.map((data, index) => (
-              <div
-                key={index}
-                className={styles[`top-${index + 1}`]}
-                onClick={() => onClickRepoItem(data.repoId)}
-              >
+              <div key={index} className={styles[`top-${index + 1}`]}>
                 <div className={styles.border} />
                 <div className={styles["main-element"]} />
                 <Image
@@ -126,6 +122,7 @@ const RepomonRank = ({
                     transform: "translateX(35%)",
                   }}
                   onClick={() => onClickRepoItem(item.repoId)}
+                  className={styles.hover}
                 >
                   <Image
                     alt="레포몬"
@@ -137,10 +134,16 @@ const RepomonRank = ({
                   ></Image>
                   {item.repomonNickname}
                 </span>
-                <span onClick={() => onClickRepoItem(item.repoId)}>
+                <span
+                  onClick={() => onClickRepoItem(item.repoId)}
+                  className={styles.hover}
+                >
                   {item.repoName}
                 </span>
-                <span onClick={() => onClickUserItem(item.userId)}>
+                <span
+                  onClick={() => onClickUserItem(item.userId)}
+                  className={styles.hover}
+                >
                   {item.repoOwner}
                 </span>
                 <span>

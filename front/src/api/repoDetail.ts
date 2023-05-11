@@ -126,3 +126,9 @@ export const axiosRequestSetPersonalLans = async (
 
   return res;
 };
+
+export const axiosRequestPersonalLans = async (repoId: number) => {
+  const res = await http.get(`repo/${repoId}/card/personal`);
+
+  return res;
+};

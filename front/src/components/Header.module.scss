@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: 1920px;
   height: 90px;
   padding: 0 8%;
   border-bottom: 2px solid rgba(255, 255, 255, 0.5);
@@ -17,6 +17,7 @@
   -moz-box-shadow: 1px 9px 15px -2px rgba(0, 0, 0, 0.05);
 
   @include desktop125 {
+    width: 1536px;
     height: 70px;
   }
 

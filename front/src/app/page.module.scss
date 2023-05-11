@@ -20,11 +20,15 @@
     }
 
     .left {
-      width: 40%;
+      width: 612px;
       color: white;
       font-weight: 600;
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
       font-family: "SUIT-Thin";
+
+      @include desktop125 {
+        height: 480px;
+      }
 
       .title {
         margin: 30% 0 0 0;
@@ -45,17 +49,21 @@
     }
 
     .right {
-      width: 60%;
+      width: 916px;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+
+      @include desktop125 {
+        width: 666px;
+      }
     }
   }
 
   .service {
     .service-title {
-      margin: 3% 0 3% 0;
+      margin: 3rem 0 3rem 0;
       text-align: center;
       font-size: 2.25rem;
 
@@ -69,14 +77,14 @@
     }
 
     .service-content {
-      width: 80%;
+      width: 1528px;
       height: 570px;
       margin: 0 auto 10rem auto;
       display: flex;
       justify-content: center;
 
       @include desktop125 {
-        width: 70%;
+        width: 1070px;
         height: calc(570px * 7 / 8);
       }
 

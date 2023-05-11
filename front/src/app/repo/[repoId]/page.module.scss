@@ -1,7 +1,7 @@
 @import "@/styles/variables.scss";
 
 .pageContainer {
-  width: 70%;
+  width: 1300px;
   min-height: 100vh;
   margin: 0 auto 5rem auto;
   padding: 30px 0 0 0;
@@ -11,6 +11,7 @@
   border-bottom-right-radius: 20px;
 
   @include desktop125 {
+    width: 1060px;
     font-size: 16px;
   }
 

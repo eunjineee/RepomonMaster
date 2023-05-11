@@ -68,11 +68,7 @@ const BattleRank = ({
         <div>
           <div className={styles["top-3-div"]}>
             {top3.map((data, index) => (
-              <div
-                key={index}
-                className={styles[`top-${index + 1}`]}
-                onClick={() => onClickRepoItem(data.repoId)}
-              >
+              <div key={index} className={styles[`top-${index + 1}`]}>
                 <div className={styles.border} />
                 <div className={styles["main-element"]} />
                 <Image
@@ -127,6 +123,7 @@ const BattleRank = ({
                     cursor: "pointer",
                   }}
                   onClick={() => onClickRepoItem(item.repoId)}
+                  className={styles.hover}
                 >
                   <Image
                     alt="레포몬"
@@ -140,11 +137,14 @@ const BattleRank = ({
                 </span>
                 <span
                   onClick={() => onClickRepoItem(item.repoId)}
-                  style={{ cursor: "pointer" }}
+                  className={styles.hover}
                 >
                   {item.repoName}
                 </span>
-                <span onClick={() => onClickUserItem(item.userId)}>
+                <span
+                  onClick={() => onClickUserItem(item.userId)}
+                  className={styles.hover}
+                >
                   {item.repoOwner}
                 </span>
                 <span>

@@ -9,8 +9,13 @@ import ReactMarkdown from "react-markdown";
 import Loading2 from "@/app/loading2";
 import Link from "next/link";
 import { customAlert } from "@/app/utils/CustomAlert";
-import { axiosRequestSetPersonalLans } from "@/api/repoDetail";
+import {
+  axiosRequestPersonalLans,
+  axiosRequestSetPersonalLans,
+} from "@/api/repoDetail";
 import { languageColor } from "@/styles/colors";
+import Image from "next/image";
+import tmpCard from "public/tmp_card.svg";
 
 const customStyles = {
   content: {
@@ -40,6 +45,7 @@ const ExportModal = ({
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [kind, setKind] = useState<string>("레포 카드");
   const [showKind, setShowKind] = useState<boolean>(false);
+  const [applied, setApplied] = useState<string[]>([]);
   const teamSource = `![RepomonRepoCard](https://repomon.kr/card/repo?repoId=${repoId})`;
   const personalSource = `![RepomonRepoPersonalCard](https://repomon.kr/card/repo_personal?repoId=${repoId}&userId=${userId}) `;
   const [selected, setSelected] = useState<string[]>([]);
@@ -47,6 +53,7 @@ const ExportModal = ({
   /** ============================== 함수, Event Handler ============================== */
   const openModal = () => {
     setIsOpen(true);
+    requestPersonalLans();
   };
 
   const afterOpenModal = () => {};
@@ -61,7 +68,12 @@ const ExportModal = ({
     setShowKind(false);
   };
 
-  const onClickCard = () => {
+  const onClickCopy = () => {
+    if (kind === "개인 레포 카드" && applied.length === 0) {
+      alert("언어를 설정해주세요.");
+      return;
+    }
+
     let copyUrl: string;
 
     if (kind === "레포 카드") {
@@ -71,7 +83,7 @@ const ExportModal = ({
     }
 
     window.navigator.clipboard.writeText(copyUrl).then(() => {
-      alert("복사가 완료되었습니다.");
+      alert("카드 URL이 복사되었습니다.");
     });
   };
 
@@ -99,12 +111,23 @@ const ExportModal = ({
   };
 
   /** ============================== Axios ============================== */
+  const requestPersonalLans = async () => {
+    try {
+      const res = await axiosRequestPersonalLans(repoId);
+      console.log("개인 레포 카드 언어: ", res);
+      setApplied(res.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const requestSetPersonalLans = async () => {
     try {
       const res = await axiosRequestSetPersonalLans(repoId, selected);
-      console.log("레포 개인 카드 언어 설정: ", res);
+      console.log("개인 레포 카드 언어 설정: ", res);
       if (res.data.resultCode === "SUCCESS") {
         setSelected([]);
+        requestPersonalLans();
       }
     } catch (err) {
       console.error(err);
@@ -124,7 +147,10 @@ const ExportModal = ({
         style={customStyles}
         contentLabel=""
       >
-        <p className={styles.title}>레포지토리 카드 추출</p>
+        <p className={styles.title}>
+          레포지토리 카드 추출
+          <XMarkIcon onClick={closeModal} />
+        </p>
         <div className={styles["kind-select"]}>
           <div className={styles["btn-div"]}>
             <button
@@ -135,7 +161,6 @@ const ExportModal = ({
               {!showKind && <ChevronDownIcon />}
               {showKind && <ChevronUpIcon />}
             </button>
-            <button className={styles.copy}>카드 복사</button>
           </div>
 
           {showKind && (
@@ -202,21 +227,42 @@ const ExportModal = ({
                 </button>
               </div>
             )}
+            <p className={styles["set-lan-title"]}>적용 중인 언어</p>
+            <p className={styles["lan-div"]}>
+              {applied.length > 0 &&
+                applied.map((lan, index) => (
+                  <span
+                    key={index}
+                    style={
+                      languageColor[lan].color
+                        ? {
+                            backgroundColor: languageColor[lan].color as string,
+                          }
+                        : { backgroundColor: "gray" }
+                    }
+                  >
+                    {lan}
+                  </span>
+                ))}
+              {applied.length === 0 && (
+                <p>카드를 추출하려면 언어를 설정해주세요.</p>
+              )}
+            </p>
           </>
         )}
 
         <p className={styles.exam}>
-          <span>*</span> {"예시)"}
+          <span>*</span> {"아래 예시 카드를 누르면 URL이 복사됩니다."}
         </p>
-        {kind === "레포 개인 카드" && (
+        {kind === "개인 레포 카드" && (
           <div
             style={
-              kind === "레포 개인 카드"
+              kind === "개인 레포 카드"
                 ? { display: "hidden" }
                 : { display: "block" }
             }
             className={styles["card-div"]}
-            onClick={onClickCard}
+            onClick={onClickCopy}
           >
             <ReactMarkdown>{personalSource}</ReactMarkdown>
           </div>
@@ -229,7 +275,7 @@ const ExportModal = ({
                 : { display: "block" }
             }
             className={styles["card-div"]}
-            onClick={onClickCard}
+            onClick={onClickCopy}
           >
             <ReactMarkdown>{teamSource}</ReactMarkdown>
           </div>

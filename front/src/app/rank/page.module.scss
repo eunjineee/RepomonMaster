@@ -10,7 +10,7 @@
 
   .banner-inner {
     position: relative;
-    width: 80%;
+    width: 1300px;
     height: 100%;
     margin: 0 auto;
 
@@ -43,7 +43,7 @@
       bottom: 10%;
       left: 50%;
       transform: translateX(-50%);
-      width: 35%;
+      width: 420px;
       height: 30px;
       display: flex;
       align-items: center;
@@ -71,22 +71,22 @@
         width: 40px;
       }
 
-      .clear-icon {
-        width: 35px;
-      }
+      // .clear-icon {
+      //   width: 35px;
+      // }
     }
 
-    .clear {
-      position: absolute;
-      bottom: 2.5%;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
+    // .clear {
+    //   position: absolute;
+    //   bottom: 2.5%;
+    //   left: 50%;
+    //   transform: translateX(-50%);
+    //   color: white;
 
-      &:hover {
-        color: rgb(240, 240, 240);
-      }
-    }
+    //   &:hover {
+    //     color: rgb(240, 240, 240);
+    //   }
+    // }
 
     .banner-lottie {
       position: absolute;
@@ -101,17 +101,21 @@
 }
 
 .tab {
-  width: 65%;
+  width: 1280px;
   margin: 2rem auto 2rem auto;
+
+  @include desktop125 {
+    width: 1040px;
+  }
 
   & button {
     position: relative;
     margin-right: 2rem;
     text-align: center;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
 
     @include desktop125 {
-      font-size: 1.5rem;
+      font-size: 1.375rem;
     }
 
     &::after {
@@ -134,7 +138,11 @@
 }
 
 .content {
-  width: 70%;
+  width: 1300px;
   min-height: 500px;
   margin: 0 auto;
+
+  @include desktop125 {
+    width: 1060px;
+  }
 }
