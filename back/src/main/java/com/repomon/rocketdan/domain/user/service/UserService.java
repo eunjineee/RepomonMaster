@@ -92,13 +92,23 @@ public class UserService {
 
 		UserResponseDto userResponseDto = UserResponseDto.fromEntity(user, userInfo);
 
+		// 활성화된 레포 카운트
+		Integer activeRepoCnt = 0;
+
 		// 총 경험치 조회
 		Long totalExp = 0L;
 		List<ActiveRepoEntity> activeRepoEntityList = activeRepoRepository.findAllByUser(user);
 		for (ActiveRepoEntity activeRepo : activeRepoEntityList) {
-			totalExp = activeRepo.getRepo().getIsActive() ? totalExp + activeRepo.getRepo().getRepoExp() : totalExp;
+			RepoEntity repo = activeRepo.getRepo();
+			totalExp = repo.getIsActive() ? totalExp + repo.getRepoExp() : totalExp;
+
+			if (repo.getIsActive() && repo.getRepomon().getRepomonTier() != 0) {
+				activeRepoCnt++;
+			}
+
 		}
 		userResponseDto.setTotalExp(totalExp);
+		userResponseDto.setActiveRepoCnt(activeRepoCnt);
 
 		// 깃허브에 레포 정보 조회
 		Map<String, GHRepository> repositories = ghUtils.getRepositoriesWithName(user.getUserName());

@@ -21,6 +21,7 @@ public class UserResponseDto {
 	private final String nickname;
 	private final String avatarUrl;
 	private String userDescription;
+	private Integer activeRepoCnt;
 	private Long totalExp;
 	private RepresentRepo representRepo;
 	private Integer userRank;
