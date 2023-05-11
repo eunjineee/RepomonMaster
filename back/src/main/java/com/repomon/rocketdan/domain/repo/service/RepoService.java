@@ -85,10 +85,14 @@ public class RepoService {
 			dtoList.get(0);
 
 		if (responseDto.getRepoListItems().size() < pageable.getPageSize()) {
-			Map<String, GHRepository> repositories = ghUtils.getRepositoriesWithName(userName);
-
 			Page<ActiveRepoEntity> activeRepoPage = activeRepoRepository.findByUser(userEntity,
 				pageable);
+
+			if(activeRepoPage.getNumberOfElements() == responseDto.getRepoListItems().size()) {
+				return responseDto;
+			}
+
+			Map<String, GHRepository> repositories = ghUtils.getRepositoriesWithName(userName);
 			List<RepoDetail> repoDetails = activeRepoPage.stream()
 				.map(activeRepoEntity -> {
 					RepoEntity repoEntity = activeRepoEntity.getRepo();
