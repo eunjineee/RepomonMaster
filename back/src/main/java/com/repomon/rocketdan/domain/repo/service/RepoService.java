@@ -128,7 +128,7 @@ public class RepoService {
 			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
 		});
 
-		UserEntity userEntity = userId != null ? userRepository.findById(userId).orElseThrow(()->{
+		UserEntity userEntity = userId != null ? userRepository.findById(userId).orElseThrow(() -> {
 			throw new CustomException(ErrorCode.NOT_FOUND_USER);
 		}) : null;
 
@@ -242,7 +242,7 @@ public class RepoService {
 	/**
 	 * 모든 레포 정보 갱신
 	 */
-	public void modifyAllRepo(Long userId){
+	public void modifyAllRepo(Long userId) {
 		UserEntity userEntity = userRepository.findById(userId).orElseThrow(() -> {
 			throw new CustomException(ErrorCode.NOT_FOUND_USER);
 		});
@@ -256,6 +256,7 @@ public class RepoService {
 			redisListRepository.delete(repoListResponseDto);
 		});
 	}
+
 
 	/**
 	 * 레포 정보 갱신
@@ -350,7 +351,7 @@ public class RepoService {
 			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
 		});
 
-		if(!repoEntity.getRepoOwner().equals(userName)){
+		if (!repoEntity.getRepoOwner().equals(userName)) {
 			throw new CustomException(ErrorCode.NO_ACCESS);
 		}
 
@@ -396,7 +397,7 @@ public class RepoService {
 						});
 
 					String orgName = ghRepository.getOwnerName();
-					if(!orgName.equals(userEntity.getUserName())){
+					if (!orgName.equals(userEntity.getUserName())) {
 						orgName = ghUtils.getOrganizationFirstOwner(orgName);
 					}
 
@@ -585,7 +586,7 @@ public class RepoService {
 	public void checkRepomonEvolution(RepoEntity repoEntity) {
 		log.info("======================== 진화 여부 확인 ============================");
 		RepomonEntity repomon = repoEntity.getRepomon();
-		if ((repomon.getRepomonTier() == 1 && repoEntity.getRepoExp() >= 5000) || (repomon.getRepomonTier() == 2 && repoEntity.getRepoExp() >= 10000)) {
+		while ((repomon.getRepomonTier() == 1 && repoEntity.getRepoExp() >= 5000) || (repomon.getRepomonTier() == 2 && repoEntity.getRepoExp() >= 10000)) {
 			log.info("========================== 레포몬 진화 =========================");
 			RepomonEntity newRepomon = repomonRepository.findByRepomonTierAndRepomonName(repomon.getRepomonTier() + 1, repomon.getRepomonName()).orElseThrow(
 				() -> new CustomException(ErrorCode.NOT_FOUND_ENTITY)
@@ -606,10 +607,11 @@ public class RepoService {
 		return RepomonSelectResponseDto.createSelectRepomon(repomonList);
 	}
 
-	public void modifyPersonalRepo(Long repoId, RepoCardRequestDto requestDto){
+
+	public void modifyPersonalRepo(Long repoId, RepoCardRequestDto requestDto) {
 		String userName = SecurityUtils.getCurrentUserId();
 		UserEntity user = userRepository.findByUserName(userName).orElseThrow(
-				() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);}
+			() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);}
 		);
 		RepoEntity repo = repoRepository.findById(repoId).orElseThrow(() -> {
 			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
@@ -618,9 +620,10 @@ public class RepoService {
 			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
 		});
 
-		List<PersonalLanguageEntity> pastLanguage = languageRepository.findAllByActiveRepoEntity(activeRepoEntity).orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);});
-		if (null != pastLanguage){
-			for (PersonalLanguageEntity item : pastLanguage){
+		List<PersonalLanguageEntity> pastLanguage = languageRepository.findAllByActiveRepoEntity(activeRepoEntity)
+			.orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);});
+		if (null != pastLanguage) {
+			for (PersonalLanguageEntity item : pastLanguage) {
 				languageRepository.delete(item);
 			}
 		}
@@ -628,6 +631,7 @@ public class RepoService {
 			languageRepository.save(PersonalLanguageEntity.of(item, activeRepoEntity));
 		}
 	}
+
 
 	/**
 	 * 레포 card detail
@@ -665,12 +669,13 @@ public class RepoService {
 		//컨벤션 지킴율
 		double conventionrate = 0;
 		RepoConventionResponseDto conventionDto = getRepoConventionInfo(repoId);
-		if (conventionDto.getTotalCnt() != 0 && conventionDto.getCollectCnt() != 0){
-			conventionrate = conventionDto.getCollectCnt()/conventionDto.getTotalCnt()*100;
+		if (conventionDto.getTotalCnt() != 0 && conventionDto.getCollectCnt() != 0) {
+			conventionrate = conventionDto.getCollectCnt() / conventionDto.getTotalCnt() * 100;
 		}
 
 		return RepoCardResponseDto.fromEntityAndGHRepository(repoEntity, ghRepository, historyEntityList, totalLineCount, contributers, conventionrate);
 	}
+
 
 	/**
 	 * 레포 personal card detail
@@ -694,30 +699,30 @@ public class RepoService {
 
 		GHRepositoryStatistics statistics = ghRepository.getStatistics();
 
-        //컨트리뷰터 수, Total Code 수
-        int contributers = 0;
-        try {
-            contributers = ghRepository.listContributors().toList().size();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        //유저 정보
-        UserEntity user = userRepository.findById(userId).orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);});
-        Map<String, String> userInfo = ghUtils.getUser(user.getUserName());
+		//컨트리뷰터 수, Total Code 수
+		int contributers = 0;
+		try {
+			contributers = ghRepository.listContributors().toList().size();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		//유저 정보
+		UserEntity user = userRepository.findById(userId).orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);});
+		Map<String, String> userInfo = ghUtils.getUser(user.getUserName());
 
 		//언어 설정
-		ActiveRepoEntity activeRepo = activeRepoRepository.findByRepoAndUser(repoEntity, user).orElseThrow(()-> {throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);});
+		ActiveRepoEntity activeRepo = activeRepoRepository.findByRepoAndUser(repoEntity, user).orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);});
 		List<PersonalLanguageEntity> language = languageRepository.findAllByActiveRepoEntity(activeRepo).orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);});
 		List<String> languages = new ArrayList<>();
-		if (language.size() != 0){
-			for (PersonalLanguageEntity item : language){
+		if (language.size() != 0) {
+			for (PersonalLanguageEntity item : language) {
 				languages.add(item.getLanguageCode());
 			}
 		}
 
 		//기여도
 		RepoContributeResponseDto contributeResponse = redisContributeRepository.findByRepoId(repoId)
-				.orElseGet(() -> findContributeDtoWithGHApi(repoEntity));
+			.orElseGet(() -> findContributeDtoWithGHApi(repoEntity));
 
 		//내 이슈, 머지, 리뷰 가져오기 >> 깃유틸에 넣기 째(getMyIssueToHistory)는 프라이빗, 예는 퍼블릭
 		Integer myIssue;
@@ -740,10 +745,11 @@ public class RepoService {
 		//컨벤션 지킴율
 		double conventionrate = 0;
 		RepoConventionResponseDto conventionDto = getRepoConventionInfo(repoId);
-		if (conventionDto.getTotalCnt() != 0 && conventionDto.getCollectCnt() != 0){
-			conventionrate = conventionDto.getCollectCnt()/conventionDto.getTotalCnt()*100;
+		if (conventionDto.getTotalCnt() != 0 && conventionDto.getCollectCnt() != 0) {
+			conventionrate = conventionDto.getCollectCnt() / conventionDto.getTotalCnt() * 100;
 		}
 
 		return RepoPersonalCardResponseDto.fromEntityAndOthers(repoEntity, historyEntityList, contributers, userInfo, contributeResponse, myIssue ,mytotalcode, myMerges, conventionrate, languages);
 	}
+
 }
