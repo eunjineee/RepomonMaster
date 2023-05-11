@@ -1,0 +1,26 @@
+{
+    "manifest_version": 2,
+    "version": "1.00",
+    "background_color": "#BF9F91",
+    "description": "당신만의 레포몬을 키워보세요",
+    "dir": "ltr",
+    "language": "ko-KR",
+    "display": "standalone",
+    "name": "레포몬",
+    "orientation": "portrait-primary",
+    "scope": ".",
+    "short_name": "레포몬",
+    "start_url": "https://repomon.kr/",
+    "theme_color": "#D8C1A5",
+    "categories": [],
+    "screenshots": [],
+    "sidebar_action": {
+        "default_page": "sidebar.html",
+        "default_icon": {
+            "36": "logo-side.png"
+        },
+        "default_title": "레포몬",
+        "use_navigation_bar": true
+    },
+    "shortcuts": []
+}
