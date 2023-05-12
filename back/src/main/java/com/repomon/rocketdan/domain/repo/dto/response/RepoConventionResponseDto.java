@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.repomon.rocketdan.domain.repo.entity.RepoConventionEntity;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
 import java.util.ArrayList;
+import javax.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +27,7 @@ public class RepoConventionResponseDto {
 	@Id
 	@JsonIgnore
 	private Long id;
-	@Indexed
+	@Column(unique = true)
 	private Long repoId;
 	private String repoOwner;
 	private List<ConventionInfo> conventions = new ArrayList<>();

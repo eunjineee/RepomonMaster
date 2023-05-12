@@ -5,6 +5,7 @@ import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.Column;
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ public class RepoContributeResponseDto {
 
     @Id @JsonIgnore
     private Long id;
-    @Indexed
+    @Column(unique = true)
     private Long repoId;
     private String repoOwner;
     private int totalCommitCount;
