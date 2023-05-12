@@ -67,7 +67,8 @@ public class GHUtilsAop {
         }
     }
 
-    @Around("execution(* com.repomon.rocketdan.domain.repo.service.RepoService.modifyAllRepo(..))))")
+    @Around("execution(* com.repomon.rocketdan.domain.repo.service.RepoService.modifyAllRepo(..)) ||"
+        + "execution(* com.repomon.rocketdan.domain.user.service.UserService.getUserInfo(..))")
     public Object useRepoIoInSearchAllRepo(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
         log.info("사용중인 modifyAllRepo -> repoId 체크시작!!");
         List<Object> params = Arrays.asList((proceedingJoinPoint.getArgs()));
