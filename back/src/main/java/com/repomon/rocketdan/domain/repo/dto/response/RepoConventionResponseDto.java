@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.repomon.rocketdan.domain.repo.entity.RepoConventionEntity;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,11 +34,12 @@ public class RepoConventionResponseDto {
 	private Long repoId;
 	private String repoOwner;
 	private List<ConventionInfo> conventions = new ArrayList<>();
+	private Map<String, Integer> conventionInfo = new HashMap<>();
 	private int totalCnt;
 	private int collectCnt;
 
 
-	public static RepoConventionResponseDto fromEntities(RepoEntity repoEntity, List<RepoConventionEntity> conventions,
+	public static RepoConventionResponseDto fromEntities(RepoEntity repoEntity, List<RepoConventionEntity> conventions, Map<String, Integer> conventionInfo,
 		int totalCnt, int collectCnt) {
 
 		List<ConventionInfo> collect = conventions.isEmpty() ? new ArrayList<>()
@@ -48,6 +51,7 @@ public class RepoConventionResponseDto {
 			.repoId(repoEntity.getRepoId())
 			.repoOwner(repoEntity.getRepoOwner())
 			.conventions(collect)
+			.conventionInfo(conventionInfo)
 			.totalCnt(totalCnt)
 			.collectCnt(collectCnt)
 			.build();

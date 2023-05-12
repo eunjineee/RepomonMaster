@@ -447,6 +447,7 @@ public class RepoService {
 
 		int totalCnt = 0;
 		int collectCnt = 0;
+		Map<String, Integer> conventionInfo = new HashMap<>();
 		if (!conventions.isEmpty()) {
 			log.info("컨벤션 분석 시작");
 
@@ -474,12 +475,18 @@ public class RepoService {
 
 					boolean present = conventions.stream().anyMatch(convention -> {
 						String prefix = convention.getRepoConventionType();
-						return message.startsWith(prefix);
+						if(message.startsWith(prefix)) {
+							if (conventionInfo.containsKey(prefix)) {
+								conventionInfo.replace(prefix, conventionInfo.get(prefix) + 1);
+							} else {
+								conventionInfo.put(prefix, 1);
+							}
+							return true;
+						}
+						return false;
 					});
 
-					if (present) {
-						collectCnt++;
-					}
+					if(present) collectCnt++;
 				}
 			} catch (IOException e) {
 				throw new RuntimeException(e);
@@ -488,7 +495,8 @@ public class RepoService {
 			log.info("컨벤션 분석 끝");
 		}
 
-		RepoConventionResponseDto responseDto = RepoConventionResponseDto.fromEntities(repoEntity, conventions, totalCnt, collectCnt);
+		conventionInfo.put("미 준수", totalCnt - collectCnt);
+		RepoConventionResponseDto responseDto = RepoConventionResponseDto.fromEntities(repoEntity, conventions, conventionInfo, totalCnt, collectCnt);
 		redisConventionRepository.save(responseDto);
 		return responseDto;
 	}
