@@ -100,7 +100,6 @@ function RepositoryCard(props: propType) {
         style={{
           display: 'flex',
           justifyContent: 'space-around',
-          alignItems: 'center',
           height: '80%',
           marginBottom: '5%',
         }}>
@@ -123,46 +122,50 @@ function RepositoryCard(props: propType) {
             <p>{props.repomonName}</p>
           </div>
         </div>
-        <div style={{ width: '50%' }}>
-          <p
-            style={{
-              fontSize: '1.25em',
-              fontWeight: '700',
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-              textOverflow: 'ellipsis',
-              cursor: props.isSameUser ? 'pointer' : props.isActive ? 'pointer' : 'auto',
-            }}
-            onClick={handleRouting}
-            id={styles.repoTitle}>
-            {props.title}
-          </p>
-          <p style={{ fontSize: '1em', fontWeight: '500', marginBlock: '3%' }} id={styles.repoDesc}>
-            {props.desc === null ? '설명 없음' : props.desc}
-          </p>
-          {props.repomonId >= 9000 ? (
-            <button
+        <div className={`flex flex-col justify-between py-2`} style={{ width: '50%' }}>
+          <div>
+            <p
               style={{
-                display: props.isSameUser ? 'block' : 'none',
-                textAlign: 'center',
-                backgroundColor: '#5AA7FF',
-                color: 'white',
-                width: '10em',
-                height: '3em',
-                borderRadius: '10px',
-                marginTop: '2em',
+                fontSize: '1.25em',
+                fontWeight: '700',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                cursor: props.isSameUser ? 'pointer' : props.isActive ? 'pointer' : 'auto',
               }}
-              onClick={handleBtnRegist}
-              disabled={!isActive}
-              id={styles.repoBtn}>
-              레포몬 등록
-            </button>
-          ) : (
-            <div style={{ display: props.isSameUser ? 'block' : 'none' }}>
-              <p>경험치 : {props.exp}</p>
-              <p>배틀 레이팅 : {props.rating} </p>
-            </div>
-          )}
+              onClick={handleRouting}
+              id={styles.repoTitle}>
+              {props.title}
+            </p>
+            <p style={{ fontSize: '1em', fontWeight: '500', marginBlock: '3%' }} id={styles.repoDesc}>
+              {props.desc === null ? '설명 없음' : props.desc}
+            </p>
+          </div>
+          <div>
+            {props.repomonId >= 9000 ? (
+              <button
+                style={{
+                  display: props.isSameUser ? 'block' : 'none',
+                  textAlign: 'center',
+                  backgroundColor: '#5AA7FF',
+                  color: 'white',
+                  width: '95%',
+                  borderRadius: '5px',
+                  marginTop: '1em',
+                  padding: '5px 0px 5px 0px',
+                }}
+                onClick={handleBtnRegist}
+                disabled={!isActive}
+                id={styles.repoBtn}>
+                레포몬 등록
+              </button>
+            ) : (
+              <div style={{ display: props.isSameUser ? 'block' : 'none' }}>
+                <p>경험치 : {props.exp}</p>
+                <p>배틀 레이팅 : {props.rating} </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -170,7 +173,7 @@ function RepositoryCard(props: propType) {
 }
 
 export default RepositoryCard;
-type modelProps = {
+export type modelProps = {
   repomonUrl: string;
   repoId: number;
 };

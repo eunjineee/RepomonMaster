@@ -23,7 +23,7 @@
       height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: start;
       text-align: start;
       top: -7vh;
       & .charaterDiv {
@@ -44,6 +44,11 @@
           width: 14em;
           height: 14em;
         }
+      }
+      & .userCardExport:hover {
+        cursor: pointer;
+        background-color: $sub;
+        color: white;
       }
     }
     & .bodyList {

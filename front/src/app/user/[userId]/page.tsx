@@ -1,22 +1,21 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { ArrowPathIcon } from "@heroicons/react/24/solid";
-import styles from "./page.module.scss";
-import RepositoryCard from "@/components/RepositoryCard";
-import { useRouter } from "next/navigation";
-import {
-  getTotalRepoList,
-  getUserDetail,
-  refreshAllRepo,
-} from "@/api/userRepo";
-import { RepoListType, UserInfoType } from "@/types/repoInfo";
-import Paging from "@/components/UI/Pagination";
-import Modal from "react-modal";
-import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
-import Ballon from "public/static/lotties/balloon.json";
-import Lottie from "react-lottie-player";
+import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { ArrowPathIcon } from '@heroicons/react/24/solid';
+import styles from './page.module.scss';
+import RepositoryCard, { modelProps } from '@/components/RepositoryCard';
+import { useRouter } from 'next/navigation';
+import { getTotalRepoList, getUserDetail, refreshAllRepo } from '@/api/userRepo';
+import { RepoListType, UserInfoType } from '@/types/repoInfo';
+import Paging from '@/components/UI/Pagination';
+import Modal from 'react-modal';
+import LoadingSpinner from '@/components/Skeletons/LoadingSpinner';
+import Ballon from 'public/static/lotties/balloon.json';
+import Lottie from 'react-lottie-player';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import * as THREE from 'three';
 
 const Page = ({ params }: { params: { userId: string } }) => {
   // 레포지토리 유저 정보 GET
@@ -50,11 +49,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getTotalRepoList(
-          Number(params.userId),
-          currentPage - 1,
-          6
-        );
+        const response = await getTotalRepoList(Number(params.userId), currentPage - 1, 6);
         const data = response.data;
         setRepoInfo(data);
         setTimeout(() => {
@@ -71,16 +66,24 @@ const Page = ({ params }: { params: { userId: string } }) => {
   // 동일 유저 체크
   const [isSameUser, setIsSameUser] = useState<boolean>();
 
+  // 카드 추출 이벤트
+  function copyUserCardUrl() {
+    const stringToCopy = `https://repomon.kr/card/user?userId=${userInfo?.userId}`;
+    navigator.clipboard
+      .writeText(stringToCopy)
+      .then(() => {
+        window.alert('복사 완료 ✅');
+      })
+      .catch((error) => {
+        window.alert('복사 실패 ❌');
+      });
+  }
+
   return (
-    <div id="pageContainer">
+    <div id='pageContainer'>
       <div className={styles.pageContainer}>
         <div className={styles.bannerBack}>
-          <Lottie
-            loop
-            animationData={Ballon}
-            play
-            style={{ width: "30vh", height: "30vh", marginTop: "-3%" }}
-          />
+          <Lottie loop animationData={Ballon} play style={{ width: '30vh', height: '30vh', marginTop: '-3%' }} />
         </div>
         <div className={styles.bodyContainer}>
           {/* 좌측 유저 정보 */}
@@ -93,54 +96,40 @@ const Page = ({ params }: { params: { userId: string } }) => {
                 }}
               />
               <p className={styles.boxTitle}>{userInfo?.username}</p>
-              <p className="py-2">{userInfo?.userDescription}</p>
-              <div className="border-2 rounded-lg flex justify-center my-2 py-1 font-bold">
+              <p className='py-2'>{userInfo?.userDescription}</p>
+              <div className={`${styles.userCardExport} border-2 rounded-lg flex justify-center my-2 py-1 font-bold`} onClick={copyUserCardUrl}>
                 <p>Export User Card</p>
               </div>
-              <div className={`${styles.boxContent} flex items-center`}>
-                <div className="pr-3 py-1.5">
-                  <Image
-                    src="/static/images/github.png"
-                    alt="logo"
-                    width={24}
-                    height={24}
-                  />
+              <a href={`https://github.com/${userInfo?.username.toLowerCase()}`}>
+                <div className={`${styles.boxContent} flex items-center`}>
+                  <div className='pr-3 py-1.5'>
+                    <Image src='/static/images/github.png' alt='logo' width={24} height={24} />
+                  </div>
+                  <div>github.com/{userInfo?.username.toLowerCase()}</div>
                 </div>
-                <div>github.com/{userInfo?.username.toLowerCase()}</div>
+              </a>
+              <div className={`${styles.boxContent} flex items-center`}>
+                <div className='pr-3 py-1.5'>
+                  <Image src='/static/images/pokeball.png' alt='logo' width={24} height={24} />
+                </div>
+                <div>{userInfo?.activeRepoCnt || 0} </div>
+                <div className='text-base ps-2'> 몬</div>
               </div>
               <div className={`${styles.boxContent} flex items-center`}>
-                <div className="pr-3 py-1.5">
-                  <Image
-                    src="/static/images/pokeball.png"
-                    alt="logo"
-                    width={24}
-                    height={24}
-                  />
+                <div className='pr-3 py-1.5'>
+                  <Image src='/static/images/trophy.png' alt='logo' width={24} height={24} />
                 </div>
-                <div>{userInfo?.activeRepoCnt || 0} 마리</div>
+                <div>{userInfo?.userRank}</div>
+                <div className='text-base ps-2'> 위</div>
               </div>
-              <div className={`${styles.boxContent} flex items-center`}>
-                <div className="pr-3 py-1.5">
-                  <Image
-                    src="/static/images/trophy.png"
-                    alt="logo"
-                    width={24}
-                    height={24}
-                  />
-                </div>
-                <div>{userInfo?.userRank} 위</div>
-              </div>
-              <div
-                className={`${styles.boxContent} flex items-center border-b-4 pb-3`}
-              >
+              <div className={`${styles.boxContent} flex items-center border-b-4 pb-3`}>
                 <div
-                  className="pr-3 py-1.5"
+                  className='pr-3 py-1.5'
                   style={{
-                    fontWeight: "1000",
-                    fontFamily: "SUIT-Bold",
-                    color: "grey",
-                  }}
-                >
+                    fontWeight: '1000',
+                    fontFamily: 'SUIT-Bold',
+                    color: 'grey',
+                  }}>
                   Exp
                 </div>
                 <div>{userInfo?.totalExp}</div>
@@ -149,39 +138,35 @@ const Page = ({ params }: { params: { userId: string } }) => {
 
             {/* 대표 레포몬 */}
             {userInfo?.representRepo == null ? (
-              <div className="flex flex-col pt-10 items-center">
-                <Image
-                  src="/static/images/forbidden.png"
-                  alt="없음"
-                  width={288}
-                  height={288}
-                />
+              <div className='flex flex-col pt-10 items-center'>
+                <Image src='/static/images/forbidden.png' alt='없음' width={288} height={288} />
                 <p>대표 레포몬을 설정해 주세요!</p>
               </div>
             ) : (
-              <div className="flex flex-col pt-10">
-                <p>대표 레포지터리</p>
-                <p
-                  className={styles.boxContent}
-                  style={{ color: "black", fontWeight: "bold" }}
-                >
+              <div className='flex flex-col pt-10'>
+                <p className='text-sm'>대표 레포지토리</p>
+                <p className={`${styles.boxContent} pb-3`} style={{ color: 'black', fontWeight: 'bold' }}>
                   {userInfo?.representRepo?.repoName}
                 </p>
-                <p>대표 레포몬</p>
-                <p
-                  className={styles.boxContent}
-                  style={{ color: "black", fontWeight: "bold" }}
-                >
-                  {userInfo?.representRepo?.repomon?.repomonName}
+                <p className='text-sm'>대표 레포몬</p>
+                <p className={styles.boxContent} style={{ color: 'black', fontWeight: 'bold' }}>
+                  {userInfo?.representRepo?.repomonNickName}
                 </p>
-                <div></div>
+                <div className='flex flex-col relative items-center' style={{ width: '18em', height: '18em' }}>
+                  <Canvas>
+                    <directionalLight color='white' position={[0, 0, 5]} intensity={0.5} />
+                    <directionalLight color='white' position={[-5, 0, -5]} intensity={0.5} />
+                    <Model repomonUrl={userInfo?.representRepo?.repomon.repomonUrl} repoId={userInfo?.representRepo?.repoId} />
+                  </Canvas>
+                  <div
+                    className='bg-indigo-300 py-5 rounded-full'
+                    style={{ position: 'absolute', bottom: '30px', width: '15em', borderRadius: `50% / 50%`, zIndex: '-1' }}></div>
+                </div>
                 <p className={styles.boxContent}>
-                  경험치 : {userInfo?.representRepo?.repoExp} (
-                  {userInfo?.representRepo?.repoRank}위)
+                  경험치 : {userInfo?.representRepo?.repoExp} ({userInfo?.representRepo?.repoRank}위)
                 </p>
                 <p className={styles.boxContent}>
-                  배틀 레이팅 : {userInfo?.representRepo?.repoRating} (
-                  {userInfo?.representRepo?.battleRank}위)
+                  배틀 레이팅 : {userInfo?.representRepo?.repoRating} ({userInfo?.representRepo?.battleRank}위)
                 </p>
               </div>
             )}
@@ -189,31 +174,27 @@ const Page = ({ params }: { params: { userId: string } }) => {
 
           {/* 우측 바디 */}
           <div className={styles.bodyList}>
-            <div className={styles.listTitle} style={{ display: "block" }}>
+            <div className={styles.listTitle} style={{ display: 'block' }}>
               <div
                 style={{
-                  display: "flex",
-                  width: "50%",
-                  alignItems: "center",
-                }}
-              >
-                <p style={{ width: "7em" }} id={styles.repoListTitle}>
+                  display: 'flex',
+                  width: '50%',
+                  alignItems: 'center',
+                }}>
+                <p style={{ width: '7em' }} id={styles.repoListTitle}>
                   레포지토리 목록
                 </p>
                 {isListLoaded === false ? (
-                  <p style={{ fontSize: "1em", opacity: "0.5" }}>
-                    레포 리스트 로딩중...
-                  </p>
+                  <p style={{ fontSize: '1em', opacity: '0.5' }}>레포 리스트 로딩중...</p>
                 ) : (
                   <ArrowPathIcon
-                    width="2rem"
-                    style={{ marginLeft: "2%" }}
+                    width='2rem'
+                    style={{ marginLeft: '2%' }}
                     className={styles.arrow}
                     ref={arrowRef}
                     onClick={async () => {
                       setIsListLoaded(false);
-                      userInfo?.userId &&
-                        (await refreshAllRepo(userInfo.userId));
+                      userInfo?.userId && (await refreshAllRepo(userInfo.userId));
                       setIsListLoaded(true);
                       setIsLoaded(false);
                       setIsReloaded(!isReloaded);
@@ -223,25 +204,22 @@ const Page = ({ params }: { params: { userId: string } }) => {
               </div>
               <p
                 style={{
-                  fontSize: "1em",
-                  opacity: "0.7",
-                  marginBlock: "1%",
+                  fontSize: '1em',
+                  opacity: '0.7',
+                  marginBlock: '1%',
                 }}
-                id={styles.reposubtitle}
-              >
-                <span style={{ color: "red", fontWeight: "800" }}>*</span> 최초
-                로드 시, 리스트가 보이지 않을 때 갱신 버튼을 눌러주세요
+                id={styles.reposubtitle}>
+                <span style={{ color: 'red', fontWeight: '800' }}>*</span> 최초 로드 시, 리스트가 보이지 않을 때 갱신 버튼을 눌러주세요
               </p>
             </div>
 
             {/* 레포카드 리스트 */}
             <div className={styles.listCards}>
-              <div className="grid grid-cols-2 gap-4 h-200">
+              <div className='grid grid-cols-2 gap-4 h-200'>
                 {Array(repoInfo?.totalElements)
                   .fill(null)
                   .map((items, i) =>
-                    repoInfo?.repoListItems &&
-                    i < repoInfo.repoListItems.length ? (
+                    repoInfo?.repoListItems && i < repoInfo.repoListItems.length ? (
                       <RepositoryCard
                         key={i}
                         title={repoInfo.repoListItems.at(i)?.repoName}
@@ -254,13 +232,9 @@ const Page = ({ params }: { params: { userId: string } }) => {
                         isSameUser={isSameUser}
                         setIsSameUser={setIsSameUser}
                         isLoaded={isLoaded}
-                        repomonName={
-                          repoInfo.repoListItems.at(i)?.repomonName || ""
-                        }
+                        repomonName={repoInfo.repoListItems.at(i)?.repomonName || ''}
                         repomonId={repoInfo.repoListItems.at(i)?.repomonId || 0}
-                        repomonUrl={
-                          repoInfo.repoListItems.at(i)?.repomonUrl || ""
-                        }
+                        repomonUrl={repoInfo.repoListItems.at(i)?.repomonUrl || ''}
                       />
                     ) : null
                   )}
@@ -284,3 +258,55 @@ const Page = ({ params }: { params: { userId: string } }) => {
 };
 
 export default Page;
+
+const Model = (props: modelProps) => {
+  const [repomonURL, setRepomonURL] = useState<string>(props.repomonUrl);
+  const [repoId, setRepoId] = useState<number>(props.repoId);
+  // 기본값은 알 크기
+  const filename = repomonURL.slice(repomonURL.lastIndexOf('/') + 1);
+  const num = filename.slice(-5, filename.length - 4);
+  const str = num.toString();
+  // console.log(repomonURL + "?id=" + repoId);
+  const getModelLevel = (str: string): number[] => {
+    switch (str) {
+      case '2':
+        return [4.5, 4.5, 4.5];
+      case '3':
+        return [4, 4, 4];
+      default:
+        return [5, 5, 5];
+    }
+  };
+  const getModelPosition = (str: string): number[] => {
+    switch (str) {
+      case '2':
+        return [1, -2, 0];
+      case '3':
+        return [1, -2, 0];
+      default:
+        return [0, -2, 0];
+    }
+  };
+
+  const [scaleState, setScaleState] = useState<number[]>(getModelLevel(str));
+  const [positionState, setPositionState] = useState<number[]>(getModelPosition(str));
+
+  const gltf = useLoader(GLTFLoader, repomonURL + '?id=' + repoId + 'representive');
+
+  let mixer: THREE.AnimationMixer | undefined;
+
+  if (gltf.animations.length) {
+    mixer = new THREE.AnimationMixer(gltf.scene);
+    mixer.timeScale = 0.4;
+    const action = mixer.clipAction(gltf.animations[0]);
+    action.clampWhenFinished = true;
+    action.play();
+  }
+
+  useFrame((state, delta) => {
+    mixer?.update(delta);
+    // gltf.scene.rotation.y += delta * 0.05; // 회전 속도를 조절할 수 있습니다.
+  });
+
+  return <primitive object={gltf.scene} scale={scaleState} position={positionState} rotation={[0.2, -0.8, 0]} />;
+};
