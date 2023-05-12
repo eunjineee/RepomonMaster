@@ -144,12 +144,14 @@ export type StatType = {
   hitPoint: number;
 };
 
+export type RepoDetailConventionType = {
+  description: string;
+  prefix: string;
+};
+
 export type RepoDetailConventionInfoType = {
   collectCnt: number;
-  conventions: {
-    description: string;
-    prefix: string;
-  }[];
+  conventions: RepoDetailConventionType[];
   repoOwner: string;
   totalCnt: number;
 };
@@ -172,4 +174,11 @@ export type ContributionChartType = {
     backgroundColor: string[];
     borderWidth: number;
   }[];
+};
+
+export type EditConventionType = {
+  id: number;
+  prefix: string;
+  description: string;
+  isEditting: boolean;
 };

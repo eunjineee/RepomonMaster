@@ -86,7 +86,7 @@
       flex-direction: column;
       width: calc(55% - 1rem);
       margin: 0 auto;
-      padding: 0 2rem 0.5rem 0;
+      padding: 0 2rem 0.25rem 0;
       font-size: 1.5rem;
 
       .first {
@@ -223,6 +223,7 @@
           color: white;
           font-size: 0.9rem;
           white-space: nowrap;
+          background-color: gray;
 
           @include desktop125 {
             font-size: 0.8rem;
@@ -326,10 +327,10 @@
   }
 
   .tab-content {
-    border-top-left-radius: 40px;
-    border-top-right-radius: 40px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
     background-color: white;
-    margin: 4rem 0 0 0;
+    margin: 2.5rem 0 0 0;
     padding: 5%;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;

@@ -58,6 +58,7 @@ function Page({ params }: { params: { repoId: string } }) {
     useState<BattleRecordType[]>();
   const [showPage, setShowPage] = useState<boolean>(false);
   const [statUpdated, setStatUpdated] = useState<boolean>(false);
+  const [conventionUpdated, setConventionUpdated] = useState<boolean>(false);
   const [repoDetailConventionInfo, setRepoDetailConventionInfo] =
     useState<RepoDetailConventionInfoType>();
   const [repoDetailContributionInfo, setRepoDetailContributionInfo] =
@@ -87,12 +88,16 @@ function Page({ params }: { params: { repoId: string } }) {
     requestRepoDetailBattleInfo(parseInt(params.repoId, 10));
   }, [statUpdated]);
 
+  /** 컨벤션 정보 불러오기 + 컨벤션 수정 시 재요청 */
+  useEffect(() => {
+    requestRepoDetailConvention(parseInt(params.repoId, 10));
+  }, [conventionUpdated]);
+
   /** 레포 정보 불러오기 */
   useEffect(() => {
     requestRepoDetailResearch(parseInt(params.repoId, 10));
     requestBattleRanking(parseInt(params.repoId, 10));
     requestBattleRecord(parseInt(params.repoId, 10));
-    requestRepoDetailConvention(parseInt(params.repoId, 10));
     requestRepoDetailContribution(parseInt(params.repoId, 10));
   }, []);
 
@@ -151,10 +156,6 @@ function Page({ params }: { params: { repoId: string } }) {
 
   const onClickUpdateBtn = () => {
     requestRepoDetailUpdate(parseInt(params.repoId, 10));
-  };
-
-  const onClickExportBtn = () => {
-    router.push(`repo/${params.repoId}/export/${loginUserId}/${isTeam}`);
   };
 
   /** =============================================== Axios =============================================== */
@@ -348,7 +349,7 @@ function Page({ params }: { params: { repoId: string } }) {
               </p>
               <div className={styles["lan-div"]}>
                 {repoDetailInfo.languages &&
-                  repoDetailInfo.languages.map((lan, index) => (
+                  repoDetailInfo.languages.slice(0, 7).map((lan, index) => (
                     <span
                       key={index}
                       style={{
@@ -360,13 +361,9 @@ function Page({ params }: { params: { repoId: string } }) {
                       {lan}
                     </span>
                   ))}
+                {repoDetailInfo.languages &&
+                  repoDetailInfo.languages.length > 7 && <span>...</span>}
               </div>
-              {/* <div className={styles["tag-div"]}>
-                {repoDetailInfo.tags &&
-                  repoDetailInfo.tags.map((tag, index) => (
-                    <span key={index}>{tag}</span>
-                  ))}
-              </div> */}
               <p className={styles.des}>{repoDetailInfo.repoDescription}</p>
               <div className={styles.tab}>
                 <button
@@ -422,7 +419,12 @@ function Page({ params }: { params: { repoId: string } }) {
               />
             )}
             {tabIndex === 3 && (
-              <DetailConvention conventionInfo={repoDetailConventionInfo!} />
+              <DetailConvention
+                conventionInfo={repoDetailConventionInfo!}
+                setConventionUpdated={setConventionUpdated}
+                repoId={params.repoId}
+                myRepo={repoDetailInfo.myRepo}
+              />
             )}
             {tabIndex === 4 && (
               <DetailContribution

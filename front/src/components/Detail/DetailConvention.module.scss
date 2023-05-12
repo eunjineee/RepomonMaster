@@ -18,6 +18,18 @@
   }
 }
 
+.edit-btn {
+  width: 62%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 4rem 0.2rem 0.2rem 0.2rem;
+  font-size: 1.125rem;
+
+  &:hover {
+    color: $sub;
+  }
+}
+
 .left {
   width: 65%;
 

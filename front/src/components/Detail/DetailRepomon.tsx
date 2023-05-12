@@ -114,6 +114,7 @@ function DetailRepomon({
     >
       <ambientLight intensity={0.1} />
       <ambientLight intensity={0.1} />
+      <ambientLight intensity={0.3} position={[0, 5, 0]} />
       <directionalLight color="white" position={[0, 0, 5]} intensity={0.6} />
       <directionalLight color="white" position={[-5, 0, -5]} intensity={0.6} />
       <Model
