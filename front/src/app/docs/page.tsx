@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './page.module.scss';
 import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
 function Page() {
   const [isCardNavOpened, setIsCardNavOpened] = useState<boolean>(true);
@@ -37,12 +38,12 @@ function Page() {
           </div>
           {isNoteNavOpened ? (
             <>
-              <a href='#Patch'>
+              {/* <a href='#Patch'>
                 <div className={`${styles.navBarItem} flex`}>
                   <div className='border-r-2' style={{ paddingLeft: '17px' }}></div>
                   <p>패치노트</p>
                 </div>
-              </a>
+              </a> */}
 
               <a href='#Exp'>
                 <div className={`${styles.navBarItem} flex`}>
@@ -178,7 +179,7 @@ function Page() {
           <p className='text-4xl  pb-5' style={{ color: `rgba(109, 130, 250, 1)`, fontWeight: '1000' }}>
             Note
           </p>
-          <div id='Patch' className={`${styles.menuItem} pb-5`}>
+          {/* <div id='Patch' className={`${styles.menuItem} pb-5`}>
             <p className='text-xl font-bold pb-3'>패치노트</p>
             <div>
               <p>내용1</p>
@@ -188,7 +189,7 @@ function Page() {
               <p>내용5</p>
               <p>내용6</p>
             </div>
-          </div>
+          </div> */}
           <div id='Exp' className={`${styles.menuItem} pb-5`}>
             <p className='text-xl font-bold pb-3'>경험치 시스템</p>
             <li>각 요소는 최근 1년 간 기록을 기준으로 반영됩니다.</li>
@@ -245,45 +246,91 @@ function Page() {
           <div id='RepositoryRenew' className={`${styles.menuItem} pb-5`}>
             <p className='text-xl font-bold pb-3 pb-3'>Repository 갱신</p>
             <div>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
+              <li>
+                깃허브의 <strong>repository</strong> 와 <strong>organization</strong> 을 가져올 수 있습니다.
+              </li>
+              <li>
+                <strong>깃허브 로그인</strong>을 진행합니다.
+              </li>
+              <li>
+                상단의 메뉴에서 <strong>내 프로필</strong>을 클릭합니다.
+              </li>
+              <li>
+                레포지토리 목록 우측의 <strong>갱신 아이콘</strong>을 클릭합니다.{' '}
+              </li>
+              <div>
+                <img className='ms-5 border-4' src='/static/images/docs_repo_reload.png' alt='x' style={{ height: '200px' }}></img>
+              </div>
             </div>
           </div>
           <div id='RepositoryActive' className={`${styles.menuItem} pb-5`}>
             <p className='text-xl font-bold py-3'>Repository 활성화 / 비활성화</p>
             <div>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
+              <li>
+                repository 를 repomon 사이트에서 <strong>공개/비공개 여부</strong>를 설정할 수 있습니다.
+              </li>
+              <li>
+                랭킹에 계산되는 점수들은 <strong>공개 상태</strong>인 repository 를 기준으로 합산됩니다.
+              </li>
+              <li>
+                <strong>깃허브 로그인</strong>을 진행합니다.
+              </li>
+              <li>
+                상단의 메뉴에서 <strong>내 프로필</strong>을 클릭합니다.
+              </li>
+              <li>
+                repository 카드 우측 상단의 <strong>토글 버튼</strong>을 클릭하여 상태를 바꿀 수 있습니다.
+              </li>
+              <div>
+                <img className='ms-5 border-4' src='/static/images/docs_repo_active.png' alt='x' style={{ height: '200px' }}></img>
+              </div>
             </div>
           </div>
           <div id='RepositoryCreateRepomon' className={`${styles.menuItem} pb-5`}>
             <p className='text-xl font-bold py-3'>Repository 레포몬 생성</p>
             <div>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
+              <li>
+                <strong>깃허브 로그인</strong>을 진행합니다.
+              </li>
+              <li>
+                상단의 메뉴에서 <strong>내 프로필</strong>을 클릭합니다.
+              </li>
+              <li>
+                <strong>레포몬 생성 버튼</strong>을 클릭합니다.
+              </li>
+              <div>
+                <img className='ms-5 border-4' src='/static/images/docs_repomon_create_01.png' alt='x' style={{ height: '200px' }}></img>
+              </div>
+              <li>
+                랜덤으로 제공되는 레포몬 3마리중 마음에 드는 <strong>레포몬을 선택</strong>합니다.{' '}
+              </li>
+              <li>
+                레포몬의 <strong>닉네임을 설정</strong>합니다. <strong>(중복 불가)</strong>
+              </li>
+              <li>
+                주사위를 굴려 <strong>초기 스텟</strong>을 정할 수 있습니다.
+              </li>
+              <li>
+                <strong>결정하기 버튼</strong>을 클릭하면 레포몬이 생성됩니다.
+              </li>
             </div>
           </div>
           <div id='RepositoryAnalysis' className={`${styles.menuItem} pb-5`}>
             <p className='text-xl font-bold py-3'>Repository 분석</p>
             <div>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
-              <li>내용 </li>
+              <li>레포지토리 분석의 요소로는 성장 히스토리, 배틀 히스토리, 컨벤션 등록과 컨벤션 지킴율 확인, 기여도 확인 등등이 가능합니다.</li>
+              <li>
+                <strong>깃허브 로그인</strong>을 진행합니다.
+              </li>
+              <li>
+                상단의 메뉴에서 <strong>내 프로필</strong>을 클릭합니다.
+              </li>
+              <li>
+                repository 카드의 <strong>이름을 클릭</strong>합니다.{' '}
+              </li>
+              <li>
+                <strong>성장, 배틀, 컨벤션, 기여도 탭</strong>을 이용해 repository 를 살펴봅니다.
+              </li>
             </div>
           </div>
         </div>
