@@ -1,30 +1,14 @@
 @import "@/styles/variables.scss";
 
-.loading {
-  padding: 0.5rem 1rem;
-  font-size: 1.125rem;
-  padding: 0.3rem 0.7rem;
-  background-color: $second;
-  color: white;
-
-  @include desktop125 {
-    margin: 0 0.7rem 0 0;
-    font-size: 1rem;
-  }
-}
-
 .open {
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 5px;
-  // margin: 0 1rem 0 0;
-  font-size: 1.125rem;
-  padding: 0.3rem 0.7rem;
   background-color: $second;
   color: white;
-
-  @include desktop125 {
-    margin: 0 0.7rem 0 0;
-    font-size: 1rem;
-  }
+  font-size: 1rem;
 
   &:hover {
     background-color: $sub;
@@ -201,6 +185,11 @@
   & span {
     color: rgb(255, 56, 56);
   }
+}
+
+.spinner-div {
+  margin: 5rem auto;
+  width: 60px;
 }
 
 .lan-div {

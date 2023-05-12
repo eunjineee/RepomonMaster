@@ -146,27 +146,28 @@
         display: flex;
 
         & button {
-          width: 100px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 30px;
+          padding: 0.2rem 0;
           border-radius: 5px;
-          margin: 0 1rem 0 0;
-          font-size: 1.125rem;
-          padding: 0.3rem 0.7rem;
           background-color: $second;
           color: white;
-
-          @include desktop125 {
-            margin: 0 0.7rem 0 0;
-            font-size: 1rem;
-          }
+          font-size: 1rem;
 
           &:hover {
             background-color: $sub;
           }
         }
 
-        .loading {
-          width: 100px;
-          // padding: 0 2rem;
+        .update {
+          width: 130px;
+          margin: 0 1rem 0 0;
+
+          @include desktop125 {
+            margin: 0 0.7rem 0 0;
+          }
         }
       }
 

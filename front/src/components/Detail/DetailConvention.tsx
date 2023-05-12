@@ -106,7 +106,7 @@ function DetailConvention({
       )}
       {loading && (
         <div className={styles.loading}>
-          <LoadingSpinner ml={4} mr={4} size={3} />
+          <LoadingSpinner ml={4} mr={4} size={6} />
         </div>
       )}
     </div>

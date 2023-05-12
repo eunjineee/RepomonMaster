@@ -2,13 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import { Cog8ToothIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 import styles from "./ExportModal.module.scss";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import ReactMarkdown from "react-markdown";
-import Loading2 from "@/app/loading2";
 import Link from "next/link";
-import { customAlert } from "@/app/utils/CustomAlert";
 import {
   axiosRequestPersonalLans,
   axiosRequestSetPersonalLans,
@@ -16,8 +14,6 @@ import {
   axiosRequestUpdateRepoPersonalCard,
 } from "@/api/repoDetail";
 import { languageColor } from "@/styles/colors";
-import Image from "next/image";
-import tmpCard from "public/tmp_card.svg";
 import LoadingSpinner from "../Skeletons/LoadingSpinner";
 
 const customStyles = {
@@ -30,7 +26,7 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "600px",
-    height: "470px",
+    height: "490px",
   },
 };
 
@@ -56,11 +52,20 @@ const ExportModal = ({
   const teamSource = `![RepomonRepoCard](https://repomon.kr/card/repo?repoId=${repoId})`;
   const personalSource = `![RepomonRepoPersonalCard](https://repomon.kr/card/repo_personal?repoId=${repoId}&userId=${userId}) `;
   const [selected, setSelected] = useState<string[]>([]);
+  const [isFirst, setIsFirst] = useState<boolean>(true);
+  const [updateRepoPersonalLoading, setUpdateRepoPersonalLoading] =
+    useState<boolean>(false);
+
+  /** ============================== useEffect ============================== */
+  useEffect(() => {
+    requestPersonalLans();
+  }, []);
 
   useEffect(() => {
     if (repoCardUpdated && repoPersonalCardUpdated) {
       setLoading(false);
       setIsOpen(true);
+      setIsFirst(false);
     }
   }, [repoCardUpdated, repoPersonalCardUpdated]);
 
@@ -137,11 +142,20 @@ const ExportModal = ({
   };
 
   const requestUpdateRepoPersonalCard = async () => {
-    setLoading(true);
+    if (isFirst) {
+      setLoading(true);
+    } else {
+      setUpdateRepoPersonalLoading(true);
+    }
+
     try {
       const res = await axiosRequestUpdateRepoPersonalCard(repoId, userId);
       console.log("개인 레포 카드 갱신: ", res);
-      setRepoPersonalCardUpdated(true);
+      if (isFirst) {
+        setRepoPersonalCardUpdated(true);
+      } else {
+        setUpdateRepoPersonalLoading(false);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -164,6 +178,7 @@ const ExportModal = ({
       if (res.data.resultCode === "SUCCESS") {
         setSelected([]);
         requestPersonalLans();
+        requestUpdateRepoPersonalCard();
       }
     } catch (err) {
       console.error(err);
@@ -172,17 +187,9 @@ const ExportModal = ({
 
   return (
     <>
-      {/* <button onClick={openModal} className={styles.open}>
+      <button onClick={openModal} className={styles.open}>
         {loading && <LoadingSpinner ml={2} mr={2} size={4} />}
         {!loading && <span>추출하기</span>}
-      </button> */}
-      <button onClick={openModal} className={styles.loading}>
-        <span>
-          <LoadingSpinner ml={3} mr={3} size={4} />
-        </span>
-      </button>
-      <button onClick={openModal} className={styles.open}>
-        <span>추출하기</span>
       </button>
       <Modal
         isOpen={modalIsOpen}
@@ -298,7 +305,13 @@ const ExportModal = ({
         <p className={styles.exam}>
           <span>*</span> {"아래 예시 카드를 누르면 URL이 복사됩니다."}
         </p>
-        {kind === "개인 레포 카드" && (
+
+        {updateRepoPersonalLoading && (
+          <div className={styles["spinner-div"]}>
+            <LoadingSpinner ml={3} mr={3} size={5} />
+          </div>
+        )}
+        {!updateRepoPersonalLoading && kind === "개인 레포 카드" && (
           <div
             style={
               kind === "개인 레포 카드"

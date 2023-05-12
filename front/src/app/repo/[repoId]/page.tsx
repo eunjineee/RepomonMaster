@@ -317,11 +317,11 @@ function Page({ params }: { params: { repoId: string } }) {
                 </div>
               </div>
               <div className={styles["btn-div"]}>
-                <button onClick={onClickUpdateBtn}>
+                <button onClick={onClickUpdateBtn} className={styles.update}>
                   {updateLoading ? (
                     <LoadingSpinner ml={4} mr={4} size={6} />
                   ) : (
-                    <span>갱신하기</span>
+                    <span>레포지토리 갱신</span>
                   )}
                 </button>
                 {repoDetailInfo.myRepo && (
