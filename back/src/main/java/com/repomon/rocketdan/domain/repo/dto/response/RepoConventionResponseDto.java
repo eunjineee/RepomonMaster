@@ -27,6 +27,7 @@ public class RepoConventionResponseDto {
 	@Id
 	@JsonIgnore
 	private Long id;
+	@Indexed
 	@Column(unique = true)
 	private Long repoId;
 	private String repoOwner;

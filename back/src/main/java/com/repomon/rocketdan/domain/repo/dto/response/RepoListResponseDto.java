@@ -20,17 +20,19 @@ import org.springframework.data.redis.core.index.Indexed;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash(value = "redis-repoList")
+@RedisHash(value = "redis-repoList", timeToLive = 86400)
 public class RepoListResponseDto {
 
     @Id @JsonIgnore
     private Long id;
 
     @JsonIgnore
+    @Indexed
     @Column(unique = true)
     private String userName;
 
     @JsonIgnore
+    @Indexed
     @Column(unique = true)
     private int currentPage;
     private int totalPages;

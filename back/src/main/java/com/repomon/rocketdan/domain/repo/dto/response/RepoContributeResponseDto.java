@@ -22,6 +22,7 @@ public class RepoContributeResponseDto {
 
     @Id @JsonIgnore
     private Long id;
+    @Indexed
     @Column(unique = true)
     private Long repoId;
     private String repoOwner;
