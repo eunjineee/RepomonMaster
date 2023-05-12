@@ -68,9 +68,9 @@ public class GHUtilsAop {
     }
 
     @Around("execution(* com.repomon.rocketdan.domain.repo.service.RepoService.modifyAllRepo(..)) ||"
-        + "execution(* com.repomon.rocketdan.domain.user.service.UserService.getUserInfo(..))")
+        + "execution(* com.repomon.rocketdan.domain.user.service.UserService.getUserCard(..))")
     public Object useRepoIoInSearchAllRepo(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
-        log.info("사용중인 modifyAllRepo -> repoId 체크시작!!");
+        log.info("사용중인 {} -> repoId 체크시작!!", proceedingJoinPoint.getSignature().getName());
         List<Object> params = Arrays.asList((proceedingJoinPoint.getArgs()));
         log.info("Params => {}", params);
 
@@ -78,11 +78,12 @@ public class GHUtilsAop {
 
         Long userId = (Long) params.get(0);
         Set<Long> repoIds = new HashSet<>();
+        if(usingUsers.contains(userId)){
+            log.warn("이미 탐색중인 유저입니다.");
+            throw new CustomException(ErrorCode.ALREADY_WORKED);
+        }
+
         try {
-            if(usingUsers.contains(userId)){
-                log.warn("이미 탐색중인 유저입니다.");
-                throw new CustomException(ErrorCode.ALREADY_WORKED);
-            }
 
             usingUsers.add(userId);
 
@@ -110,7 +111,7 @@ public class GHUtilsAop {
         }finally {
             usingKeys.removeAll(repoIds);
             usingUsers.remove(userId);
-            log.info("사용중인  modifyAllRepo -> repoId 체크 끝!!");
+            log.info("사용중인  {} -> repoId 체크 끝!!", proceedingJoinPoint.getSignature().getName());
         }
     }
 
