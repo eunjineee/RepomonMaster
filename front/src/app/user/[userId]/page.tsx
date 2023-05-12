@@ -240,7 +240,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
                   )}
               </div>
 
-              <div className={styles.paginations}>
+              <div className={`${styles.paginations} pt-10`}>
                 <Paging
                   size={6}
                   currentPage={currentPage}
