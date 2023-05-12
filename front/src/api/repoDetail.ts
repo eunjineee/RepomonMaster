@@ -150,3 +150,18 @@ export const axiosRequestEditConventions = async (
 
   return res;
 };
+
+export const axiosRequestUpdateRepoCard = async (repoId: number) => {
+  const res = http.get(`repo/${repoId}/card/detail`);
+
+  return res;
+};
+
+export const axiosRequestUpdateRepoPersonalCard = async (
+  repoId: number,
+  userId: number
+) => {
+  const res = http.get(`repo/${repoId}/card/personal/${userId}`);
+
+  return res;
+};

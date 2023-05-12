@@ -20,6 +20,7 @@ import Lottie from "react-lottie-player";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
+import UserExportModal from "@/components/UserExportModal";
 
 const Page = ({ params }: { params: { userId: string } }) => {
   // 레포지토리 유저 정보 GET
@@ -110,6 +111,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
               />
               <p className={styles.boxTitle}>{userInfo?.username}</p>
               <p className="py-2">{userInfo?.userDescription}</p>
+              <UserExportModal userId={params.userId} />
               <div
                 className={`${styles.userCardExport} border-2 rounded-lg flex justify-center my-2 py-1 font-bold`}
                 onClick={copyUserCardUrl}

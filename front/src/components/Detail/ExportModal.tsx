@@ -12,10 +12,13 @@ import { customAlert } from "@/app/utils/CustomAlert";
 import {
   axiosRequestPersonalLans,
   axiosRequestSetPersonalLans,
+  axiosRequestUpdateRepoCard,
+  axiosRequestUpdateRepoPersonalCard,
 } from "@/api/repoDetail";
 import { languageColor } from "@/styles/colors";
 import Image from "next/image";
 import tmpCard from "public/tmp_card.svg";
+import LoadingSpinner from "../Skeletons/LoadingSpinner";
 
 const customStyles = {
   content: {
@@ -43,6 +46,10 @@ const ExportModal = ({
   lans: string[];
 }) => {
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [repoCardUpdated, setRepoCardUpdated] = useState<boolean>(false);
+  const [repoPersonalCardUpdated, setRepoPersonalCardUpdated] =
+    useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [kind, setKind] = useState<string>("레포 카드");
   const [showKind, setShowKind] = useState<boolean>(false);
   const [applied, setApplied] = useState<string[]>([]);
@@ -50,10 +57,17 @@ const ExportModal = ({
   const personalSource = `![RepomonRepoPersonalCard](https://repomon.kr/card/repo_personal?repoId=${repoId}&userId=${userId}) `;
   const [selected, setSelected] = useState<string[]>([]);
 
+  useEffect(() => {
+    if (repoCardUpdated && repoPersonalCardUpdated) {
+      setLoading(false);
+      setIsOpen(true);
+    }
+  }, [repoCardUpdated, repoPersonalCardUpdated]);
+
   /** ============================== 함수, Event Handler ============================== */
   const openModal = () => {
-    setIsOpen(true);
-    requestPersonalLans();
+    requestUpdateRepoCard();
+    requestUpdateRepoPersonalCard();
   };
 
   const afterOpenModal = () => {};
@@ -111,6 +125,28 @@ const ExportModal = ({
   };
 
   /** ============================== Axios ============================== */
+  const requestUpdateRepoCard = async () => {
+    setLoading(true);
+    try {
+      const res = await axiosRequestUpdateRepoCard(repoId);
+      console.log("레포 카드 갱신: ", res);
+      setRepoCardUpdated(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const requestUpdateRepoPersonalCard = async () => {
+    setLoading(true);
+    try {
+      const res = await axiosRequestUpdateRepoPersonalCard(repoId, userId);
+      console.log("개인 레포 카드 갱신: ", res);
+      setRepoPersonalCardUpdated(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const requestPersonalLans = async () => {
     try {
       const res = await axiosRequestPersonalLans(repoId);
@@ -136,10 +172,18 @@ const ExportModal = ({
 
   return (
     <>
-      <button onClick={openModal} className={styles.open}>
-        추출하기
+      {/* <button onClick={openModal} className={styles.open}>
+        {loading && <LoadingSpinner ml={2} mr={2} size={4} />}
+        {!loading && <span>추출하기</span>}
+      </button> */}
+      <button onClick={openModal} className={styles.loading}>
+        <span>
+          <LoadingSpinner ml={3} mr={3} size={4} />
+        </span>
       </button>
-
+      <button onClick={openModal} className={styles.open}>
+        <span>추출하기</span>
+      </button>
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}

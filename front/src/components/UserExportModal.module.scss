@@ -1,33 +1,12 @@
 @import "@/styles/variables.scss";
 
-.loading {
-  padding: 0.5rem 1rem;
-  font-size: 1.125rem;
-  padding: 0.3rem 0.7rem;
-  background-color: $second;
-  color: white;
-
-  @include desktop125 {
-    margin: 0 0.7rem 0 0;
-    font-size: 1rem;
-  }
-}
-
-.open {
-  border-radius: 5px;
-  // margin: 0 1rem 0 0;
-  font-size: 1.125rem;
-  padding: 0.3rem 0.7rem;
-  background-color: $second;
-  color: white;
-
-  @include desktop125 {
-    margin: 0 0.7rem 0 0;
-    font-size: 1rem;
-  }
+.userCardExport {
+  background-color: white;
 
   &:hover {
+    cursor: pointer;
     background-color: $sub;
+    color: white;
   }
 }
 

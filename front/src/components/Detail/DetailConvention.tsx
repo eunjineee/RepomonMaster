@@ -66,15 +66,18 @@ function DetailConvention({
               </p>
             </div>
           )}
-          {conventionInfo.conventions &&
+          {!loading &&
+            conventionInfo.conventions &&
             conventionInfo.conventions.length > 0 && (
               <div style={{ display: "flex", marginTop: "0.5rem" }}>
                 <div className={styles.left}>
                   {conventionInfo.conventions.map((con, index) => (
-                    <div key={index} className={styles["con-div"]}>
-                      <span className={styles.prefix}>{con.prefix}</span>
-                      <span className={styles.des}>{con.description}</span>
-                    </div>
+                    <>
+                      <div key={index} className={styles["con-div"]}>
+                        <span className={styles.prefix}>{con.prefix}</span>
+                        <span className={styles.des}>{con.description}</span>
+                      </div>
+                    </>
                   ))}
                 </div>
                 <div className={styles.right}>
@@ -86,18 +89,19 @@ function DetailConvention({
                 </div>
               </div>
             )}
-          {(!conventionInfo.conventions ||
-            conventionInfo.conventions?.length === 0) && (
-            <div className={styles["no-convention"]}>
-              <Lottie
-                loop={true}
-                animationData={notFound}
-                play
-                style={{ width: "300px" }}
-              />
-              <p className={styles.comment}>등록된 컨벤션이 없어요.</p>
-            </div>
-          )}
+          {!loading &&
+            (!conventionInfo.conventions ||
+              conventionInfo.conventions?.length === 0) && (
+              <div className={styles["no-convention"]}>
+                <Lottie
+                  loop={true}
+                  animationData={notFound}
+                  play
+                  style={{ width: "300px" }}
+                />
+                <p className={styles.comment}>등록된 컨벤션이 없어요.</p>
+              </div>
+            )}
         </div>
       )}
       {loading && (

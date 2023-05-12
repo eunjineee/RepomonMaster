@@ -1,4 +1,4 @@
-@import '@/styles/variables.scss';
+@import "@/styles/variables.scss";
 
 .pageContainer {
   width: 100%;
@@ -46,16 +46,6 @@
           width: 14em;
           height: 14em;
         }
-      }
-
-      & .userCardExport {
-        background-color: white;
-      }
-
-      & .userCardExport:hover {
-        cursor: pointer;
-        background-color: $sub;
-        color: white;
       }
     }
     & .bodyList {

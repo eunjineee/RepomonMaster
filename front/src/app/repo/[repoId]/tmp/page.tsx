@@ -19,20 +19,30 @@ function Page() {
   const [repoDetailConventionInfo, setRepoDetailConventionInfo] =
     useState<RepoDetailConventionInfoType>();
 
-  useEffect(() => {
-    Modal.setAppElement("#repo-detail");
-    requestRepoDetailConvention(4);
-  }, []);
-
-  const requestRepoDetailConvention = async (repoId: number) => {
-    try {
-      const res = await axiosRequestRepoDetailConvention(repoId);
-      console.log("레포 디테일 컨벤션: ", res);
-      setRepoDetailConventionInfo(res.data);
-    } catch (err) {
-      console.error(err);
-    }
+  const [cardUpdated, setCardUpdated] = useState<number>(2);
+  const [exportModalIsOpen, setExportModalIsOpen] = useState<boolean>(false);
+  const openModal = () => {
+    setExportModalIsOpen(true);
   };
+
+  const closeModal = () => {
+    setExportModalIsOpen(false);
+  };
+
+  // useEffect(() => {
+  //   Modal.setAppElement("#repo-detail");
+  //   requestRepoDetailConvention(4);
+  // }, []);
+
+  // const requestRepoDetailConvention = async (repoId: number) => {
+  //   try {
+  //     const res = await axiosRequestRepoDetailConvention(repoId);
+  //     console.log("레포 디테일 컨벤션: ", res);
+  //     setRepoDetailConventionInfo(res.data);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   return (
     <div className={styles.pageContainer} id="repo-detail">
@@ -46,7 +56,7 @@ function Page() {
       {/* <button className={styles.btn}>
         <LoadingSpinner ml={4} mr={4} size={6} />
       </button> */}
-      {/* <ExportModal
+      <ExportModal
         repoId={4}
         userId={3}
         isTeam={true}
@@ -60,7 +70,7 @@ function Page() {
           "JavaScript",
           "HTML",
         ]}
-      /> */}
+      />
     </div>
   );
 }
