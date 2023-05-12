@@ -171,8 +171,8 @@ const Page = ({ params }: { params: { userId: string } }) => {
                 <p className={styles.boxContent} style={{ color: 'black', fontWeight: 'bold' }}>
                   {userInfo?.representRepo?.repomonNickName}
                 </p>
-                <div className='flex flex-col relative items-center border rounded-full' style={{ width: '18em', height: '18em', zIndex: '100' }}>
-                  <Canvas>
+                <div className='flex flex-col relative items-center border rounded-full' style={{ width: '18em', height: '18em' }}>
+                  <Canvas style={{ zIndex: '100', backgroundColor: 'white' }}>
                     <directionalLight color='white' position={[0, 0, 5]} intensity={0.5} />
                     <directionalLight color='white' position={[-5, 0, -5]} intensity={0.5} />
                     <Model repomonUrl={userInfo?.representRepo?.repomon.repomonUrl} repoId={userInfo?.representRepo?.repoId} />
