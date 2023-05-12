@@ -51,6 +51,7 @@ public class UserResponseDto {
 		private RepomonResponseDto repomon;
 		private Long repoRank;
 		private Long battleRank;
+		private Boolean isActive;
 
 
 		public static RepresentRepo fromEntity(RepoEntity repo, Long repoRank, Long battleRank) {
@@ -63,6 +64,7 @@ public class UserResponseDto {
 				.repomon(RepomonResponseDto.fromEntity(repo.getRepomon()))
 				.repoRank(repoRank)
 				.battleRank(battleRank)
+				.isActive(repo.getIsActive())
 				.build();
 		}
 
