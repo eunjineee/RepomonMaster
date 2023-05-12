@@ -5,16 +5,18 @@ import com.repomon.rocketdan.common.utils.GHUtils;
 import com.repomon.rocketdan.common.utils.SecurityUtils;
 import com.repomon.rocketdan.domain.repo.app.RepoDetail;
 import com.repomon.rocketdan.domain.repo.dto.request.RepoCardRequestDto;
+import com.repomon.rocketdan.domain.repo.dto.response.RepoRedisPersonalCardResponseDto;
 import com.repomon.rocketdan.domain.repo.entity.ActiveRepoEntity;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
 import com.repomon.rocketdan.domain.repo.repository.ActiveRepoRepository;
 import com.repomon.rocketdan.domain.repo.repository.RepoRepository;
 import com.repomon.rocketdan.domain.user.dto.request.RepresentRepomonRequestDto;
-import com.repomon.rocketdan.domain.user.dto.response.UserCardResponseDto;
+import com.repomon.rocketdan.domain.user.dto.response.UserRedisCardResponseDto;
 import com.repomon.rocketdan.domain.user.dto.response.UserResponseDto;
 import com.repomon.rocketdan.domain.user.entity.UserEntity;
 import com.repomon.rocketdan.domain.user.entity.UserLanguageEntity;
 import com.repomon.rocketdan.domain.user.repository.UserLanguageRepository;
+import com.repomon.rocketdan.domain.user.repository.UserRedisCardRepository;
 import com.repomon.rocketdan.domain.user.repository.UserRepository;
 import com.repomon.rocketdan.exception.CustomException;
 import com.repomon.rocketdan.exception.ErrorCode;
@@ -45,6 +47,7 @@ public class UserService {
 	private final RepoRepository repoRepository;
 	private final UserRepository userRepository;
 	private final GHUtils ghUtils;
+	private final UserRedisCardRepository userRedisCardRepository;
 
 
 	/**
@@ -134,7 +137,12 @@ public class UserService {
 	 * @param userId
 	 * @return
 	 */
-	public UserCardResponseDto getUserCard(Long userId) {
+	public UserRedisCardResponseDto getUserCard(Long userId) {
+		//레디스에서 찾아보고 있으면 삭제
+		userRedisCardRepository.findByUserId(userId).ifPresent(dto -> {
+			userRedisCardRepository.delete(dto);
+		});
+
 		UserEntity user = userRepository.findById(userId).orElseThrow(() -> {throw new CustomException(NOT_FOUND_USER);});
 		ActiveRepoEntity representActiveRepo = user.getRepresentRepo().orElseThrow(
 			() -> new CustomException(NOT_FOUND_ACTIVE_REPOSITORY)
@@ -148,11 +156,20 @@ public class UserService {
 		}
 		try {
 			RepoEntity representRepo = representActiveRepo.getRepo();
-			return UserCardResponseDto.fromEntity(ghUtils.getUserCardInfo(user.getUserName()), user, representRepo, userLanguage);
+			UserRedisCardResponseDto responseDto = UserRedisCardResponseDto.fromEntity(ghUtils.getUserCardInfo(user.getUserName()), user, representRepo, userLanguage);
+			userRedisCardRepository.save(responseDto);
+			return responseDto;
 
 		} catch (IOException | InterruptedException e) {
 			throw new CustomException(ErrorCode.DATA_BAD_REQUEST);
 		}
+	}
+
+	public UserRedisCardResponseDto findUserCard(Long userId) {
+		UserRedisCardResponseDto responseDto =  userRedisCardRepository.findByUserId(userId).orElseThrow(
+				() -> {throw new CustomException(ErrorCode.NOT_FOUND_REPOSITORY);}
+		);
+		return responseDto;
 	}
 
 

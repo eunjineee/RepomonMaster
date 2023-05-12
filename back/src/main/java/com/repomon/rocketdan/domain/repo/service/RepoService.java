@@ -11,9 +11,7 @@ import com.repomon.rocketdan.domain.repo.dto.request.RepoPeriodRequestDto;
 import com.repomon.rocketdan.domain.repo.dto.response.*;
 import com.repomon.rocketdan.domain.repo.entity.*;
 import com.repomon.rocketdan.domain.repo.repository.*;
-import com.repomon.rocketdan.domain.repo.repository.redis.RepoRedisContributeRepository;
-import com.repomon.rocketdan.domain.repo.repository.redis.RepoRedisConventionRepository;
-import com.repomon.rocketdan.domain.repo.repository.redis.RepoRedisListRepository;
+import com.repomon.rocketdan.domain.repo.repository.redis.*;
 import com.repomon.rocketdan.domain.repomon.entity.RepomonStatusEntity;
 import com.repomon.rocketdan.domain.repomon.repository.RepomonStatusRepository;
 import com.repomon.rocketdan.domain.user.entity.UserEntity;
@@ -28,7 +26,6 @@ import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHRepositoryStatistics;
 import org.kohsuke.github.PagedIterable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +58,8 @@ public class RepoService {
 	private final RepoRedisListRepository redisListRepository;
 	private final RepoRedisContributeRepository redisContributeRepository;
 	private final RepoRedisConventionRepository redisConventionRepository;
+	private final RepoRedisCardRepository repoRedisCardRepository;
+	private final RepoRedisPersonalCardRespository repoRedisPersonalCardRespository;
 
 
 	/**
@@ -658,7 +657,12 @@ public class RepoService {
 	/**
 	 * 레포 card detail
 	 */
-	public RepoCardResponseDto RepoCardDetail(Long repoId) {
+	public RepoRedisCardResponseDto repoCardDetail(Long repoId) {
+		//레디스에서 찾아보고 있으면 삭제
+		repoRedisCardRepository.findByRepoId(repoId).ifPresent(dto -> {
+			repoRedisCardRepository.delete(dto);
+		});
+
 		RepoEntity repoEntity = repoRepository.findById(repoId).orElseThrow(() -> {
 			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
 		});
@@ -695,14 +699,21 @@ public class RepoService {
 			conventionrate = conventionDto.getCollectCnt() / conventionDto.getTotalCnt() * 100;
 		}
 
-		return RepoCardResponseDto.fromEntityAndGHRepository(repoEntity, ghRepository, historyEntityList, totalLineCount, contributers, conventionrate);
+		RepoRedisCardResponseDto responseDto =  RepoRedisCardResponseDto.fromEntityAndGHRepository(repoId, repoEntity, ghRepository, historyEntityList, totalLineCount, contributers, conventionrate);
+		repoRedisCardRepository.save(responseDto);
+		return responseDto;
 	}
 
 
 	/**
 	 * 레포 personal card detail
 	 */
-	public RepoPersonalCardResponseDto RepoPersonalCardDetail(Long repoId, Long userId) throws IOException, InterruptedException {
+	public RepoRedisPersonalCardResponseDto repoPersonalCardDetail(Long repoId, Long userId) throws IOException, InterruptedException {
+		//레디스에서 찾아보고 있으면 삭제
+		repoRedisPersonalCardRespository.findByRepoIdAndUserId(repoId, userId).ifPresent(dto -> {
+			repoRedisPersonalCardRespository.delete(dto);
+		});
+
 		RepoEntity repoEntity = repoRepository.findById(repoId).orElseThrow(() -> {
 			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
 		});
@@ -771,7 +782,25 @@ public class RepoService {
 			conventionrate = conventionDto.getCollectCnt() / conventionDto.getTotalCnt() * 100;
 		}
 
-		return RepoPersonalCardResponseDto.fromEntityAndOthers(repoEntity, historyEntityList, contributers, userInfo, contributeResponse, myIssue, mytotalcode, myMerges, conventionrate, languages);
+		RepoRedisPersonalCardResponseDto responseDto = RepoRedisPersonalCardResponseDto.fromEntityAndOthers(userId, repoEntity, historyEntityList, contributers, userInfo, contributeResponse, myIssue, mytotalcode, myMerges, conventionrate, languages);
+		repoRedisPersonalCardRespository.save(responseDto);
+		return responseDto;
 	}
 
+	/**
+	 * django용 요청
+	 */
+	public RepoRedisCardResponseDto findRepoCardDetail(Long repoId) {
+		RepoRedisCardResponseDto responseDto =  repoRedisCardRepository.findByRepoId(repoId).orElseThrow(
+				() -> {throw new CustomException(ErrorCode.NOT_FOUND_REPOSITORY);}
+		);
+		return responseDto;
+	}
+
+	public RepoRedisPersonalCardResponseDto findRepoPersonalCardDetail(Long repoId, Long userId) {
+		RepoRedisPersonalCardResponseDto responseDto =  repoRedisPersonalCardRespository.findByRepoIdAndUserId(repoId, userId).orElseThrow(
+				() -> {throw new CustomException(ErrorCode.NOT_FOUND_REPOSITORY);}
+		);
+		return responseDto;
+	}
 }

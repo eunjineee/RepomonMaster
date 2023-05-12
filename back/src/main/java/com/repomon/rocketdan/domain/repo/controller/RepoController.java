@@ -132,16 +132,29 @@ public class RepoController {
 
 	@ApiOperation(value = "레포카드 정보")
 	@GetMapping("/{repoId}/card/detail")
-	public ResponseEntity<RepoCardResponseDto> getRepoCardDetail(@PathVariable Long repoId) {
-		RepoCardResponseDto responseDto = repoService.RepoCardDetail(repoId);
+	public ResponseEntity<RepoRedisCardResponseDto> getRepoCardDetail(@PathVariable Long repoId) {
+		RepoRedisCardResponseDto responseDto = repoService.repoCardDetail(repoId);
 		return ResponseEntity.ok(responseDto);
 	}
 
-
 	@ApiOperation(value = "래포개인카드 정보")
 	@GetMapping("/{repoId}/card/personal/{userId}")
-	public ResponseEntity<RepoPersonalCardResponseDto> getPersonalRepoCard(@PathVariable Long repoId, @PathVariable Long userId) throws IOException, InterruptedException {
-		RepoPersonalCardResponseDto responseDto = repoService.RepoPersonalCardDetail(repoId, userId);
+	public ResponseEntity<RepoRedisPersonalCardResponseDto> getPersonalRepoCard(@PathVariable Long repoId, @PathVariable Long userId) throws IOException, InterruptedException {
+		RepoRedisPersonalCardResponseDto responseDto = repoService.repoPersonalCardDetail(repoId, userId);
+		return ResponseEntity.ok(responseDto);
+	}
+
+	@ApiOperation(value = "레포카드 정보 Django")
+	@GetMapping("/{repoId}/card/detail/django")
+	public ResponseEntity<RepoRedisCardResponseDto> getRepoCardDetailRedis(@PathVariable Long repoId) {
+		RepoRedisCardResponseDto responseDto = repoService.findRepoCardDetail(repoId);
+		return ResponseEntity.ok(responseDto);
+	}
+
+	@ApiOperation(value = "래포개인카드 정보 Django")
+	@GetMapping("/{repoId}/card/personal/{userId}/django")
+	public ResponseEntity<RepoRedisPersonalCardResponseDto> getPersonalRepoCardRedis(@PathVariable Long repoId, @PathVariable Long userId) {
+		RepoRedisPersonalCardResponseDto responseDto = repoService.findRepoPersonalCardDetail(repoId, userId);
 		return ResponseEntity.ok(responseDto);
 	}
 

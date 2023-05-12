@@ -1,21 +1,19 @@
 package com.repomon.rocketdan.domain.user.dto.response;
 
 
-import com.repomon.rocketdan.common.utils.GHUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.repomon.rocketdan.domain.repo.app.UserCardDetail;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
-import com.repomon.rocketdan.domain.repo.repository.RepoRepository;
 import com.repomon.rocketdan.domain.user.entity.UserEntity;
-import com.repomon.rocketdan.exception.CustomException;
-import com.repomon.rocketdan.exception.ErrorCode;
 import lombok.*;
-import org.kohsuke.github.GHUser;
-import org.kohsuke.github.GitHub;
 
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 
 @AllArgsConstructor
@@ -23,8 +21,14 @@ import java.util.Map;
 @Setter
 @ToString
 @Builder
-public class UserCardResponseDto {
-
+@RedisHash(value = "user-card")
+public class UserRedisCardResponseDto {
+	@Id
+	@JsonIgnore
+	private Long id;
+	@Column(unique = true)
+	@Indexed
+	private Long userId;
 	private final Long myrepomonId;
 	private final Long myrepoExp;
 	private final int myrepomonTier;
@@ -50,10 +54,11 @@ public class UserCardResponseDto {
 	private final Long forkExp;
 
 
-	public static UserCardResponseDto fromEntity(UserCardDetail userCardDetail, UserEntity user, RepoEntity representrepo, List<String> languages) throws IOException {
+	public static UserRedisCardResponseDto fromEntity(UserCardDetail userCardDetail, UserEntity user, RepoEntity representrepo, List<String> languages) throws IOException {
 
 
-		return UserCardResponseDto.builder()
+		return UserRedisCardResponseDto.builder()
+			.userId(user.getUserId())
 			.userName(userCardDetail.getUserName())
 			.avatarUrl(userCardDetail.getAvatarUrl())
 			.totalExp(user.getTotalExp())
