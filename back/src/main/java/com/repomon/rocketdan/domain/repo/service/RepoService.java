@@ -386,9 +386,7 @@ public class RepoService {
 					updateRepositoryInfo(repoEntity, ghRepository, List.of(userEntity));
 				},
 				() -> {
-					Long eggId = 9995L + (new Random().nextInt(5));
-					RepomonEntity repomonEntity = repomonRepository.findById(eggId)
-						.orElseThrow(() -> {
+					RepomonEntity repomonEntity = repomonRepository.findById(9999L).orElseThrow(() -> {
 							throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
 						});
 
