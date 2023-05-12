@@ -147,7 +147,7 @@ function RepositoryCard(props: propType) {
                 style={{
                   display: props.isSameUser ? 'block' : 'none',
                   textAlign: 'center',
-                  backgroundColor: '#5AA7FF',
+                  backgroundColor: isActive ? '#5AA7FF' : 'grey',
                   color: 'white',
                   width: '95%',
                   borderRadius: '5px',
@@ -156,7 +156,7 @@ function RepositoryCard(props: propType) {
                 }}
                 onClick={handleBtnRegist}
                 disabled={!isActive}
-                id={styles.repoBtn}>
+                id={isActive ? styles.repoBtn : ''}>
                 레포몬 등록
               </button>
             ) : (
