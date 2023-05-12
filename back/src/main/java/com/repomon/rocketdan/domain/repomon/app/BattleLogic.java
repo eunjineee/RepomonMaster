@@ -163,8 +163,10 @@ public class BattleLogic {
 		int isSkilled = random.nextInt(100);
 		// 스킬 발동 여부 확인
 		if (isSkilled < skillProbability) {
+			String attackerLog = createAttackerLog(offenseRepomon.getRepomonNickname(), SKILL, offenseRepomon.getRepomon().getRepomonSkillName());
+			String defenderLog = createDefenderLog(defenseRepomon.getRepomonNickname(), ATTACKED, skillDmg);
 			return useSkillLog(turn, offenseRepomon.getRepoId(), defenseRepomon.getRepoId(),
-				skillDmg);
+				skillDmg, attackerLog, defenderLog);
 
 		} else {
 			// 명중 여부 확인
@@ -176,16 +178,16 @@ public class BattleLogic {
 			int isCritical = random.nextInt(100);
 			if (isCritical < offenseStatus.get("critical")) {
 				Float dmg = attackDamageCalc(offenseRepomon, defenseStatus.get("def")) * 2;
+				String attackerLog = createAttackerLog(offenseRepomon.getRepomonNickname(), CRITICAL, offenseRepomon.getRepomon().getRepomonSkillName());
 				return dodge
-					? useDodgeLog(turn, offenseRepomon.getRepoId(), defenseRepomon.getRepoId(), CRITICAL)
-					: useAttackLog(turn, offenseRepomon.getRepoId(), defenseRepomon.getRepoId(), CRITICAL,
-						dmg);
+					? useDodgeLog(turn, offenseRepomon.getRepoId(), defenseRepomon.getRepoId(), CRITICAL, attackerLog, createDefenderLog(defenseRepomon.getRepomonNickname(), DODGE, dmg))
+					: useAttackLog(turn, offenseRepomon.getRepoId(), defenseRepomon.getRepoId(), CRITICAL, dmg, attackerLog, createDefenderLog(defenseRepomon.getRepomonNickname(), ATTACKED, dmg));
 			} else {
 				Float dmg = attackDamageCalc(offenseRepomon, defenseStatus.get("def"));
+				String attackerLog = createAttackerLog(offenseRepomon.getRepomonNickname(), ATTACK, offenseRepomon.getRepomon().getRepomonSkillName());
 				return dodge
-					? useDodgeLog(turn, offenseRepomon.getRepoId(), defenseRepomon.getRepoId(), ATTACK)
-					: useAttackLog(turn, offenseRepomon.getRepoId(), defenseRepomon.getRepoId(), ATTACK,
-						dmg);
+					? useDodgeLog(turn, offenseRepomon.getRepoId(), defenseRepomon.getRepoId(), ATTACK, attackerLog, createDefenderLog(defenseRepomon.getRepomonNickname(), DODGE, dmg))
+					: useAttackLog(turn, offenseRepomon.getRepoId(), defenseRepomon.getRepoId(), ATTACK, dmg, attackerLog, createDefenderLog(defenseRepomon.getRepomonNickname(), ATTACKED, dmg));
 			}
 
 		}
@@ -194,7 +196,7 @@ public class BattleLogic {
 
 
 	public static HashMap<String, Object> useAttackLog(Integer turn, Long attackRepoId,
-		Long defenseRepoId, BattleFactor battleFactor, Float dmg) {
+		Long defenseRepoId, BattleFactor battleFactor, Float dmg, String attackerLog, String defenderLog) {
 		return new HashMap<>() {
 			{
 				put("turn", turn);
@@ -203,13 +205,15 @@ public class BattleLogic {
 				put("attack_act", battleFactor.idx);
 				put("defense_act", ATTACKED.idx);
 				put("damage", dmg);
+				put("attack_log", attackerLog);
+				put("defense_log", defenderLog);
 			}
 		};
 	}
 
 
 	public static HashMap<String, Object> useDodgeLog(Integer turn, Long attackRepoId,
-		Long defenseRepoId, BattleFactor battleFactor) {
+		Long defenseRepoId, BattleFactor battleFactor, String attackerLog, String defenderLog) {
 		return new HashMap<>() {
 			{
 				put("turn", turn);
@@ -218,13 +222,15 @@ public class BattleLogic {
 				put("attack_act", battleFactor.idx);
 				put("defense_act", DODGE.idx);
 				put("damage", 0);
+				put("attack_log", attackerLog);
+				put("defense_log", defenderLog);
 			}
 		};
 	}
 
 
 	public static HashMap<String, Object> useSkillLog(Integer turn, Long attackRepoId,
-		Long defenseRepoId, Float skillDmg) {
+		Long defenseRepoId, Float skillDmg, String attackerLog, String defenderLog) {
 		return new HashMap<>() {
 			{
 				put("turn", turn);
@@ -233,6 +239,8 @@ public class BattleLogic {
 				put("attack_act", SKILL.idx);
 				put("defense_act", ATTACKED.idx);
 				put("damage", skillDmg);
+				put("attack_log", attackerLog);
+				put("defense_log", defenderLog);
 			}
 		};
 	}
@@ -247,6 +255,31 @@ public class BattleLogic {
 			((double) (yourRepomon.getRating() - myRepomon.getRating() - statusGap) / 400)))))
 			* maxRating);
 
+	}
+
+
+	private static String createAttackerLog(String repomonNickname, BattleFactor battleFactor, String skillName) {
+		switch (battleFactor) {
+		case ATTACK:
+			return repomonNickname + "의 평범한 공격!";
+		case CRITICAL:
+			return repomonNickname + "의 강력한 공격!";
+		case SKILL:
+			return repomonNickname + "의 " + skillName + " 발동!";
+		}
+
+		return null;
+	}
+
+
+	private static String createDefenderLog(String repomonNickname, BattleFactor battleFactor, Float damage) {
+		switch (battleFactor) {
+		case ATTACKED:
+			return repomonNickname + "(은)는 " + (int) (Math.ceil(damage)) + "의 데미지를 입었다!";
+		case DODGE:
+			return repomonNickname + "(은)는 날렵한 몸놀림으로 회피했다!";
+		}
+		return null;
 	}
 
 }
