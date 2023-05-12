@@ -77,11 +77,9 @@ public class RepoService {
 
 		String userName = userEntity.getUserName();
 
-		PageRequest redisPageable = PageRequest.of(pageable.getPageNumber(), 1);
-		List<RepoListResponseDto> dtoList = redisListRepository.findByUserName(userName, redisPageable);
-		RepoListResponseDto responseDto = dtoList.isEmpty() ?
-			RepoListResponseDto.empty(userName) :
-			dtoList.get(0);
+		int currentPage = pageable.getPageNumber();
+		RepoListResponseDto responseDto = redisListRepository.findByUserNameAndCurrentPage(userName, currentPage)
+			.orElseGet(() -> RepoListResponseDto.empty(userName,currentPage));
 
 		if (responseDto.getRepoListItems().size() != pageable.getPageSize()) {
 			Page<ActiveRepoEntity> activeRepoPage = activeRepoRepository.findByUser(userEntity,
@@ -103,7 +101,7 @@ public class RepoService {
 				long totalElements = activeRepoPage.getTotalElements();
 				int totalPages = activeRepoPage.getTotalPages();
 
-				responseDto.updateFromDetails(repoDetails, totalElements, totalPages);
+				responseDto.updateFromDetails(repoDetails, currentPage, totalPages, totalElements);
 
 				redisListRepository.save(responseDto);
 			}

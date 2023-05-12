@@ -10,7 +10,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,6 @@ import org.kohsuke.github.GHRateLimit;
 import org.kohsuke.github.GHRateLimit.Record;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Aspect @Slf4j
@@ -75,36 +73,36 @@ public class GHUtilsAop {
         List<Object> params = Arrays.asList((proceedingJoinPoint.getArgs()));
         log.info("Params => {}", params);
 
+
+
         Long userId = (Long) params.get(0);
-
-        if(usingUsers.contains(userId)){
-            log.warn("이미 탐색중인 유저입니다.");
-            throw new CustomException(ErrorCode.ALREADY_WORKED);
-        }
-
-        usingUsers.add(userId);
-
-        UserEntity userEntity = userRepository.findById(userId).orElseThrow(() -> {
-            throw new CustomException(ErrorCode.NOT_FOUND_USER);
-        });
-
-        Map<String, GHRepository> repositories = ghUtils.getRepositoriesWithName(
-            userEntity.getUserName());
-
         Set<Long> repoIds = new HashSet<>();
-        repositories.keySet().forEach(repoKey -> {
-            repoRepository.findByRepoKey(repoKey).ifPresent(repoEntity -> {
-                Long repoId = repoEntity.getRepoId();
-                if(usingKeys.contains(repoId)){
-                    log.warn("이미 사용중인 repoId 입니다.");
-                    throw new CustomException(ErrorCode.ALREADY_WORKED);
-                }
-
-                repoIds.add(repoId);
-            });
-        });
-
         try {
+            if(usingUsers.contains(userId)){
+                log.warn("이미 탐색중인 유저입니다.");
+                throw new CustomException(ErrorCode.ALREADY_WORKED);
+            }
+
+            usingUsers.add(userId);
+
+            UserEntity userEntity = userRepository.findById(userId).orElseThrow(() -> {
+                throw new CustomException(ErrorCode.NOT_FOUND_USER);
+            });
+
+            Map<String, GHRepository> repositories = ghUtils.getRepositoriesWithName(
+                userEntity.getUserName());
+
+            repositories.keySet().forEach(repoKey -> {
+                repoRepository.findByRepoKey(repoKey).ifPresent(repoEntity -> {
+                    Long repoId = repoEntity.getRepoId();
+                    if(usingKeys.contains(repoId)){
+                        log.warn("이미 사용중인 repoId 입니다.");
+                        throw new CustomException(ErrorCode.ALREADY_WORKED);
+                    }
+
+                    repoIds.add(repoId);
+                });
+            });
             usingKeys.addAll(repoIds);
 
             return proceedingJoinPoint.proceed();
