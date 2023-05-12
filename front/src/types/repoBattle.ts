@@ -22,6 +22,8 @@ export type BattleLogType = {
   attacker: number;
   turn: number;
   defender: number;
+  defense_log: string;
+  attack_log: string;
 };
 
 export type ScriptType = {

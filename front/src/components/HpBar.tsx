@@ -14,7 +14,7 @@ function HpBar(props: Props) {
           style={{
             width: `${(props.HP / props.maxHP) * 100}%`,
             marginTop: "2%",
-            transition: "all 1s ease-in-out",
+            transition: "width 2s ease-in-out",
           }}
         />
       </div>

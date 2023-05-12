@@ -11,6 +11,10 @@
   background-color: #272727;
   margin-top: -90px;
   overflow-y: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   @include desktop125 {
     margin-top: -70px;
   }
@@ -34,7 +38,6 @@
       height: 35em;
       border: 10px double black;
       border-width: 10px 10px 5px 10px;
-      z-index: 1;
       transition: all 1s ease-in-out;
       background-color: white;
       position: relative;
@@ -55,32 +58,9 @@
   }
 }
 
-.skipBtn {
-  width: 7em;
-  height: 3em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-image: linear-gradient(
-    to right bottom,
-    #ff7ce9,
-    #ff61c0,
-    #ff4a93,
-    #ff3e63,
-    #ff4332
-  );
-  color: aliceblue;
-  font-weight: 800;
-  border-radius: 15px;
-  border: 5px double white;
-  position: absolute;
-  right: -3em;
-  top: 2.5em;
+#backTo {
   &:hover {
-    background-color: rgb(175, 44, 44);
-    .skipArrow {
-      animation: arrowHover 1s ease-in-out infinite;
-    }
+    color: rgb(0, 120, 218);
   }
 }
 

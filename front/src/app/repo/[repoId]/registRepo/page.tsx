@@ -299,6 +299,31 @@ const Page: NextPage<PageProps> = ({ params }) => {
     Modal.setAppElement("#pageContainer");
   }, []);
 
+  const setBox = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isClickOne || isClickTwo || isClickThree) {
+      if (setBox.current) {
+        const rect = setBox.current.getBoundingClientRect();
+        setBox.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest",
+        });
+        const mediaQuery = window.matchMedia(
+          "(min-width: 1160px) and (max-width: 1600px)"
+        );
+        if (mediaQuery.matches) {
+          console.log("125");
+          window.scrollBy(0, rect.top - 10);
+        } else {
+          console.log("100");
+          window.scrollBy(0, rect.top - 20);
+        }
+      }
+    }
+  }, [isClickOne, isClickTwo, isClickThree]);
+
   return (
     <div className={styles.pageContainer} id="pageContainer">
       <Modal
@@ -444,7 +469,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
           </div>
         </div>
       </div>
-      <div className={styles.settingBox}>
+      <div className={styles.settingBox} ref={setBox}>
         <div className={styles.conventionBox}>
           <div
             style={{

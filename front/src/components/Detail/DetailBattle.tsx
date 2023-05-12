@@ -123,7 +123,7 @@ const DetailBattle = ({
   };
 
   const onClickMatchBtn = async () => {
-    router.push(`/repo/repoBattle`);
+    router.push(`/repo/1/repoBattle`);
     // requestMatchBattle();
   };
 
