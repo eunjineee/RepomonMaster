@@ -401,7 +401,7 @@ def repo_card(request):
             .elli2 {{
                 fill: #C1E9FF;
                 cx: 95px;
-                cy: 155px;
+                cy: 135px;
                 rx: 58px;
                 ry: 20px;
             }}
