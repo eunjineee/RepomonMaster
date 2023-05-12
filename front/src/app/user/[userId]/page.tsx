@@ -137,7 +137,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
             </div>
 
             {/* 대표 레포몬 */}
-            {userInfo?.representRepo == null ? (
+            {userInfo?.representRepo == null || !userInfo.representRepo.isActive ? (
               <div className='flex flex-col pt-10 items-center'>
                 <Image src='/static/images/forbidden.png' alt='없음' width={288} height={288} />
                 <p>대표 레포몬을 설정해 주세요!</p>

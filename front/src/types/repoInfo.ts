@@ -1,4 +1,5 @@
 export type RepresentRepoType = {
+  isActive: boolean;
   battleRank: number;
   repoExp: number;
   repoId: number;
