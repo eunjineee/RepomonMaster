@@ -171,15 +171,17 @@ const Page = ({ params }: { params: { userId: string } }) => {
                 <p className={styles.boxContent} style={{ color: 'black', fontWeight: 'bold' }}>
                   {userInfo?.representRepo?.repomonNickName}
                 </p>
-                <div className='flex flex-col relative items-center border rounded-full' style={{ width: '18em', height: '18em' }}>
-                  <Canvas style={{ zIndex: '100', backgroundColor: 'white' }}>
+                <div
+                  className='flex flex-col relative items-center border rounded-full overflow-hidden bg-white'
+                  style={{ width: '18em', height: '18em' }}>
+                  <Canvas style={{ zIndex: '100' }}>
                     <directionalLight color='white' position={[0, 0, 5]} intensity={0.5} />
                     <directionalLight color='white' position={[-5, 0, -5]} intensity={0.5} />
                     <Model repomonUrl={userInfo?.representRepo?.repomon.repomonUrl} repoId={userInfo?.representRepo?.repoId} />
                   </Canvas>
                   <div
                     className='bg-gray-300 py-5 rounded-full'
-                    style={{ position: 'absolute', bottom: '40px', width: '12em', borderRadius: `50% / 50%`, zIndex: '1' }}></div>
+                    style={{ position: 'absolute', bottom: '40px', width: '12em', borderRadius: `50% / 50%`, zIndex: '80' }}></div>
                 </div>
                 <p className={styles.boxContent}>
                   경험치 : {userInfo?.representRepo?.repoExp} ({userInfo?.representRepo?.repoRank}위)
