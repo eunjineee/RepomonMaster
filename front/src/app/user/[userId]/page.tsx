@@ -139,8 +139,13 @@ const Page = ({ params }: { params: { userId: string } }) => {
             {/* 대표 레포몬 */}
             {userInfo?.representRepo == null || !userInfo.representRepo.isActive ? (
               <div className='flex flex-col pt-10 items-center'>
-                <Image src='/static/images/forbidden.png' alt='없음' width={288} height={288} />
-                <p>대표 레포몬을 설정해 주세요!</p>
+                <div className='flex flex-col relative items-center justify-center' style={{ width: '18em', height: '18em' }}>
+                  <p>대표 레포몬을 설정해 주세요!</p>
+                  <Image className='absolute opacity-20' src='/static/images/default_repomon.png' width={200} height={200} alt='logo'></Image>
+                  <div
+                    className='bg-gray-300 py-5 rounded-full'
+                    style={{ position: 'absolute', bottom: '50px', width: '15em', borderRadius: `50% / 50%`, zIndex: '-1' }}></div>
+                </div>
               </div>
             ) : (
               <div className='flex flex-col pt-10'>
