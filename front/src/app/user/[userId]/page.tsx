@@ -139,12 +139,26 @@ const Page = ({ params }: { params: { userId: string } }) => {
             {/* 대표 레포몬 */}
             {userInfo?.representRepo == null || !userInfo.representRepo.isActive ? (
               <div className='flex flex-col pt-10 items-center'>
-                <div className='flex flex-col relative items-center justify-center' style={{ width: '18em', height: '18em' }}>
+                <div
+                  className='flex flex-col relative items-center justify-center border rounded-full bg-white'
+                  style={{ width: '18em', height: '18em' }}>
                   <p>대표 레포몬을 설정해 주세요!</p>
-                  <Image className='absolute opacity-20' src='/static/images/default_repomon.png' width={200} height={200} alt='logo'></Image>
+                  <Image
+                    className='absolute opacity-20'
+                    src='/static/images/default_repomon.png'
+                    width={200}
+                    height={200}
+                    alt='logo'
+                    style={{ zIndex: '100' }}></Image>
                   <div
                     className='bg-gray-300 py-5 rounded-full'
-                    style={{ position: 'absolute', bottom: '50px', width: '15em', borderRadius: `50% / 50%`, zIndex: '-1' }}></div>
+                    style={{
+                      position: 'absolute',
+                      bottom: '50px',
+                      width: '12em',
+                      borderRadius: `50% / 50%`,
+                      zIndex: '1',
+                    }}></div>
                 </div>
               </div>
             ) : (
@@ -157,15 +171,15 @@ const Page = ({ params }: { params: { userId: string } }) => {
                 <p className={styles.boxContent} style={{ color: 'black', fontWeight: 'bold' }}>
                   {userInfo?.representRepo?.repomonNickName}
                 </p>
-                <div className='flex flex-col relative items-center' style={{ width: '18em', height: '18em' }}>
+                <div className='flex flex-col relative items-center border rounded-full' style={{ width: '18em', height: '18em', zIndex: '100' }}>
                   <Canvas>
                     <directionalLight color='white' position={[0, 0, 5]} intensity={0.5} />
                     <directionalLight color='white' position={[-5, 0, -5]} intensity={0.5} />
                     <Model repomonUrl={userInfo?.representRepo?.repomon.repomonUrl} repoId={userInfo?.representRepo?.repoId} />
                   </Canvas>
                   <div
-                    className='bg-indigo-300 py-5 rounded-full'
-                    style={{ position: 'absolute', bottom: '30px', width: '15em', borderRadius: `50% / 50%`, zIndex: '-1' }}></div>
+                    className='bg-gray-300 py-5 rounded-full'
+                    style={{ position: 'absolute', bottom: '40px', width: '12em', borderRadius: `50% / 50%`, zIndex: '1' }}></div>
                 </div>
                 <p className={styles.boxContent}>
                   경험치 : {userInfo?.representRepo?.repoExp} ({userInfo?.representRepo?.repoRank}위)
@@ -285,9 +299,9 @@ const Model = (props: modelProps) => {
   const getModelPosition = (str: string): number[] => {
     switch (str) {
       case '2':
-        return [1, -2, 0];
+        return [0, -2, 0];
       case '3':
-        return [1, -2, 0];
+        return [0, -2, 0];
       default:
         return [0, -2, 0];
     }
@@ -303,7 +317,8 @@ const Model = (props: modelProps) => {
   if (gltf.animations.length) {
     mixer = new THREE.AnimationMixer(gltf.scene);
     mixer.timeScale = 0.4;
-    const action = mixer.clipAction(gltf.animations[0]);
+    console.log(gltf.animations);
+    const action = mixer.clipAction(gltf.animations[8]);
     action.clampWhenFinished = true;
     action.play();
   }

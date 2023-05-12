@@ -77,6 +77,7 @@ function RepositoryCard(props: propType) {
       className='border-2 rounded-lg'
       style={{
         opacity: isActive ? '1' : '0.5',
+        backgroundColor: 'white',
       }}
       id={styles.cardContainer}>
       <div
