@@ -66,6 +66,7 @@ function Page({ params }: { params: { repoId: string } }) {
   const [updateLoading, setUpdateLoading] = useState<boolean>(false);
   const router = useRouter();
   const [isTeam, setIsTeam] = useState<boolean>(false);
+  const [conventionLoading, setConventionLoading] = useState<boolean>(false);
 
   /** =============================================== useEffect =============================================== */
   useEffect(() => {
@@ -224,12 +225,15 @@ function Page({ params }: { params: { repoId: string } }) {
 
   /** 레포 디테일 컨벤션 정보 */
   const requestRepoDetailConvention = async (repoId: number) => {
+    setConventionLoading(true);
     try {
       const res = await axiosRequestRepoDetailConvention(repoId);
       console.log("레포 디테일 컨벤션: ", res);
       setRepoDetailConventionInfo(res.data);
     } catch (err) {
       console.error(err);
+    } finally {
+      setConventionLoading(false);
     }
   };
 
@@ -424,6 +428,7 @@ function Page({ params }: { params: { repoId: string } }) {
                 setConventionUpdated={setConventionUpdated}
                 repoId={params.repoId}
                 myRepo={repoDetailInfo.myRepo}
+                loading={conventionLoading}
               />
             )}
             {tabIndex === 4 && (

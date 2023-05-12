@@ -61,9 +61,6 @@ function Page() {
           "HTML",
         ]}
       /> */}
-      {repoDetailConventionInfo && (
-        <DetailConvention conventionInfo={repoDetailConventionInfo!} />
-      )}
     </div>
   );
 }

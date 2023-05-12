@@ -11,17 +11,20 @@ import Lottie from "react-lottie-player";
 import notFound from "public/static/lotties/not_found.json";
 import {} from "@/types/repoRegist";
 import ConventionEdit from "./ConventionEdit";
+import LoadingSpinner from "../Skeletons/LoadingSpinner";
 
 function DetailConvention({
   conventionInfo,
   setConventionUpdated,
   repoId,
   myRepo,
+  loading,
 }: {
   conventionInfo: RepoDetailConventionInfoType;
   setConventionUpdated: React.Dispatch<React.SetStateAction<boolean>>;
   repoId: string;
   myRepo: boolean;
+  loading: boolean;
 }) {
   const [editMode, setEditMode] = useState(false);
   const conventions: EditConventionType[] = conventionInfo.conventions.map(
@@ -48,14 +51,20 @@ function DetailConvention({
         />
       )}
       {!editMode && (
-        <>
+        <div style={{ margin: "4rem 0 0 0" }}>
           {myRepo && (
-            <button
-              onClick={() => setEditMode(true)}
-              className={styles["edit-btn"]}
-            >
-              컨벤션 수정
-            </button>
+            <div className={styles["edit-div"]}>
+              <button
+                onClick={() => setEditMode(true)}
+                className={styles["edit-btn"]}
+              >
+                컨벤션 수정
+              </button>
+              <p className={styles["edit-comment"]}>
+                <span style={{ color: "red" }}>*</span> 수정 후 분석에 시간이
+                걸릴 수 있습니다.
+              </p>
+            </div>
           )}
           {conventionInfo.conventions &&
             conventionInfo.conventions.length > 0 && (
@@ -88,7 +97,12 @@ function DetailConvention({
               <p className={styles.comment}>등록된 컨벤션이 없어요.</p>
             </div>
           )}
-        </>
+        </div>
+      )}
+      {loading && (
+        <div className={styles.loading}>
+          <LoadingSpinner ml={4} mr={4} size={3} />
+        </div>
       )}
     </div>
   );
