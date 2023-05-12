@@ -117,7 +117,7 @@ function RepositoryCard(props: propType) {
             <directionalLight color='white' position={[-5, 0, -5]} intensity={0.5} />
             <Model repomonUrl={props.repomonUrl} repoId={props.repoId} />
           </Canvas>
-          <div className='flex justify-center items-center'>
+          <div className='flex justify-center items-center mb-3'>
             <div className='rounded-full mx-2 bg-indigo-300' style={{ width: '16px', height: '16px' }}></div>
             <p>{props.repomonName}</p>
           </div>
