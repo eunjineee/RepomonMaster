@@ -7,14 +7,15 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import styles from "./page.module.scss";
-import * as THREE from "three";
-import { Html, OrbitControls } from "@react-three/drei";
 import Loader from "@/components/threeLoader";
 import HpBar from "@/components/HpBar";
 import Image from "next/image";
 import Lottie from "react-lottie-player";
 import lottieJson from "public/static/lotties/battle.json";
 import Panpare from "public/static/lotties/panpare.json";
+import GhostOne from "public/static/lotties/ghost1.json";
+import * as THREE from "three";
+import { Html, OrbitControls } from "@react-three/drei";
 import { BattleLogType } from "@/types/repoBattle";
 import SoundOff from "@/components/UI/SoundOff";
 import SoundOn from "@/components/UI/SoundOn";
@@ -114,7 +115,7 @@ const Page = () => {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      width: "500px",
+      width: "600px",
       height: "250px",
       display: "flex",
       flexDirection: "column",
@@ -148,12 +149,12 @@ const Page = () => {
                 <div style={{ display: "flex" }}>
                   <Lottie
                     loop={true}
-                    animationData={Panpare}
+                    animationData={matchData?.data.isWin ? Panpare : GhostOne}
                     play
                     style={{
                       position: "absolute",
-                      width: "5em",
-                      height: "5em",
+                      width: matchData?.data.isWin ? "5em" : "7em",
+                      height: matchData?.data.isWin ? "5em" : "7em",
                       left: "2em",
                       top: "5.5em",
                     }}
@@ -163,19 +164,21 @@ const Page = () => {
                       fontSize: "2.5em",
                       textAlign: "center",
                       fontWeight: "700",
-                      color: "#1dbabf",
+                      color: matchData?.data.isWin ? "#1dbabf" : "red",
                     }}
                   >
-                    승리했습니다!
+                    {matchData?.data.isWin
+                      ? "승리했습니다!"
+                      : "패배했습니다..."}
                   </p>
                   <Lottie
                     loop={true}
-                    animationData={Panpare}
+                    animationData={matchData?.data.isWin ? Panpare : GhostOne}
                     play
                     style={{
                       position: "absolute",
-                      width: "5em",
-                      height: "5em",
+                      width: matchData?.data.isWin ? "5em" : "7em",
+                      height: matchData?.data.isWin ? "5em" : "7em",
                       right: "2em",
                       top: "5.5em",
                       transform: "scaleX(-1)",
@@ -447,9 +450,23 @@ const Page = () => {
                     position={[5, 0, 5]}
                     intensity={0.6}
                   />
-                  <Model url={matchData?.data.attackRepo.repomon.repomonUrl} />
+                  <Model
+                    url={
+                      matchData?.data.attackRepo.repomon.repomonUrl.includes(
+                        "Egg"
+                      )
+                        ? `https://repomon.s3.ap-northeast-2.amazonaws.com/models/Egg.glb`
+                        : matchData?.data.attackRepo.repomon.repomonUrl
+                    }
+                  />
                   <SecondModel
-                    url={matchData?.data.defenseRepo.repomon.repomonUrl}
+                    url={
+                      matchData?.data.attackRepo.repomon.repomonUrl.includes(
+                        "Egg"
+                      )
+                        ? `https://repomon.s3.ap-northeast-2.amazonaws.com/models/Egg.glb`
+                        : matchData?.data.attackRepo.repomon.repomonUrl
+                    }
                   />
                   <MyUI />
                   <OpUI />
