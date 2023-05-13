@@ -35,22 +35,22 @@ const MatchModal = ({ repoId }: { repoId: string }) => {
 
   /** ============================== useEffect ============================== */
   useEffect(() => {
-    if (oppoInfo) {
+    if (oppoRepoId && oppoInfo) {
       setIsOpen(true);
     }
-  }, [oppoInfo]);
+  }, [oppoRepoId, oppoInfo]);
 
-  useEffect(() => {
-    if (modalIsOpen && oppoRepoId) {
-      setTimeout(() => {
-        router.push(`./repoBattle/${oppoRepoId}`);
-      }, 2000);
-    }
-  }, [modalIsOpen, oppoRepoId]);
+  useEffect(() => {}, []);
 
   /** ============================== 함수, Event Handler ============================== */
   const closeModal = () => {
     setIsOpen(false);
+  };
+
+  const afterOpenModal = () => {
+    setTimeout(() => {
+      router.push(`repo/${repoId}/repoBattle/${oppoRepoId}`);
+    }, 2000);
   };
 
   const onClickMatchBtn = async () => {
@@ -79,25 +79,28 @@ const MatchModal = ({ repoId }: { repoId: string }) => {
           <ChevronDoubleRightIcon />
         </span>
       </button>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel=""
-      >
-        <div className={styles.oppo}>
-          <span>VS</span>
-          <Image
-            alt="상대 레포몬"
-            src={`/static/models_png/${pretreatModelUrl(
-              oppoInfo?.repomonUrl as string
-            )}.png`}
-            width={100}
-            height={100}
-          ></Image>
-        </div>
-        <p className={styles.notice}>상대 정보를 불러오고 있습니다.</p>
-      </Modal>
+      {oppoRepoId && oppoInfo && (
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          onAfterOpen={afterOpenModal}
+          style={customStyles}
+          contentLabel=""
+        >
+          <div className={styles.oppo}>
+            <span>VS</span>
+            <Image
+              alt="상대 레포몬"
+              src={`/static/models_png/${pretreatModelUrl(
+                oppoInfo.repomonUrl
+              )}.png`}
+              width={100}
+              height={100}
+            ></Image>
+          </div>
+          <p className={styles.notice}>상대 정보를 불러오고 있습니다.</p>
+        </Modal>
+      )}
     </div>
   );
 };
