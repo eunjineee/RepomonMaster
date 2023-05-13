@@ -1,0 +1,111 @@
+@import "@/styles/variables.scss";
+
+.match-btn {
+  display: flex;
+  height: 60px;
+  margin: 0 2rem 0 0;
+  padding: 0 1.5rem;
+  align-items: center;
+  font-size: 1.25rem;
+  border-radius: 10px;
+  background-color: rgb(255, 102, 102);
+  color: white;
+  box-shadow: 0.5px 2px 5px rgb(158, 158, 158);
+
+  @include desktop125 {
+    font-size: 1.125rem;
+    padding: 0 1.3rem;
+  }
+
+  &:hover {
+    background-color: rgb(255, 133, 133);
+  }
+
+  & span {
+    width: 30px;
+  }
+
+  & svg {
+    margin-left: 1rem;
+    width: 30px;
+    animation: slide 1.5s infinite;
+
+    @include desktop125 {
+      width: 25px;
+      animation: slide2 1.5s infinite;
+    }
+
+    @keyframes slide {
+      0% {
+        margin-left: 0;
+        opacity: 1;
+        width: 30px;
+      }
+      20% {
+        opacity: 1;
+        width: 30px;
+      }
+      100% {
+        margin-left: 1.4rem;
+        opacity: 0;
+        width: 25px;
+      }
+    }
+
+    @keyframes slide2 {
+      0% {
+        margin-left: 0;
+        opacity: 1;
+        width: 25px;
+      }
+      20% {
+        opacity: 1;
+        width: 25px;
+      }
+      100% {
+        margin-left: 1.2rem;
+        opacity: 0;
+        width: 20px;
+      }
+    }
+  }
+}
+
+.oppo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & span {
+    margin: 0 2rem 0 0;
+    font-size: 2rem;
+    font-weight: bold;
+    font-style: italic;
+    color: rgb(255, 72, 72);
+  }
+
+  & img {
+    border-radius: 100%;
+  }
+}
+
+.notice {
+  margin: 1rem 0 0;
+  text-align: center;
+  color: rgb(224, 224, 224);
+  animation: twinkle 1.7s ease-in-out infinite;
+
+  @keyframes twinkle {
+    0% {
+      opacity: 0.8;
+    }
+
+    50% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 0.8;
+    }
+  }
+}

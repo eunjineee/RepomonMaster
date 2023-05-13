@@ -64,7 +64,9 @@ export function ConventionChart({
   }, []);
 
   return (
-    <div>
+    <div
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
       <Pie
         data={data}
         options={{
@@ -75,7 +77,13 @@ export function ConventionChart({
           },
         }}
       />
-      <p>컨벤션 준수율 {((obey / total) * 100.0).toFixed(2)} %</p>
+      <p style={{ color: "gray", margin: "1rem 0 0 0.5rem" }}>
+        컨벤션 준수율{" "}
+        <span style={{ color: "rgba(109, 130, 250, 1)" }}>
+          {((obey / total) * 100.0).toFixed(2)}
+        </span>{" "}
+        %
+      </p>
     </div>
   );
 }

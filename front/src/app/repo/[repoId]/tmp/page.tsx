@@ -10,6 +10,7 @@ import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
 import DetailConvention from "@/components/Detail/DetailConvention";
 import { RepoDetailConventionInfoType } from "@/types/repoDetail";
 import { axiosRequestRepoDetailConvention } from "@/api/repoDetail";
+import MatchModal from "@/components/Detail/MatchModal";
 
 function Page() {
   const [repomonUrl, setRepomonUrl] = useState(
@@ -56,7 +57,7 @@ function Page() {
       {/* <button className={styles.btn}>
         <LoadingSpinner ml={4} mr={4} size={6} />
       </button> */}
-      <ExportModal
+      {/* <ExportModal
         repoId={4}
         userId={3}
         isTeam={true}
@@ -70,7 +71,8 @@ function Page() {
           "JavaScript",
           "HTML",
         ]}
-      />
+      /> */}
+      <MatchModal repoId={"4"} />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { EditConventionType } from "@/types/repoDetail";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ConventionEdit.module.scss";
 import { axiosRequestEditConventions } from "@/api/repoDetail";
 
@@ -66,6 +66,12 @@ const ConventionEdit = ({
     setConventions(conventions.filter((convention) => convention.id !== id));
   };
 
+  const onKeyDownAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      onClickAddBtn();
+    }
+  };
+
   const onClickEditBtn = (
     id: number,
     newPrefix: string,
@@ -120,6 +126,19 @@ const ConventionEdit = ({
           : convention
       )
     );
+  };
+
+  const onKeyDownEditting = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    id: number,
+    newPrefix: string,
+    newDescription: string
+  ) => {
+    if (e.key === "Enter") {
+      onClickEditApplyBtn(id, newPrefix, newDescription);
+    } else if (e.key === "Escape") {
+      onClcikEditCancle(id);
+    }
   };
 
   const onClickEditModeOffBtn = () => {
@@ -178,12 +197,28 @@ const ConventionEdit = ({
                   type="text"
                   value={edittingPrefix}
                   onChange={onChangeEdittingPrefix}
+                  onKeyDown={(e) =>
+                    onKeyDownEditting(
+                      e,
+                      convention.id,
+                      edittingPrefix,
+                      edittingDescription
+                    )
+                  }
                   style={{ paddingLeft: "0.5rem" }}
                 />
                 <input
                   type="text"
                   value={edittingDescription}
                   onChange={onChangeEdittingDescription}
+                  onKeyDown={(e) =>
+                    onKeyDownEditting(
+                      e,
+                      convention.id,
+                      edittingPrefix,
+                      edittingDescription
+                    )
+                  }
                 />
                 <div className={styles["btn-div"]}>
                   <button
@@ -209,16 +244,18 @@ const ConventionEdit = ({
       <div className={`${styles.line} ${styles["input-item-line"]}`}>
         <input
           type="text"
-          placeholder="헤더 입력"
+          placeholder="커밋 헤더 입력"
           value={prefix}
           onChange={onChangePrefix}
           style={{ paddingLeft: "0.5rem" }}
+          onKeyDown={(e) => onKeyDownAdd(e)}
         />
         <input
           type="text"
           placeholder="헤더 설명 입력"
           value={description}
           onChange={onChangeDescription}
+          onKeyDown={(e) => onKeyDownAdd(e)}
         />
         <div className={styles["btn-div"]}>
           <button onClick={onClickAddBtn}>추가</button>

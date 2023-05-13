@@ -19,14 +19,12 @@ export type GrowthFactorType = {
 };
 
 export type HistoryType = {
-  exp: number;
-  type: string;
-  workedAt: string;
+  [key: string]: number;
 };
 
 export type RepoDetailResearchType = {
   growthFactor: GrowthFactorType;
-  histories: HistoryType[];
+  histories: HistoryType;
   rank: number;
   repoExp: number;
   totalGetExp: number;
@@ -57,13 +55,16 @@ export type GrowthChartType = {
   datasets: DatasetType[];
 };
 
-type DetailRepomonType = {
+export type RepomonType = {
   repomonId: number;
   repomonName: string;
   repomonSkillName: string;
   repomonSkillUrl: string;
   repomonTier: number;
   repomonUrl: string;
+};
+
+type DetailRepomonType = RepomonType & {
   selectRepomonList?: {
     repomonId: number;
     repomonName: string;
@@ -156,7 +157,7 @@ export type RepoDetailConventionInfoType = {
   totalCnt: number;
   conventionInfo: {
     [prefix: string]: number;
-  }
+  };
 };
 
 export type RepoDetailContributionInfoType = {

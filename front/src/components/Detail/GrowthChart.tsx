@@ -16,7 +16,7 @@ import { Line } from "react-chartjs-2";
 import { DatasetType, GrowthChartType, HistoryType } from "@/types/repoDetail";
 import "chartjs-adapter-moment";
 import "chartjs-adapter-date-fns";
-import { is, ko } from "date-fns/locale";
+import { ko } from "date-fns/locale";
 import styles from "./GrowthChart.module.scss";
 
 ChartJS.register(
@@ -30,11 +30,7 @@ ChartJS.register(
   TimeScale
 );
 
-export default function GrowthChart({
-  histories,
-}: {
-  histories: HistoryType[];
-}) {
+export default function GrowthChart({ histories }: { histories: HistoryType }) {
   const [apiDatasets, setApiDatasets] = useState<DatasetType>({
     label: "획득 경험치",
     data: [],
@@ -60,11 +56,10 @@ export default function GrowthChart({
 
     let cumulValue = 0;
 
-    for (let i = 0; i < histories.length; i++) {
-      const history: HistoryType = histories[i];
-      apiLabels.push(history.workedAt);
-      apiData.push(history.exp.toString());
-      cumulValue += history.exp;
+    for (let date in histories) {
+      apiLabels.push(date);
+      apiData.push(histories[date].toString());
+      cumulValue += histories[date];
       cumulData.push(cumulValue.toString());
     }
 

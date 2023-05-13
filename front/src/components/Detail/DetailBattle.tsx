@@ -13,6 +13,7 @@ import shieldIcon from "public/static/icons/shield_icon.png";
 import {
   BattleRecordType,
   RepoDetailBattleType,
+  RepomonType,
   StatType,
 } from "@/types/repoDetail";
 import { axiosRequestUpStat } from "@/api/repoDetail";
@@ -25,6 +26,7 @@ import platinum from "public/static/tier/platinum.svg";
 import diamond from "public/static/tier/diamond.svg";
 import { pretreatModelUrl } from "@/app/utils/PretreatModelUrl";
 import { axiosRequestMatchBattle } from "@/api/repoBattle";
+import MatchModal from "./MatchModal";
 
 const DetailBattle = ({
   battleInfo,
@@ -122,20 +124,6 @@ const DetailBattle = ({
     router.push(`/repo/${repoId}`);
   };
 
-  const onClickMatchBtn = async () => {
-    router.push(`/repo/1/repoBattle`);
-    // requestMatchBattle();
-  };
-
-  const requestMatchBattle = async () => {
-    try {
-      const res = await axiosRequestMatchBattle(repoId);
-      console.log(res);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <div>
       <p className={styles["tab-title"]}>레포몬 배틀 정보</p>
@@ -173,14 +161,7 @@ const DetailBattle = ({
             <span>{battleInfo.loseCnt}</span>
           </div>
         </div>
-        {myRepo && (
-          <button onClick={onClickMatchBtn}>
-            배틀 매칭
-            <span>
-              <ChevronDoubleRightIcon />
-            </span>
-          </button>
-        )}
+        {myRepo && <MatchModal repoId={repoId} />}
       </div>
       <div className={styles.bottom}>
         <div className={styles.left}>
