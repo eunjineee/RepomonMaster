@@ -36,8 +36,7 @@ public class UserController {
 	@ApiOperation(value = "대표 레포몬을 설정합니다.")
 	@PutMapping("/{userId}/represent")
 	public ResponseEntity<ResultDto<Boolean>> modifyRepresentRepo(@PathVariable("userId") Long userId,
-
-		RepresentRepomonRequestDto requestDto) {
+	                                                              @RequestBody RepresentRepomonRequestDto requestDto) {
 		userService.modifyRepresentRepo(userId, requestDto);
 		return ResponseEntity.ok().body(ResultDto.ofSuccess());
 	}
@@ -70,9 +69,10 @@ public class UserController {
 		return ResponseEntity.ok().body(ResultDto.of(responseDto));
 	}
 
+
 	@ApiOperation(value = "유저카드 언어설정")
 	@PutMapping("/{userId}/card/language")
-	public ResponseEntity<ResultDto> modifyPersonalRepoCard(@PathVariable Long userId, @RequestBody RepoCardRequestDto requestDto) {
+	public ResponseEntity<ResultDto<Boolean>> modifyPersonalRepoCard(@PathVariable Long userId, @RequestBody RepoCardRequestDto requestDto) {
 		userService.modifyUserRepo(userId, requestDto);
 		return ResponseEntity.ok(ResultDto.ofSuccess());
 	}
