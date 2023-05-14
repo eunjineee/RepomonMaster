@@ -108,3 +108,38 @@ export const getUserRanking = async (userId: number) => {
   const fetchData = {};
   const res = await http.get(`/rank/user`);
 };
+
+/** 유저 카드 갱신 */
+export const axiosUpdateUserCard = async (userId: number) => {
+  const res = await http.get(`user/${userId}/card`);
+
+  return res;
+};
+
+/** 유저가 사용한 전체 언어 조회 */
+export const axiosGetUserLan = async (userId: number) => {
+  const res = await http.get(`user/${userId}/card/language`);
+
+  return res;
+};
+
+/** 유저 카드에 적용 중인 언어 조회 */
+export const axiosGetUserCardLan = async (userId: number) => {
+  const res = await http.get(`user/${userId}/card/language/now`);
+
+  return res;
+};
+
+/** 유저 카드 언어 설정 */
+export const axiosSetUserCardLan = async (
+  userId: number,
+  languages: string[]
+) => {
+  const data = {
+    languages,
+  };
+
+  const res = await http.put(`user/${userId}/card/language`, data);
+
+  return res;
+};

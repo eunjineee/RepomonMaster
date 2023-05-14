@@ -94,6 +94,14 @@
   font-family: SUIT-Thin;
   color: #575757;
   font-weight: 600;
+
+  @include desktop125 {
+    font-size: 1rem;
+
+    & img {
+      width: 20px;
+    }
+  }
 }
 
 .visitLink {
@@ -103,6 +111,11 @@
 .arrow {
   transition: all 0.7s ease-in-out;
   cursor: pointer;
+
+  @include desktop125 {
+    width: 1.5rem;
+  }
+
   &:hover {
     transform: rotate(150deg);
   }
@@ -126,5 +139,15 @@
 #reposubtitle {
   @include desktop125 {
     font-size: 0.9em !important;
+  }
+}
+
+.repomon-div {
+  width: 18em;
+  height: 18em;
+
+  @include desktop125 {
+    width: 13em;
+    height: 13em;
   }
 }

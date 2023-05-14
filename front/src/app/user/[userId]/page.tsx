@@ -96,7 +96,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
             loop
             animationData={Ballon}
             play
-            style={{ width: "30vh", height: "30vh", marginTop: "-3%" }}
+            style={{ width: "30vh", height: "30vh", marginTop: "-3.3%" }}
           />
         </div>
         <div className={styles.bodyContainer}>
@@ -112,12 +112,6 @@ const Page = ({ params }: { params: { userId: string } }) => {
               <p className={styles.boxTitle}>{userInfo?.username}</p>
               <p className="py-2">{userInfo?.userDescription}</p>
               <UserExportModal userId={params.userId} />
-              <div
-                className={`${styles.userCardExport} border-2 rounded-lg flex justify-center my-2 py-1 font-bold`}
-                onClick={copyUserCardUrl}
-              >
-                <p>Export User Card</p>
-              </div>
               <a
                 href={`https://github.com/${userInfo?.username.toLowerCase()}`}
               >
@@ -220,8 +214,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
                   {userInfo?.representRepo?.repomonNickName}
                 </p>
                 <div
-                  className="flex flex-col relative items-center border rounded-full overflow-hidden bg-white"
-                  style={{ width: "18em", height: "18em" }}
+                  className={`flex flex-col relative items-center border rounded-full overflow-hidden bg-white ${styles["repomon-div"]}`}
                 >
                   <Canvas style={{ zIndex: "100" }}>
                     <directionalLight
@@ -250,7 +243,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
                     }}
                   ></div>
                 </div>
-                <p className={styles.boxContent}>
+                <p className={styles.boxContent} style={{ marginTop: "1rem" }}>
                   경험치 : {userInfo?.representRepo?.repoExp} (
                   {userInfo?.representRepo?.repoRank}위)
                 </p>
@@ -281,7 +274,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
                   </p>
                 ) : (
                   <ArrowPathIcon
-                    width="2rem"
+                    width="1.75rem"
                     style={{ marginLeft: "2%" }}
                     className={styles.arrow}
                     ref={arrowRef}

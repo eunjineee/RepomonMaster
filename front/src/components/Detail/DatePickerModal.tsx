@@ -40,7 +40,7 @@ const DatePickerModal = ({
   let footer = (
     <p
       style={{
-        margin: "1rem 0 0 -0.5rem",
+        margin: "1rem 0 0 0.5rem",
         fontWeight: "bold",
         color: "rgb(223, 62, 62)",
       }}
@@ -53,7 +53,7 @@ const DatePickerModal = ({
       footer = (
         <p
           style={{
-            margin: "1rem 0 0 -0.5rem",
+            margin: "1rem 0 0 0.5rem",
           }}
         >
           시작일:

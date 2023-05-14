@@ -102,7 +102,7 @@ const ExportModal = ({
     }
 
     window.navigator.clipboard.writeText(copyUrl).then(() => {
-      alert("카드 URL이 복사되었습니다.");
+      alert("✅ 카드 URL이 복사되었습니다.");
     });
   };
 
@@ -233,22 +233,19 @@ const ExportModal = ({
               레포 카드를 통해 레포지토리의 정보를 한 눈에 확인할 수 있습니다.
             </p>
             <p>README에 URL을 입력하면, 레포 카드를 생성할 수 있습니다.</p>
-            <p>
-              <span style={{ color: "red" }}>*</span> 레포지토리 갱신 후의
-              정보가 반영됩니다.
-            </p>
           </p>
         )}
         {kind === "개인 레포 카드" && (
           <p className={styles.comment}>
-            <p>개인 레포 카드를 통해 나의 기여 정보를 확인할 수 있습니다.</p>
-            <p>README에 URL을 입력하면, 개인 레포 카드를 생성할 수 있습니다.</p>
             <p>
-              <span style={{ color: "red" }}>*</span> 레포지토리 갱신 후의
-              정보가 반영됩니다.
+              개인 레포 카드를 통해 나의 기여 정보를 한 눈에 확인할 수 있습니다.
             </p>
+            <p>README에 URL을 입력하면, 개인 레포 카드를 생성할 수 있습니다.</p>
           </p>
         )}
+        <p className={styles.exam}>
+          <span>*</span> {"하단의 예시 카드를 누르면 URL이 복사됩니다."}
+        </p>
         {kind === "개인 레포 카드" && (
           <>
             <p className={styles["set-lan-title"]}>언어 설정</p>
@@ -301,10 +298,6 @@ const ExportModal = ({
             </p>
           </>
         )}
-
-        <p className={styles.exam}>
-          <span>*</span> {"아래 예시 카드를 누르면 URL이 복사됩니다."}
-        </p>
 
         {updateRepoPersonalLoading && (
           <div className={styles["spinner-div"]}>
