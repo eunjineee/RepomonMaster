@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
 import styles from "./DetailBattle.module.scss";
 import heartIcon from "public/static/icons/heart_icon.png";
 import attackIcon from "public/static/icons/attack_icon.png";
@@ -13,7 +12,6 @@ import shieldIcon from "public/static/icons/shield_icon.png";
 import {
   BattleRecordType,
   RepoDetailBattleType,
-  RepomonType,
   StatType,
 } from "@/types/repoDetail";
 import { axiosRequestUpStat } from "@/api/repoDetail";
@@ -25,7 +23,6 @@ import gold from "public/static/tier/gold.svg";
 import platinum from "public/static/tier/platinum.svg";
 import diamond from "public/static/tier/diamond.svg";
 import { pretreatModelUrl } from "@/app/utils/PretreatModelUrl";
-import { axiosRequestMatchBattle } from "@/api/repoBattle";
 import MatchModal from "./MatchModal";
 
 const DetailBattle = ({
@@ -64,23 +61,23 @@ const DetailBattle = ({
 
   useEffect(() => {
     if (battleInfo.rating >= 1600) {
-      setTier("Diamond");
+      setTier("다이아몬드");
       setTierImg(diamond);
       setTierColor("#CBD9FE");
     } else if (battleInfo.rating >= 1400) {
-      setTier("Platinum");
+      setTier("플래티넘");
       setTierImg(platinum);
       setTierColor("#25BBA2");
     } else if (battleInfo.rating >= 1200) {
-      setTier("Gold");
+      setTier("골드");
       setTierImg(gold);
       setTierColor("#D7BC6A");
     } else if (battleInfo.rating >= 1000) {
-      setTier("Silver");
+      setTier("실버");
       setTierImg(silver);
       setTierColor("#B1B1B1");
     } else {
-      setTier("Bronze");
+      setTier("브론즈");
       setTierImg(bronze);
       setTierColor("#BD6E40");
     }
@@ -139,7 +136,10 @@ const DetailBattle = ({
             <span>승</span>
             <span>패</span>
           </div>
-          <div className={styles.att} style={{ color: "red" }}>
+          <div
+            className={styles.att}
+            style={{ color: "rgb(255, 70, 70)", fontWeight: "bold" }}
+          >
             <span>{battleInfo.rating}</span>
             <span
               style={{
@@ -338,8 +338,8 @@ const DetailBattle = ({
                         record.attackRepo.repomon.repomonUrl
                       )}.png`}
                       alt="공격 레포몬"
-                      width={50}
-                      height={50}
+                      width={45}
+                      height={45}
                     ></Image>
                     <div
                       className={`${styles["record-refo-info"]} ${styles.attack}`}
@@ -360,7 +360,9 @@ const DetailBattle = ({
                           )
                         }
                       >
-                        {record.attackRepo.repomonNickname}
+                        {record.attackRepo.repomonNickname}{" "}
+                        {myRepomonNickname ===
+                          record.attackRepo.repomonNickname && "(나)"}
                       </p>
                     </div>
                   </div>
@@ -389,7 +391,11 @@ const DetailBattle = ({
                           )
                         }
                       >
-                        <p>{record.defenseRepo.repomonNickname}</p>
+                        <p>
+                          {record.defenseRepo.repomonNickname}{" "}
+                          {myRepomonNickname ===
+                            record.defenseRepo.repomonNickname && "(나)"}
+                        </p>
                       </p>
                     </div>
                     <Image
@@ -397,8 +403,8 @@ const DetailBattle = ({
                         record.defenseRepo.repomon.repomonUrl
                       )}.png`}
                       alt="방어 레포몬"
-                      width={50}
-                      height={50}
+                      width={45}
+                      height={45}
                     ></Image>
                   </div>
                 </div>

@@ -53,10 +53,10 @@ const Page = () => {
   };
 
   /** 초기화 버튼 클릭 시 */
-  // const onClickClearBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   setSearchInput("");
-  //   setSearchRequestSign(!searchRequestSign);
-  // };
+  const onClickClearBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setSearchInput("");
+    setSearchRequestSign(!searchRequestSign);
+  };
 
   return (
     <div>
@@ -87,15 +87,17 @@ const Page = () => {
               value={searchInput}
               onChange={onChangeSearchInput}
               onKeyDown={onKeyDownInSearch}
+              placeholder={
+                tabIndex === "레포몬" || tabIndex === "배틀"
+                  ? "레포지토리 명을 입력해주세요."
+                  : "유저 명을 입력해주세요."
+              }
             />
             <MagnifyingGlassCircleIcon
               onClick={onClickSearchBtn}
               className={styles["search-icon"]}
             />
           </div>
-          {/* <button className={styles.clear} onClick={onClickClearBtn}>
-            검색 초기화
-          </button> */}
           <div className={styles["banner-lottie"]}>
             <Lottie loop={false} animationData={rankingLottie} play />
           </div>
@@ -122,6 +124,9 @@ const Page = () => {
           className={tabIndex === "유저" ? styles.selected : undefined}
         >
           유저
+        </button>
+        <button className={styles.clear} onClick={onClickClearBtn}>
+          검색 초기화
         </button>
       </div>
       <div className={styles.content}>

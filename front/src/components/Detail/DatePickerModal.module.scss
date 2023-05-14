@@ -1,15 +1,13 @@
 @import "@/styles/variables.scss";
 
 .open {
-  margin-left: 0.3rem;
-  width: 25px;
-  color: rgb(140, 140, 140);
-  transition: transform 1s ease-in-out;
+  margin-left: 0.5rem;
+  width: 22px;
+  color: rgb(80, 80, 80);
 
   &:hover {
     cursor: pointer;
     color: rgb(130, 130, 130);
-    transform: rotate(180deg);
   }
 }
 

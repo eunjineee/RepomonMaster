@@ -4,7 +4,7 @@ import { conventionType } from "@/types/repoRegist";
 
 export const axiosRequestRepoDetail = async (
   repoId: number,
-  userId?: number
+  userId: number
 ) => {
   if (userId) {
     const res = await http.get(`repo/${repoId}/info/${userId}`);
@@ -162,6 +162,15 @@ export const axiosRequestUpdateRepoPersonalCard = async (
   userId: number
 ) => {
   const res = http.get(`repo/${repoId}/card/personal/${userId}`);
+
+  return res;
+};
+
+export const axiosRequestSetRepresent = async (
+  repoId: number,
+  userId: number
+) => {
+  const res = http.put(`user/${userId}/represent?repoId=${repoId}`);
 
   return res;
 };
