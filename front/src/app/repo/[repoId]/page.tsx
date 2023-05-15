@@ -54,6 +54,8 @@ function Page({ params }: { params: { repoId: string } }) {
   const [repoDetailInfo, setRepoDetailInfo] = useState<RepoDetailType>();
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  /** 갱신 버튼 업데이트 */
+  const [isUpdated2, setIsUpdated2] = useState<boolean>(false);
   const [repoDetailResearchInfo, setRepoDetailResearchInfo] =
     useState<RepoDetailResearchType>();
   const [repoDetailBattleInfo, setRepoDetailBattleInfo] =
@@ -82,7 +84,12 @@ function Page({ params }: { params: { repoId: string } }) {
       parseInt(params.repoId, 10),
       parseInt(loginUserId as string, 10)
     );
-  }, [isUpdated]);
+  }, [isUpdated, isUpdated2]);
+
+  useEffect(() => {
+    requestRepoDetailResearch(parseInt(params.repoId, 10));
+    requestRepoDetailContribution(parseInt(params.repoId, 10));
+  }, [isUpdated2]);
 
   /** 배틀 정보 불러오기 + 스탯 변경 시 재요청 */
   useEffect(() => {
@@ -92,14 +99,12 @@ function Page({ params }: { params: { repoId: string } }) {
   /** 컨벤션 정보 불러오기 + 컨벤션 수정 시 재요청 */
   useEffect(() => {
     requestRepoDetailConvention(parseInt(params.repoId, 10));
-  }, [conventionUpdated]);
+  }, [conventionUpdated, isUpdated2]);
 
   /** 레포 정보 불러오기 */
   useEffect(() => {
-    requestRepoDetailResearch(parseInt(params.repoId, 10));
     requestBattleRanking(parseInt(params.repoId, 10));
     requestBattleRecord(parseInt(params.repoId, 10));
-    requestRepoDetailContribution(parseInt(params.repoId, 10));
   }, []);
 
   useEffect(() => {
@@ -261,7 +266,7 @@ function Page({ params }: { params: { repoId: string } }) {
       setUpdateLoading(true);
       const res = await axiosRequestRepoDetailUpdate(repoId);
       console.log("레포 정보 갱신: ", res);
-      setIsUpdated(!isUpdated);
+      setIsUpdated2(!isUpdated2);
     } catch (err) {
       console.error(err);
       customAlert("잠시후 다시 시도해주세요.");
