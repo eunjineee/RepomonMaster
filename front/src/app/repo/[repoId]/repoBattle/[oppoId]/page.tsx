@@ -21,7 +21,7 @@ import SoundOn from "@/components/UI/SoundOn";
 import Modal from "react-modal";
 import { useRouter } from "next/navigation";
 
-const Page = () => {
+const Page = ({ params }: { params: { repoId: number; oppoId: number } }) => {
   const [loadData, setLoadData] = useState<boolean>(false);
   const [matchData, setMatchData] = useState<BattleResultResponseDataType>();
   const [opHp, setopHp] = useState<number | undefined>(
@@ -262,8 +262,8 @@ const Page = () => {
   // 애니메이션 제어 테스트
   const [doMyAttack, setDoMyAttack] = useState<boolean>(false);
   const [doAttack, setDoAttack] = useState<boolean>(false);
-  let oppoId = 3;
-  let myId = 6;
+  let oppoId = params.oppoId;
+  let myId = params.repoId;
   function getMatchResult() {
     // oppo - my
     return requestMatchResult(oppoId, myId);
