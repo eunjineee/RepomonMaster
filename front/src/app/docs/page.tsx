@@ -227,7 +227,7 @@ function Page() {
               티어는 <strong>브론즈, 실버, 골드, 플래티넘, 다이아</strong> 총 다섯 가지 단계로 구분됩니다.
             </li>
             <li>
-              레이팅 기준 <strong>1,000점</strong> 미만은 브론즈, <strong>1,000점부터 1,999점</strong>은 실버, <strong>1,200점부터 1,399점</strong>은 골드, <strong>1,400점부터 1,599점</strong>은
+              레이팅 기준 <strong>1,000점</strong> 미만은 브론즈, <strong>1,000점부터 1,199점</strong>은 실버, <strong>1,200점부터 1,399점</strong>은 골드, <strong>1,400점부터 1,599점</strong>은
               플래티넘, <strong>1,600점 이상</strong>은 다이아 로 구분됩니다. (2023.05.10 기준)
             </li>
             <li>
