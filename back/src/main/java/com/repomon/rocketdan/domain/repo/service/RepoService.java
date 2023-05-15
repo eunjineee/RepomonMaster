@@ -388,20 +388,24 @@ public class RepoService {
 					updateRepositoryInfo(repoEntity, ghRepository, List.of(userEntity));
 				},
 				() -> {
-					RepomonEntity repomonEntity = repomonRepository.findById(9999L).orElseThrow(() -> {
-							throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
-						});
+					if(ghRepository.getSize() > 0) {
+						RepomonEntity repomonEntity = repomonRepository.findById(9999L)
+							.orElseThrow(() -> {
+								throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
+							});
 
-					String orgName = ghRepository.getOwnerName();
-					if (!orgName.equals(userEntity.getUserName())) {
-						orgName = ghUtils.getOrganizationFirstOwner(orgName);
+						String orgName = ghRepository.getOwnerName();
+						if (!orgName.equals(userEntity.getUserName())) {
+							orgName = ghUtils.getOrganizationFirstOwner(orgName);
+						}
+
+						RepomonStatusEntity repomonStatusEntity = RepomonStatusEntity.fromGHRepository(
+							orgName, ghRepository, repomonEntity);
+						repomonStatusRepository.save(repomonStatusEntity);
+						activeRepoRepository.save(ActiveRepoEntity.of(userEntity, repomonStatusEntity));
+
+						initRepositoryInfo(repomonStatusEntity, ghRepository, null);
 					}
-
-					RepomonStatusEntity repomonStatusEntity = RepomonStatusEntity.fromGHRepository(orgName, ghRepository, repomonEntity);
-					repomonStatusRepository.save(repomonStatusEntity);
-					activeRepoRepository.save(ActiveRepoEntity.of(userEntity, repomonStatusEntity));
-
-					initRepositoryInfo(repomonStatusEntity, ghRepository, null);
 				});
 		});
 	}
@@ -556,17 +560,21 @@ public class RepoService {
 				});
 			}
 		}, () -> {
-			Long exp = initRepositoryInfo(repoEntity, ghRepository, null);
 
-			if (repoEntity.getIsActive()) {
-				userEntities.forEach(userEntity -> {
+			if(ghRepository.getSize() > 0) {
+				Long exp = initRepositoryInfo(repoEntity, ghRepository, null);
 
-					redisListRepository.findAllByUserName(userEntity.getUserName()).forEach(repoListResponseDto -> {
-						redisListRepository.delete(repoListResponseDto);
+				if (repoEntity.getIsActive()) {
+					userEntities.forEach(userEntity -> {
+
+						redisListRepository.findAllByUserName(userEntity.getUserName())
+							.forEach(repoListResponseDto -> {
+								redisListRepository.delete(repoListResponseDto);
+							});
+
+						userEntity.updateTotalExp(exp);
 					});
-
-					userEntity.updateTotalExp(exp);
-				});
+				}
 			}
 		});
 

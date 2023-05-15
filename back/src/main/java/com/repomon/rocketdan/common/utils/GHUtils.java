@@ -79,7 +79,7 @@ public class GHUtils {
 
 
 	private Map<String, GHRepository> getRepositories(GHUser user) throws IOException {
-		String name = user.getLogin();
+		String name = user.getLogin().toLowerCase();
 
 		Map<String, GHRepository> repositories = new HashMap<>(user.getRepositories());
 		Map<String, GHRepository> repositoriesWithNodeKey = new HashMap<>();
