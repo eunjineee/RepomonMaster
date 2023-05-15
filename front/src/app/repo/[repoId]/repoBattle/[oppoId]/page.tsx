@@ -23,7 +23,7 @@ import Modal from "react-modal";
 import { useRouter } from "next/navigation";
 import Grass from "../Grass";
 
-const Page = ({ params }: { params: { repoId: number; oppoId: number } }) => {
+const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
   const [loadData, setLoadData] = useState<boolean>(false);
   const [matchData, setMatchData] = useState<BattleResultResponseDataType>();
   const [opHp, setopHp] = useState<number | undefined>(
@@ -35,6 +35,17 @@ const Page = ({ params }: { params: { repoId: number; oppoId: number } }) => {
     matchData?.data.attackRepo.hp
   );
   const router = useRouter();
+
+  let oppoId = parseInt(params.oppoId);
+  let myId = parseInt(params.repoId);
+
+  console.log(typeof oppoId);
+  console.log(typeof myId);
+
+  function getMatchResult() {
+    // oppo - my
+    return requestMatchResult(oppoId, myId);
+  }
 
   // 새로고침 방지
   const preventClose = (e: BeforeUnloadEvent) => {
@@ -64,7 +75,7 @@ const Page = ({ params }: { params: { repoId: number; oppoId: number } }) => {
         case "3":
           return [3, 3, 3];
         default:
-          return [9, 9, 9];
+          return [4, 4, 4];
       }
     };
     const getModelPosition = (str: string): number[] => {
@@ -137,7 +148,7 @@ const Page = ({ params }: { params: { repoId: number; oppoId: number } }) => {
         case "3":
           return [2.5, 2.5, 2.5];
         default:
-          return [9, 9, 9];
+          return [2.5, 2.5, 2.5];
       }
     };
     const getModelPosition = (str: string): number[] => {
@@ -374,12 +385,6 @@ const Page = ({ params }: { params: { repoId: number; oppoId: number } }) => {
   };
 
   // 애니메이션 제어 테스트
-  let oppoId = params.oppoId;
-  let myId = params.repoId;
-  function getMatchResult() {
-    // oppo - my
-    return requestMatchResult(oppoId, myId);
-  }
 
   useEffect(() => {
     getMatchResult()
