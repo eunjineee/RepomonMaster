@@ -36,7 +36,7 @@
         color: rgb(255, 88, 88);
       }
 
-      &:hover {
+      & span:hover {
         color: $highlight;
       }
     }

@@ -329,7 +329,7 @@ function Page({ params }: { params: { repoId: string } }) {
                   <SolidHeartIcon className={styles["color-heart"]} />
                 )}
                 {!repoDetailInfo.myPresentRepo && <HeartIcon />}
-                대표 레포지토리 설정
+                <span>대표 레포지토리 설정</span>
               </button>
             )}
           </div>
