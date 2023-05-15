@@ -46,7 +46,7 @@ def svg_chart(request):
     radar_chart.x_labels = ['', '', '', '', '', '']
     radar_chart.add('Exp', request)
     chartspider = radar_chart.render()
-
+    # print('💙',chartspider)
     response = svg_to_base64(chartspider)
 
     return response
@@ -964,7 +964,7 @@ class UserDefaultSettings(object):
                 self.avgContribution_percent = self.percent(self.avgContribution)
 
                 self.userName = self.json['userName'] 
-                self.avatarUrl = self.json['avatarUrl'] 
+                self.avatarUrl = self.avatarUrl_to(self.json['avatarUrl'])
                 self.introduce = self.is_none(self.json['introduce']) 
                 self.repoCount = self.json['repoCount'] 
             
@@ -1039,6 +1039,13 @@ class UserDefaultSettings(object):
             return ''
         else:
             return data
+
+    def avatarUrl_to(self, data):
+        response = requests.get(data)
+        b64_data = base64.b64encode(response.content).decode('utf-8')
+        image_url = f"data:image/png;base64,{b64_data}"
+        return image_url
+
 
 def user_card(request):
     pocket = IMG['pocket']
