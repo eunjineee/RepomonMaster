@@ -92,7 +92,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
         case "2":
           return [4, 4, 4];
         case "3":
-          return [3, 3, 3];
+          return [5, 5, 5];
         default:
           return [6, 6, 6];
       }
@@ -629,7 +629,6 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
                           : matchData?.data.defenseRepo.repomon.repomonUrl || ""
                       }
                     />
-                    {/* <ShadowCircle /> */}
                     <Grass />
                     <MyUI />
                     <OpUI />
