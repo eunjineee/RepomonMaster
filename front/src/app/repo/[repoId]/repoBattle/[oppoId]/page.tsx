@@ -36,16 +36,35 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
   );
   const router = useRouter();
 
+  // 데이터 로드
   let oppoId = parseInt(params.oppoId);
   let myId = parseInt(params.repoId);
 
-  console.log(typeof oppoId);
-  console.log(typeof myId);
-
-  function getMatchResult() {
+  function getMatchResult(op: number, my: number) {
     // oppo - my
     return requestMatchResult(oppoId, myId);
   }
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await getMatchResult(
+          parseInt(params.oppoId),
+          parseInt(params.repoId)
+        );
+        const data = response.data;
+        setMatchData(data);
+        setopHp(data?.data.defenseRepo.hp);
+        setmyHp(data?.data.attackRepo.hp);
+        setLoadData(true);
+        console.log("매치 정보", data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   // 새로고침 방지
   const preventClose = (e: BeforeUnloadEvent) => {
@@ -165,7 +184,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
     const [positionState, setPositionState] = useState<number[]>(
       getModelPosition(str)
     );
-    const gltf = useLoader(GLTFLoader, props.url ?? "");
+    const gltf = useLoader(GLTFLoader, props.url + `?id=${oppoId}` ?? "");
 
     let mixer: THREE.AnimationMixer | undefined;
     let action: THREE.AnimationAction | undefined;
@@ -384,23 +403,6 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
     );
   };
 
-  // 애니메이션 제어 테스트
-
-  useEffect(() => {
-    getMatchResult()
-      .then((response) => {
-        const data = response.data;
-        setMatchData(data);
-        setLoadData(true);
-        console.log("매치 정보", data);
-        setopHp(data?.data.defenseRepo.hp);
-        setmyHp(data?.data.attackRepo.hp);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
   // audio control
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -580,68 +582,68 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
           />
         )}
         <>
-          <div className={styles.gameWrapper} ref={gameWrapper}>
-            <div className={styles.gameBox}>
-              <div
-                onClick={() => setSoundOn(!soundOn)}
-                style={{
-                  cursor: "pointer",
-                  marginLeft: "2em",
-                  position: "absolute",
-                  zIndex: 9999,
-                  top: "1em",
-                  right: "2em",
-                }}
-              >
-                {soundOn ? <SoundOn /> : <SoundOff />}
+          {loadData && (
+            <div className={styles.gameWrapper} ref={gameWrapper}>
+              <div className={styles.gameBox}>
+                <div
+                  onClick={() => setSoundOn(!soundOn)}
+                  style={{
+                    cursor: "pointer",
+                    marginLeft: "2em",
+                    position: "absolute",
+                    zIndex: 9999,
+                    top: "1em",
+                    right: "2em",
+                  }}
+                >
+                  {soundOn ? <SoundOn /> : <SoundOff />}
+                </div>
+                <Canvas
+                  style={{
+                    position: "relative",
+                    zIndex: 10,
+                  }}
+                >
+                  <Suspense fallback={<Loader />}>
+                    <ambientLight intensity={0.5} />
+                    <directionalLight
+                      color="white"
+                      position={[5, 0, 5]}
+                      intensity={0.6}
+                    />
+                    <Model
+                      url={
+                        matchData?.data.attackRepo.repomon.repomonUrl.includes(
+                          "Egg"
+                        )
+                          ? `https://repomon.s3.ap-northeast-2.amazonaws.com/models/Egg.glb`
+                          : matchData?.data.attackRepo.repomon.repomonUrl || ""
+                      }
+                    />
+                    <SecondModel
+                      url={
+                        matchData?.data.defenseRepo.repomon.repomonUrl.includes(
+                          "Egg"
+                        )
+                          ? `https://repomon.s3.ap-northeast-2.amazonaws.com/models/Egg.glb`
+                          : matchData?.data.defenseRepo.repomon.repomonUrl || ""
+                      }
+                    />
+                    {/* <ShadowCircle /> */}
+                    <Grass />
+                    <MyUI />
+                    <OpUI />
+                    <EndModal />
+                  </Suspense>
+                </Canvas>
               </div>
-              <Canvas
-                style={{
-                  position: "relative",
-                  zIndex: 10,
-                }}
-              >
-                <Suspense fallback={<Loader />}>
-                  <ambientLight intensity={0.5} />
-                  <directionalLight
-                    color="white"
-                    position={[5, 0, 5]}
-                    intensity={0.6}
-                  />
-                  <Model
-                    url={
-                      matchData?.data.attackRepo.repomon.repomonUrl.includes(
-                        "Egg"
-                      )
-                        ? `https://repomon.s3.ap-northeast-2.amazonaws.com/models/Egg.glb`
-                        : matchData?.data.attackRepo.repomon.repomonUrl || ""
-                    }
-                  />
-                  <SecondModel
-                    url={
-                      matchData?.data.defenseRepo.repomon.repomonUrl.includes(
-                        "Egg"
-                      )
-                        ? `https://repomon.s3.ap-northeast-2.amazonaws.com/models/Egg.glb`
-                        : matchData?.data.defenseRepo.repomon.repomonUrl || ""
-                    }
-                  />
-                  {/* <ShadowCircle /> */}
-                  <Grass />
-                  <MyUI />
-                  <OpUI />
-                  <EndModal />
-                </Suspense>
-              </Canvas>
-            </div>
-            <div className={styles.gameLogBox} onClick={handleNext}>
-              <div
-                style={{
-                  overflowY: "auto",
-                  position: "relative",
-                }}
-              >
-                {loadData ? (
+              <div className={styles.gameLogBox} onClick={handleNext}>
+                <div
+                  style={{
+                    overflowY: "auto",
+                    position: "relative",
+                  }}
+                >
                   <div
                     style={{
                       display: "flex",
@@ -660,12 +662,10 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
                       ▼
                     </p>
                   </div>
-                ) : (
-                  <Spinner />
-                )}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </>
       </div>
     </div>
