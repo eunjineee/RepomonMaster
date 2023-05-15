@@ -233,6 +233,9 @@ function Page() {
             <li>
               현재 티어에 따라 닉네임 옆에 <strong>특정 마크</strong>가 부착됩니다.
             </li>
+            <div>
+              <img className="ms-5 border-4" src="/static/tier/tiers.png" alt="x" style={{ height: '100px' }}></img>
+            </div>
           </div>
         </div>
 
