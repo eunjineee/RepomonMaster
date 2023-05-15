@@ -18,6 +18,11 @@ locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 logger = logging.getLogger('testlogger')
 
+def avatarUrl_to(data):
+    response = requests.get(data)
+    b64_data = base64.b64encode(response.content).decode('utf-8')
+    image_url = f"data:image/png;base64,{b64_data}"
+    return image_url
 
 def svg_to_base64(svg_code):
     png_data = cairosvg.svg2png(bytestring=svg_code)
@@ -566,7 +571,7 @@ class RepoPersonalDefaultSettings(object):
                 self.reviews = self.json['reviews']
 
                 self.gitname = self.json['userName'] 
-                self.avatarUrl = self.json['avatarUrl'] 
+                self.avatarUrl = avatarUrl_to(self.json['avatarUrl'])
 
                 self.mycommits = self.json['mycommit']
                 self.myissues = self.json['myissues']
@@ -964,7 +969,7 @@ class UserDefaultSettings(object):
                 self.avgContribution_percent = self.percent(self.avgContribution)
 
                 self.userName = self.json['userName'] 
-                self.avatarUrl = self.avatarUrl_to(self.json['avatarUrl'])
+                self.avatarUrl = avatarUrl_to(self.json['avatarUrl'])
                 self.introduce = self.is_none(self.json['introduce']) 
                 self.repoCount = self.json['repoCount'] 
             
@@ -1039,12 +1044,6 @@ class UserDefaultSettings(object):
             return ''
         else:
             return data
-
-    def avatarUrl_to(self, data):
-        response = requests.get(data)
-        b64_data = base64.b64encode(response.content).decode('utf-8')
-        image_url = f"data:image/png;base64,{b64_data}"
-        return image_url
 
 
 def user_card(request):
@@ -1198,7 +1197,6 @@ def user_card(request):
     <rect width="600" height="230" rx="10" ry="10" class="background"/>
     
     <circle cx="213" cy="43" r="22" fill="url(#avatarUrl)"/>
-    <image href="{avatarUrl}" x="150" y="25" width="30px" height="30px" class="repomon-img"/>
     <text x="241" y="41" class="repo-handle">{gitname}</text>
     <image href="{pocket}" x="241" y="50" width="14px"/><text x="259" y="61" font-size="0.6em">{repoCount}</text>
     <text x="275" y="62" font-size="0.75em">{introduce}</text>
