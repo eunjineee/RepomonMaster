@@ -275,7 +275,7 @@ public class RepomonService {
 	 * @return
 	 */
 	public BattleLogListResponseDto getBattleLogList(Long repoId) {
-		List<BattleLogEntity> battleLogList = battleLogRepository.findTop10ByRepoIdOrderByDesc(
+		List<BattleLogEntity> battleLogList = battleLogRepository.findTop5ByRepoIdOrderByDesc(
 			repoId);
 		if (battleLogList.isEmpty()) {
 			throw new CustomException(NOT_FOUND_ENTITY);

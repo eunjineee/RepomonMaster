@@ -13,7 +13,7 @@ public interface BattleLogRepository extends JpaRepository<BattleLogEntity, Long
 
 	@Query(nativeQuery = true, value = "SELECT * FROM battle_log " +
 		"where attack_repo_id = :repo_id or defense_repo_id = :repo_id " +
-		"ORDER BY created_at DESC LIMIT 10 ")
-	List<BattleLogEntity> findTop10ByRepoIdOrderByDesc(@Param("repo_id") Long repoId);
+		"ORDER BY created_at DESC LIMIT 5 ")
+	List<BattleLogEntity> findTop5ByRepoIdOrderByDesc(@Param("repo_id") Long repoId);
 
 }
