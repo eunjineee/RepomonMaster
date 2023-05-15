@@ -33,12 +33,7 @@
 
       .color-heart {
         width: 18px;
-        background: rgb(255, 88, 88);
-        background: linear-gradient(
-          47deg,
-          rgba(255, 88, 88, 1) 0%,
-          rgba(255, 155, 155, 0.5) 100%
-        );
+        color: rgb(255, 88, 88);
       }
 
       &:hover {

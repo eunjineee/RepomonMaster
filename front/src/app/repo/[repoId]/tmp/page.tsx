@@ -11,6 +11,7 @@ import DetailConvention from "@/components/Detail/DetailConvention";
 import { RepoDetailConventionInfoType } from "@/types/repoDetail";
 import { axiosRequestRepoDetailConvention } from "@/api/repoDetail";
 import MatchModal from "@/components/Detail/MatchModal";
+import { HeartIcon } from "@heroicons/react/24/solid";
 
 function Page() {
   const [repomonUrl, setRepomonUrl] = useState(
@@ -55,6 +56,7 @@ function Page() {
 
   return (
     <div className={styles.pageContainer} id="repo-detail">
+      <HeartIcon style={{ color: "red" }} />
       <button onClick={onClickSibal}>시발</button>
       {/* <div className={styles.info}>
         <div className={styles["repo-mon-card-div"]}>

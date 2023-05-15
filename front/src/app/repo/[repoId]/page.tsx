@@ -162,9 +162,7 @@ function Page({ params }: { params: { repoId: string } }) {
 
     setTabIndex(parseInt(target.id, 10));
     sessionStorage.setItem("tabIndex", target.id);
-    if (tabRef.current) {
-      tabRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    window.scrollTo(0, 410);
   };
 
   const onClickUpdateBtn = () => {
@@ -419,14 +417,12 @@ function Page({ params }: { params: { repoId: string } }) {
                 )}
               </p>
               <div className={styles["lan-div-container"]}>
-                {lanRef.current && lanRef.current.offsetWidth > 400 && (
-                  <button
-                    className={styles["scroll-btn-left"]}
-                    onClick={scrollLeft}
-                  >
-                    &lt;
-                  </button>
-                )}
+                <button
+                  className={styles["scroll-btn-left"]}
+                  onClick={scrollLeft}
+                >
+                  &lt;
+                </button>
                 <div className={styles["lan-div"]} ref={lanRef}>
                   {repoDetailInfo.languages &&
                     repoDetailInfo.languages.map((lan, index) => (
@@ -442,14 +438,12 @@ function Page({ params }: { params: { repoId: string } }) {
                       </span>
                     ))}
                 </div>
-                {lanRef.current && lanRef.current.offsetWidth > 400 && (
-                  <button
-                    className={styles["scroll-btn-right"]}
-                    onClick={scrollRight}
-                  >
-                    &gt;
-                  </button>
-                )}
+                <button
+                  className={styles["scroll-btn-right"]}
+                  onClick={scrollRight}
+                >
+                  &gt;
+                </button>
               </div>
               <p className={styles.des}>
                 {repoDetailInfo.repoDescription ? (
