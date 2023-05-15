@@ -92,7 +92,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
     const [positionState, setPositionState] = useState<number[]>(
       getModelPosition(str)
     );
-    const gltf = useLoader(GLTFLoader, props.url + "?id=1" ?? "");
+    const gltf = useLoader(GLTFLoader, props.url + `?id=${myId}` ?? "");
     console.log(gltf.animations);
     let mixer: THREE.AnimationMixer | undefined;
     if (gltf.animations.length) {
@@ -165,7 +165,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
     const [positionState, setPositionState] = useState<number[]>(
       getModelPosition(str)
     );
-    const gltf = useLoader(GLTFLoader, props.url + "?id=2" ?? "");
+    const gltf = useLoader(GLTFLoader, props.url + `?id=${oppoId}` ?? "");
 
     let mixer: THREE.AnimationMixer | undefined;
     let action: THREE.AnimationAction | undefined;
