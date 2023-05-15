@@ -165,7 +165,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
     const [positionState, setPositionState] = useState<number[]>(
       getModelPosition(str)
     );
-    const gltf = useLoader(GLTFLoader, props.url + `?id=${oppoId}` ?? "");
+    const gltf = useLoader(GLTFLoader, props.url ?? "");
 
     let mixer: THREE.AnimationMixer | undefined;
     let action: THREE.AnimationAction | undefined;
