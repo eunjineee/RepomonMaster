@@ -137,6 +137,11 @@ public class RepomonService {
 			throw new CustomException(NO_ACCESS);
 		}
 
+		// 알인지 확인
+		if (repomonStatus.getRepomon().getRepomonId() > 9000) {
+			throw new CustomException(NOT_ALLOW_EGG);
+		}
+
 		String repomonOwner = repomonStatus.getRepoOwner();
 		Integer userRating = repomonStatus.getRating();
 		int index = 1;
@@ -174,6 +179,11 @@ public class RepomonService {
 		// 권한 검증
 		if (!SecurityUtils.getCurrentUserId().equals(myRepomon.getRepoOwner())) {
 			throw new CustomException(NO_ACCESS);
+		}
+
+		// 알인지 확인
+		if (myRepomon.getRepomon().getRepomonId() > 9000) {
+			throw new CustomException(NOT_ALLOW_EGG);
 		}
 
 		RepomonStatusEntity yourRepomon = repomonStatusRepository.findById(
