@@ -24,7 +24,7 @@ const Header = () => {
 
   /** ======================================== useEffect ======================================== */
   useEffect(() => {
-    if (login) {
+    if (login || sessionStorage.getItem("accessToken")) {
       setUserId(parseInt(sessionStorage.getItem("userId") as string, 10));
       setAvatarUrl(sessionStorage.getItem("avatarUrl") as string);
       console.log(typeof sessionStorage.getItem("avatarUrl") as string);
