@@ -10,7 +10,6 @@ import { axiosRequestLogout } from "@/api/auth";
 import { usePathname, useRouter } from "next/navigation";
 import gitCat from "../../public/git_cat.svg";
 import { getBaseURL } from "@/api/axios";
-import path from "path";
 
 const Header = () => {
   const githubLoginUrl = getBaseURL() + "/oauth2/authorization/github";

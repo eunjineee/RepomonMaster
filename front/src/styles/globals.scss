@@ -1,8 +1,9 @@
-@import './variables.scss';
+@import "./variables.scss";
 
 body {
-  font-family: 'SUIT-Regular';
+  font-family: "SUIT-Regular";
   color: rgb(50, 50, 50);
+  width: calc(100vw - 10px);
 }
 
 a {

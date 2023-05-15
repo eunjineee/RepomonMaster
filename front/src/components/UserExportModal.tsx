@@ -39,7 +39,6 @@ const UserExportModal = ({ userId }: { userId: string }) => {
   const [first, setFirst] = useState<boolean>(true);
   const [applyLanLoading, setApplyLanLoading] = useState<boolean>(false);
 
-  /**  */
   useEffect(() => {
     if (!first && lans && applied) {
       setUpdateLoading(false);
@@ -49,6 +48,9 @@ const UserExportModal = ({ userId }: { userId: string }) => {
 
   /** ============================== 함수, Event Handler ============================== */
   const onClickExportBtn = async () => {
+    if (updateLoading) {
+      return;
+    }
     updateUserCard(parseInt(userId, 10));
     getUserLan(parseInt(userId, 10));
     getUserCardLan(parseInt(userId, 10));
@@ -56,6 +58,10 @@ const UserExportModal = ({ userId }: { userId: string }) => {
 
   const closeModal = () => {
     setIsOpen(false);
+    setUpdateLoading(false);
+    setSelected([]);
+    setFirst(true);
+    setApplyLanLoading(false);
   };
 
   const onClickLan = (lan: string) => {

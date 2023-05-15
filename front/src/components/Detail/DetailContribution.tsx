@@ -10,32 +10,19 @@ function DetailContribution({
 }: {
   contributionInfo: RepoDetailContributionInfoType;
 }) {
-  let len: number;
-  let commitDesc: number[] = [];
-  let newCommitters: { rank: number; id: string; commitCnt: number }[] = [];
+  const committersArr = Object.entries(contributionInfo.committers);
 
-  if (contributionInfo.committers) {
-    commitDesc = Object.values(contributionInfo.committers).sort(function (
-      a,
-      b
-    ) {
-      return b - a;
-    });
+  committersArr.sort((a, b) => b[1] - a[1]);
 
-    len = commitDesc.length > 10 ? 10 : commitDesc.length;
-
-    for (let i = 0; i < len; i++) {
-      for (let commiter in contributionInfo.committers) {
-        if (contributionInfo.committers[commiter] === commitDesc[i]) {
-          newCommitters.push({
-            rank: i + 1,
-            id: commiter,
-            commitCnt: commitDesc[i],
-          });
-        }
-      }
+  let rank = 1;
+  let prevCommitCnt = committersArr[0][1];
+  const rankedCommitters = committersArr.map(([id, commitCnt]) => {
+    if (commitCnt < prevCommitCnt) {
+      rank++;
+      prevCommitCnt = commitCnt;
     }
-  }
+    return { id, commitCnt, rank };
+  });
 
   return (
     <div>
@@ -69,21 +56,22 @@ function DetailContribution({
               <span>Git ID</span>
               <span>커밋 수</span>
             </div>
-            {newCommitters.map((data, index) => (
-              <div
-                key={index}
-                className={
-                  data.rank === 1
-                    ? `${styles["item-line"]} ${styles.top}`
-                    : styles["item-line"]
-                }
-              >
-                <span>{data.rank}</span>
-                <span>{data.id}</span>
-                <span>{data.commitCnt}</span>
-              </div>
-            ))}
-            {commitDesc?.length > 10 && <p className={styles.omis}>...</p>}
+            <div className={styles["item-div"]}>
+              {rankedCommitters.map((data, index) => (
+                <div
+                  key={index}
+                  className={
+                    data.rank === 1
+                      ? `${styles["item-line"]} ${styles.top}`
+                      : styles["item-line"]
+                  }
+                >
+                  <span>{data.rank}</span>
+                  <span>{data.id}</span>
+                  <span>{data.commitCnt}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

@@ -36,41 +36,48 @@
     font-size: 1rem;
   }
 
-  & > div {
+  .title-line {
     display: grid;
     grid-template-columns: 1fr 2.5fr 1fr;
     border-radius: 5px;
+    margin: 0 0 0.5rem 0;
+    padding: 0.5rem 0;
+    background-color: $sub;
+    color: white;
 
     & span {
       text-align: center;
     }
   }
 
-  .title-line {
-    margin: 0 0 0.5rem 0;
-    padding: 0.5rem 0;
-    background-color: $sub;
-    color: white;
-  }
+  .item-div {
+    height: 400px;
+    overflow-y: auto;
 
-  .item-line {
-    margin: 0 0 0.5rem 0;
-    padding: 0.3rem 0;
-
-    &:hover {
-      background-color: aliceblue;
+    &::-webkit-scrollbar {
+      width: 7px;
     }
-  }
 
-  .top {
-    color: rgb(162, 101, 255);
-    font-weight: bold;
-  }
+    .item-line {
+      margin: 0 0 0.5rem 0;
+      padding: 0.3rem 0;
+      display: grid;
+      grid-template-columns: 1fr 2.5fr 1fr;
+      border-radius: 5px;
 
-  .omis {
-    text-align: center;
-    font-size: 2rem;
-    color: rgb(118, 118, 118);
+      &:hover {
+        background-color: aliceblue;
+      }
+
+      & span {
+        text-align: center;
+      }
+    }
+
+    .top {
+      color: rgb(162, 101, 255);
+      font-weight: bold;
+    }
   }
 }
 

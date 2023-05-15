@@ -58,10 +58,6 @@ const ExportModal = ({
 
   /** ============================== useEffect ============================== */
   useEffect(() => {
-    requestPersonalLans();
-  }, []);
-
-  useEffect(() => {
     if (repoCardUpdated && repoPersonalCardUpdated) {
       setLoading(false);
       setIsOpen(true);
@@ -71,14 +67,27 @@ const ExportModal = ({
 
   /** ============================== 함수, Event Handler ============================== */
   const openModal = () => {
+    if (loading) {
+      return;
+    }
     requestUpdateRepoCard();
     requestUpdateRepoPersonalCard();
   };
 
-  const afterOpenModal = () => {};
+  const afterOpenModal = () => {
+    requestPersonalLans();
+  };
 
   const closeModal = () => {
     setIsOpen(false);
+    setRepoCardUpdated(false);
+    setRepoPersonalCardUpdated(false);
+    setLoading(false);
+    setKind("레포 카드");
+    setShowKind(false);
+    setSelected([]);
+    setIsFirst(true);
+    setUpdateRepoPersonalLoading(false);
   };
 
   const onClickKindItem = (e: React.MouseEvent<HTMLLIElement>) => {
