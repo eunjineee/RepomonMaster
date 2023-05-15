@@ -47,12 +47,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		Map<String, Object> userAttributes = oAuth2User.getAttributes();
 		String accessToken = userRequest.getAccessToken().getTokenValue();
 		String login = (String) userAttributes.get("login");
-		String name = (String) userAttributes.get("name");
+//		String name = (String) userAttributes.get("name");
 		String avatarUrl = (String) userAttributes.get("avatar_url");
 		Long userId = authService.login(login);
 
-		name = name == null ? "" : name;
-		GithubOAuth2UserInfo userInfo = new GithubOAuth2UserInfo(userId, login, name, accessToken, avatarUrl);
+//		name = name == null ? "" : name;
+		GithubOAuth2UserInfo userInfo = new GithubOAuth2UserInfo(userId, login, accessToken, avatarUrl);
 
 		return new DefaultOAuth2User(
 			Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
@@ -63,11 +63,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 	public class GithubOAuth2UserInfo {
 		private Map<String, Object> attributes;
 
-		public GithubOAuth2UserInfo(Long userId, String login, String name, String accessToken, String avatarUrl) {
+		public GithubOAuth2UserInfo(Long userId, String login, String accessToken, String avatarUrl) {
 			attributes = new HashMap<>();
 			attributes.put("userId", userId);
 			attributes.put("login", login);
-			attributes.put("name", name);
+//			attributes.put("name", name);
 			attributes.put("avatarUrl", avatarUrl);
 			attributes.put("accessToken", accessToken);
 		}
@@ -77,7 +77,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		}
 
 		public String getNameAttributeKey() {
-			return "name";
+			return "login";
 		}
 	}
 

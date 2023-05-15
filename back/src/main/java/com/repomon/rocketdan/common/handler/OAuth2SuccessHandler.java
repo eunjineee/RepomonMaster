@@ -37,13 +37,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 		Long userId = oAuth2User.getAttribute("userId");
 		String username = oAuth2User.getAttribute("login");
-		String name = oAuth2User.getAttribute("name");
+//		String name = oAuth2User.getAttribute("name");
 		String avatarUrl = oAuth2User.getAttribute("avatarUrl");
 		AuthResponseDto authResponseDto = authTokenProvider.createToken(userId);
 
-		name = URLEncoder.encode(name, StandardCharsets.UTF_8);
+//		name = URLEncoder.encode(name, StandardCharsets.UTF_8);
 		setDefaultTargetUrl(
-			frontUrl + "?access-token=" + authResponseDto.getAccessToken() + "&refresh-token=" + authResponseDto.getRefreshToken() + "&username=" + username + "&name=" + name + "&avatarUrl="
+			frontUrl + "?access-token=" + authResponseDto.getAccessToken() + "&refresh-token=" + authResponseDto.getRefreshToken() + "&username=" + username  + "&avatarUrl="
 				+ avatarUrl + "&userId=" + userId);
 		super.onAuthenticationSuccess(request, response, authentication);
 
