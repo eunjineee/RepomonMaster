@@ -3,7 +3,6 @@
 import { setActiveRepo } from '@/api/userRepo';
 import { useAppSelector } from '@/redux/hooks';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -29,19 +28,16 @@ type propType = {
 };
 
 function RepositoryCard(props: propType) {
-  // const [isActive, setIsActive] = useState<boolean | undefined>(props.isActive);
   const [userOriginId, setUserOriginId] = useState<number>();
   const login = useAppSelector((state) => state.authReducer.login);
   const router = useRouter();
 
-  async function handleClick() {
-    console.log('맵 레포 ID: ', props.repoId);
-
+  async function handleClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.stopPropagation();
     if (props.repoId) {
       try {
         const res = await setActiveRepo(props.repoId);
         console.log('레포 활성화 변경: ', res);
-        // setIsActive(!isActive);
         props.handleChangeIsActive(props.repoId);
       } catch (err) {
         console.error(err);
@@ -49,7 +45,8 @@ function RepositoryCard(props: propType) {
     }
   }
 
-  function handleBtnRegist() {
+  function handleBtnRegist(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.stopPropagation();
     router.push(`/repo/${props.repoId}/registRepo`);
   }
 
@@ -80,7 +77,6 @@ function RepositoryCard(props: propType) {
     }
   }, [props.isSameUser]);
 
-  console.log('@@@@@', props.isActive);
   return !props.isLoaded ? (
     <CardSkeleton />
   ) : (
@@ -89,8 +85,10 @@ function RepositoryCard(props: propType) {
       style={{
         opacity: props.isActive ? '1' : '0.5',
         backgroundColor: 'white',
+        cursor: props.isSameUser ? 'pointer' : props.isActive ? 'pointer' : 'auto',
       }}
-      id={styles.cardContainer}>
+      id={styles.cardContainer}
+      onClick={handleRouting}>
       <div
         style={{
           height: '10%',
@@ -106,8 +104,10 @@ function RepositoryCard(props: propType) {
           {props?.isActive ? 'Public' : 'Private'}
         </span>
         <label className='relative inline-flex items-center cursor-pointer'>
-          <input type='checkbox' className='sr-only peer' defaultChecked={false} onClick={() => handleClick()} checked={props.isActive} />
-          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          <input type='checkbox' className='sr-only peer' defaultChecked={false} checked={props.isActive} onClick={(e) => e.stopPropagation()} />
+          <div
+            onClick={handleClick}
+            className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
         </label>
       </div>
       <div
@@ -145,9 +145,7 @@ function RepositoryCard(props: propType) {
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
-                cursor: props.isSameUser ? 'pointer' : props.isActive ? 'pointer' : 'auto',
               }}
-              onClick={handleRouting}
               id={styles.repoTitle}>
               {props.title}
             </p>
@@ -155,6 +153,7 @@ function RepositoryCard(props: propType) {
               {props.desc === null ? '설명 없음' : props.desc}
             </p>
           </div>
+
           <div>
             {props.repomonId >= 9000 ? (
               <button
