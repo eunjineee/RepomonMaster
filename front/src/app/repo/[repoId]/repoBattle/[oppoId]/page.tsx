@@ -312,7 +312,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
               <button
                 type="button"
                 onClick={() => {
-                  router.push(`/repo/${myId}`);
+                  router.back();
                 }}
                 style={{ fontWeight: "600", marginTop: "2em", width: "auto" }}
               >

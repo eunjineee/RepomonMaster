@@ -64,6 +64,7 @@ function InputField(props: InputProps) {
           value={name || ""}
           onChange={handleInputField}
           disabled={isDisabled}
+          maxLength={10}
         />
         <button
           className={`flex-shrink-0 ${
