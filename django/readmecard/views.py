@@ -1198,6 +1198,7 @@ def user_card(request):
     <rect width="600" height="230" rx="10" ry="10" class="background"/>
     
     <circle cx="213" cy="43" r="22" fill="url(#avatarUrl)"/>
+    <image href="{avatarUrl}" x="150" y="25" width="30px" height="30px" class="repomon-img"/>
     <text x="241" y="41" class="repo-handle">{gitname}</text>
     <image href="{pocket}" x="241" y="50" width="14px"/><text x="259" y="61" font-size="0.6em">{repoCount}</text>
     <text x="275" y="62" font-size="0.75em">{introduce}</text>
