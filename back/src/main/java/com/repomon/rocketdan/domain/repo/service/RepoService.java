@@ -202,7 +202,9 @@ public class RepoService {
 		RepoConventionResponseDto responseDto = redisConventionRepository.findByRepoId(repoId)
 			.orElseGet(() -> findConventionDtoWithGHApi(repoEntity));
 
-		if (responseDto.getConventions().isEmpty()) {
+		long conventionCount = conventionRepository.countByRepo(repoEntity);
+
+		if (responseDto.getConventions().size() < conventionCount) {
 			redisConventionRepository.delete(responseDto);
 			responseDto = findConventionDtoWithGHApi(repoEntity);
 		}

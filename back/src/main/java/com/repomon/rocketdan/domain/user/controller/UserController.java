@@ -35,8 +35,7 @@ public class UserController {
 
 	@ApiOperation(value = "대표 레포몬을 설정합니다.")
 	@PutMapping("/{userId}/represent")
-	public ResponseEntity<ResultDto<Boolean>> modifyRepresentRepo(@PathVariable("userId") Long userId,
-	                                                              @RequestBody RepresentRepomonRequestDto requestDto) {
+	public ResponseEntity<ResultDto<Boolean>> modifyRepresentRepo(@PathVariable("userId") Long userId, @ModelAttribute RepresentRepomonRequestDto requestDto) {
 		userService.modifyRepresentRepo(userId, requestDto);
 		return ResponseEntity.ok().body(ResultDto.ofSuccess());
 	}

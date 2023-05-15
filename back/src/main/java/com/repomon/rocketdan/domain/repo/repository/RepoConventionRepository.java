@@ -10,4 +10,6 @@ public interface RepoConventionRepository extends JpaRepository<RepoConventionEn
     List<RepoConventionEntity> findAllByRepo(RepoEntity repoEntity);
 
     void deleteAllByRepo(RepoEntity repoEntity);
+
+    long countByRepo(RepoEntity repoEntity);
 }
