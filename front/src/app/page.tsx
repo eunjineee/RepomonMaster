@@ -141,32 +141,6 @@ const Home = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     setScrollY(window.scrollY);
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   if (fpRef.current && spRef.current && tpRef.current) {
-  //     if (scrollY < 550) {
-  //       fpRef.current.style.opacity = "0";
-  //       spRef.current.style.opacity = "0";
-  //       tpRef.current.style.opacity = "0";
-  //     } else {
-  //       fpRef.current.style.opacity = "1";
-  //       spRef.current.style.opacity = "1";
-  //       tpRef.current.style.opacity = "1";
-  //     }
-  //   }
-  // }, [scrollY]);
-
   // 우측버튼
   const banner = [Banner01, Banner02, Banner03];
   function getNextBanner() {
@@ -217,42 +191,7 @@ const Home = () => {
           {bannerComponent}
         </div>
       </div>
-      {/* <div className={styles.banner}>
-        <div className={styles.left}>
-          <h1 className={styles.title}>REPOMON</h1>
-          <p className={styles.comment}>
-            당신의 프로젝트와 함께할 레포몬은 무엇인가요?
-          </p>
-        </div>
-        <div className={styles.right}>
-          <div
-            className="bubble shadow large bottom"
-            id={styles.speechBubble}
-            style={{ opacity: "0", zIndex: "999" }}
-            ref={speech}
-          >
-            {gitTipsString?.msg}
-          </div>
-          <Canvas className={styles.rightCanvas}>
-            <ambientLight intensity={0.1} />
-            <ambientLight intensity={0.1} />
-            <directionalLight
-              color="white"
-              position={[0, 0, 5]}
-              intensity={0.5}
-            />
-            <directionalLight
-              color="white"
-              position={[-5, 0, -5]}
-              intensity={0.5}
-            />
-            <Model
-              isClicked={isClicked}
-              onIsClickedChange={handleIsClickedChange}
-            />
-          </Canvas>
-        </div>
-      </div> */}
+
       <div className={styles.service}>
         <h2 className={styles['service-title']}>
           <span>레포몬</span> 서비스 둘러보기

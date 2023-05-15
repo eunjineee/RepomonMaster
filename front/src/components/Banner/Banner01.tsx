@@ -127,7 +127,7 @@ const Banner01 = () => {
       <div className={styles.banner}>
         <div className={styles.left}>
           <p className={styles.title}>개발자이지만, 레포몬 마스터 !</p>
-          <p className='text-5xl'>나만의 레포몬을 생성해 보세요</p>
+          <p className={`${styles.desk125text3xl}`}>나만의 레포몬을 생성해 보세요</p>
           <p className='text-xl py-10'>레포몬을 클릭해 깃허브 사용 팁을 확인할 수 있어요 👍</p>
         </div>
         <div className={styles.right}>
