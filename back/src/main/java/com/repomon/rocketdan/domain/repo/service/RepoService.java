@@ -115,6 +115,7 @@ public class RepoService {
 	 * 레포 이름, 스타, 포크 수
 	 * 레포몬 이름, 레포 시작날짜, 종료날짜
 	 * 경험치, 랭킹, 성장요소 ( 히스토리 분석 ), 히스토리
+	 * 대표 레포 여부
 	 *
 	 * @param repoId
 	 * @return
@@ -137,9 +138,19 @@ public class RepoService {
 			throw new CustomException(ErrorCode.NOT_FOUND_PUBLIC_REPOSITORY);
 		}
 
-		boolean myRepo = userEntity == null ? false : activeRepoRepository.existsByUserAndRepo(userEntity, repoEntity);
+		boolean myRepo = false;
+		boolean myPresentRepo = false;
+		if(userEntity != null){
+			myRepo = activeRepoRepository.existsByUserAndRepo(userEntity, repoEntity);
+			if(myRepo){
+				ActiveRepoEntity activeRepoEntity = userEntity.getRepresentRepo().orElseGet(null);
+				if(activeRepoEntity != null){
+					myPresentRepo = repoEntity.getRepoId() == activeRepoEntity.getRepo().getRepoId();
+				}
 
-		return RepoResponseDto.fromEntityAndGHRepository(repoEntity, ghRepository, myRepo);
+			}
+		}
+		return RepoResponseDto.fromEntityAndGHRepository(repoEntity, ghRepository, myRepo, myPresentRepo);
 	}
 
 
