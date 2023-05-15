@@ -119,7 +119,7 @@ const BattleRank = ({
                 <span
                   style={{
                     justifyContent: "flex-start",
-                    transform: "translateX(35%)",
+                    transform: "translateX(30%)",
                     cursor: "pointer",
                   }}
                   onClick={() => onClickRepoItem(item.repoId)}

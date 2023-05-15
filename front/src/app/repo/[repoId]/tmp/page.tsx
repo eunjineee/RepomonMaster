@@ -1,7 +1,7 @@
 "use client";
 
 import DetailRepomon from "@/components/Detail/DetailRepomon";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./page.module.scss";
 import Modal from "react-modal";
 import ExportModal from "@/components/Detail/ExportModal";
@@ -30,6 +30,8 @@ function Page() {
     setExportModalIsOpen(false);
   };
 
+  const divRef = useRef<HTMLDivElement>(null);
+
   // useEffect(() => {
   //   Modal.setAppElement("#repo-detail");
   //   requestRepoDetailConvention(4);
@@ -45,8 +47,15 @@ function Page() {
   //   }
   // };
 
+  const onClickSibal = () => {
+    if (divRef.current) {
+      divRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className={styles.pageContainer} id="repo-detail">
+      <button onClick={onClickSibal}>시발</button>
       {/* <div className={styles.info}>
         <div className={styles["repo-mon-card-div"]}>
           <div className={styles["repo-mon-card"]}> */}
@@ -73,6 +82,11 @@ function Page() {
         ]}
       /> */}
       <MatchModal repoId={"4"} />
+      <div style={{ height: "500px" }}></div>
+      <div
+        ref={divRef}
+        style={{ height: "500px", backgroundColor: "skyblue" }}
+      ></div>
     </div>
   );
 }

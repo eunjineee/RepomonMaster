@@ -1,4 +1,5 @@
 export type RepoDetailType = {
+  myPresentRepo: boolean;
   forkCnt: number;
   myRepo: boolean;
   languages: string[];

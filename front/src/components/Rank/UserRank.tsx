@@ -120,7 +120,7 @@ const UserRank = ({
                 <span
                   style={{
                     justifyContent: "flex-start",
-                    transform: "translateX(35%)",
+                    transform: "translateX(30%)",
                   }}
                 >
                   <Image
