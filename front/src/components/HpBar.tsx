@@ -12,7 +12,11 @@ function HpBar(props: Props) {
         <div
           className="bg-red-600 h-2.5 rounded-full dark:bg-red-500"
           style={{
-            width: `${(props.HP / props.maxHP) * 100}%`,
+            width: `${
+              (props.HP / props.maxHP) * 100 < 0
+                ? 0
+                : (props.HP / props.maxHP) * 100
+            }%`,
             marginTop: "2%",
             transition: "width 2s ease-in-out",
           }}

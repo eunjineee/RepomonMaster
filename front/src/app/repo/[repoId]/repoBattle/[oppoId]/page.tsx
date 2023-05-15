@@ -9,20 +9,19 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import styles from "./page.module.scss";
 import Loader from "@/components/threeLoader";
 import HpBar from "@/components/HpBar";
-import Image from "next/image";
 import Lottie from "react-lottie-player";
 import lottieJson from "public/static/lotties/battle.json";
 import Panpare from "public/static/lotties/panpare.json";
 import GhostOne from "public/static/lotties/ghost1.json";
 import * as THREE from "three";
-import { Html, OrbitControls } from "@react-three/drei";
+import { Html } from "@react-three/drei";
 import { BattleLogType } from "@/types/repoBattle";
 import SoundOff from "@/components/UI/SoundOff";
 import SoundOn from "@/components/UI/SoundOn";
 import Modal from "react-modal";
 import { useRouter } from "next/navigation";
 
-const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
+const Page = () => {
   const [loadData, setLoadData] = useState<boolean>(false);
   const [matchData, setMatchData] = useState<BattleResultResponseDataType>();
   const [opHp, setopHp] = useState<number | undefined>(
@@ -263,10 +262,8 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
   // 애니메이션 제어 테스트
   const [doMyAttack, setDoMyAttack] = useState<boolean>(false);
   const [doAttack, setDoAttack] = useState<boolean>(false);
-
-  let oppoId = parseInt(params.oppoId, 10);
-  let myId = parseInt(params.repoId, 10);
-
+  let oppoId = 3;
+  let myId = 6;
   function getMatchResult() {
     // oppo - my
     return requestMatchResult(oppoId, myId);
