@@ -393,7 +393,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
           }}
         >
           상대 레포명: {matchData?.data.defenseRepo.repomonNickname} <br />
-          HP : {opHp && Math.ceil(opHp)} / {firstOpHp}
+          HP : {opHp && Math.ceil(opHp) < 0 ? 0 : myHp} / {firstOpHp}
           <HpBar
             HP={Number(opHp)}
             maxHP={Number(matchData?.data.defenseRepo.hp)}
