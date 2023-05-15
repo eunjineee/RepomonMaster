@@ -75,7 +75,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
         case "3":
           return [3, 3, 3];
         default:
-          return [4, 4, 4];
+          return [6, 6, 6];
       }
     };
     const getModelPosition = (str: string): number[] => {
@@ -85,7 +85,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
         case "3":
           return [-4, -4, 0];
         default:
-          return [-4, -6, 0];
+          return [-4, -4, 0];
       }
     };
     const [scaleState, setScaleState] = useState<number[]>(getModelLevel(str));
