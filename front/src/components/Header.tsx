@@ -5,11 +5,12 @@ import Link from "next/link";
 import styles from "./Header.module.scss";
 import Logo from "../../public/logo.png";
 import Image from "next/image";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { axiosRequestLogout } from "@/api/auth";
 import { usePathname, useRouter } from "next/navigation";
 import gitCat from "../../public/git_cat.svg";
 import { getBaseURL } from "@/api/axios";
+import { setAuthLogoutState } from "@/redux/features/authSlice";
 
 const Header = () => {
   const githubLoginUrl = getBaseURL() + "/oauth2/authorization/github";
@@ -19,10 +20,11 @@ const Header = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
 
   /** ======================================== useEffect ======================================== */
   useEffect(() => {
-    if (sessionStorage.getItem("accessToken")) {
+    if (login) {
       setUserId(parseInt(sessionStorage.getItem("userId") as string, 10));
       setAvatarUrl(sessionStorage.getItem("avatarUrl") as string);
       console.log(typeof sessionStorage.getItem("avatarUrl") as string);
@@ -63,6 +65,7 @@ const Header = () => {
       sessionStorage.clear();
       setUserId(-1);
       router.push(".");
+      dispatch(setAuthLogoutState());
     } catch (err) {
       console.error(err);
     }

@@ -14,11 +14,14 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setAuthLoginState: (state) => {
-      state.login = !state.login;
+      state.login = true;
+    },
+    setAuthLogoutState: (state) => {
+      state.login = false;
     },
   },
 });
 
-export const { setAuthLoginState } = authSlice.actions;
+export const { setAuthLoginState, setAuthLogoutState } = authSlice.actions;
 
 export default authSlice.reducer;
