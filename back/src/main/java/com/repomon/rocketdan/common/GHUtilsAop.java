@@ -49,15 +49,6 @@ public class GHUtilsAop {
             log.info("remaining 개수 => {}", core.getRemaining());
             if (core.getRemaining() == 0) {
                 ghUtils.changeUserToken();
-
-                LocalDateTime resetDate = LocalDateTime.ofInstant(core.getResetDate().toInstant(),
-                    ZoneId.systemDefault());
-
-                log.warn("토큰 재활성 시간 => {}", resetDate);
-                Duration between = Duration.between(LocalDateTime.now(), resetDate);
-                long seconds = between.getSeconds();
-                Thread.sleep(seconds);
-
             }
 
             return proceedingJoinPoint.proceed();
