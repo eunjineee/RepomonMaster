@@ -6,6 +6,10 @@
   @include desktop125 {
     font-size: 1.75rem;
   }
+
+  @include tablet {
+    font-size: 1.25rem;
+  }
 }
 
 .tab-des {
@@ -16,15 +20,25 @@
   @include desktop125 {
     font-size: 1.25rem;
   }
+
+  @include tablet {
+    font-size: 1rem;
+  }
+}
+
+.content-div {
+  @include detail {
+    flex-direction: column;
+  }
 }
 
 .left {
   margin: 0 5% 0 2.5%;
   width: 35%;
 
-  @include desktop125 {
-    margin: 0 5% 0 2.5%;
-    width: 35%;
+  @include detail {
+    margin: 0 auto;
+    width: 50%;
   }
 }
 
@@ -34,6 +48,15 @@
 
   @include desktop125 {
     font-size: 1rem;
+  }
+
+  @include detail {
+    margin: 3rem 0 0 0;
+    width: 100%;
+  }
+
+  @include mobile {
+    font-size: 0.8rem;
   }
 
   .title-line {

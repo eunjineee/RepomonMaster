@@ -7,6 +7,10 @@
   @include desktop125 {
     width: 800px;
   }
+
+  @include detail {
+    width: 100%;
+  }
 }
 
 .line {
@@ -14,6 +18,11 @@
   grid-template-columns: 1.5fr 4fr 1.5fr;
   align-items: center;
   border-bottom: 1px solid rgb(221, 221, 221);
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
 
   @include desktop125 {
     font-size: 0.9rem;

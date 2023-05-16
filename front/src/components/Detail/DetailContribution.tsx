@@ -46,7 +46,10 @@ function DetailContribution({
         </div>
       )}
       {contributionInfo.committers && contributionInfo.totalCommitCount > 0 && (
-        <div style={{ display: "flex", marginTop: "4rem" }}>
+        <div
+          style={{ display: "flex", marginTop: "4rem" }}
+          className={styles["content-div"]}
+        >
           <div className={styles.left}>
             <ContributionChart commiters={contributionInfo.committers} />
           </div>

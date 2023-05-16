@@ -297,9 +297,7 @@ const DetailBattle = ({
           <p className={styles["record-title"]}>최근 전적</p>
           <div>
             {battleRecords.length === 0 && (
-              <p style={{ color: "grey", fontSize: "1.25rem" }}>
-                배틀 기록이 없어요.
-              </p>
+              <p className={styles["no-record"]}>배틀 기록이 없어요.</p>
             )}
             {battleRecords &&
               battleRecords.slice(0, 5).map((record, index) => (

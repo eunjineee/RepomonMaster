@@ -69,7 +69,10 @@ function DetailConvention({
           {!loading &&
             conventionInfo.conventions &&
             conventionInfo.conventions.length > 0 && (
-              <div style={{ display: "flex", marginTop: "0.5rem" }}>
+              <div
+                style={{ display: "flex", marginTop: "0.5rem" }}
+                className={styles["content-div"]}
+              >
                 <div className={styles.left}>
                   {conventionInfo.conventions.map((con, index) => (
                     <>

@@ -6,6 +6,10 @@
   @include desktop125 {
     font-size: 1.75rem;
   }
+
+  @include tablet {
+    font-size: 1.25rem;
+  }
 }
 
 .tab-des {
@@ -16,10 +20,18 @@
   @include desktop125 {
     font-size: 1.25rem;
   }
+
+  @include tablet {
+    font-size: 1rem;
+  }
 }
 
 .edit-div {
   width: 63%;
+
+  @include detail {
+    width: 100%;
+  }
 
   .edit-btn {
     margin: 0.2rem;
@@ -50,8 +62,12 @@
 .left {
   width: 70%;
   padding: 0.5rem;
-  height: 400px;
+  max-height: 400px;
   overflow-y: scroll;
+
+  @include detail {
+    width: 100%;
+  }
 
   &::-webkit-scrollbar {
     width: 7px;
@@ -68,6 +84,14 @@
     border-radius: 5px;
     color: black;
 
+    @include tablet {
+      padding: 5px 10px 5px 160px;
+    }
+    @include mobile {
+      padding: 5px 10px 5px 110px;
+      font-size: 0.8rem;
+    }
+
     .prefix {
       position: absolute;
       display: flex;
@@ -81,6 +105,15 @@
       border: 2px solid rgba(161, 205, 255, 0.4);
       background-color: white;
       font-weight: bold;
+
+      @include tablet {
+        width: 150px;
+      }
+
+      @include mobile {
+        width: 100px;
+        font-size: 0.8rem;
+      }
     }
   }
 }
@@ -88,6 +121,13 @@
 .right {
   margin-left: 3%;
   width: 27%;
+
+  @include detail {
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto 0 auto;
+    width: 40%;
+  }
 }
 
 .no-convention {
@@ -97,12 +137,34 @@
   justify-content: center;
   align-items: center;
 
+  @include tablet {
+    height: 250px;
+  }
+
+  @include mobile {
+    height: 150px;
+  }
+
   .comment {
     font-size: 1.5rem;
+
+    @include tablet {
+      font-size: 1.25rem;
+    }
+
+    @include mobile {
+      font-size: 1rem;
+    }
   }
 }
 
 .loading {
   margin: 4rem auto 0 auto;
   width: 4%;
+}
+
+.content-div {
+  @include detail {
+    flex-direction: column;
+  }
 }

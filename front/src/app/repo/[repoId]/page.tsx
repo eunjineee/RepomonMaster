@@ -162,7 +162,10 @@ function Page({ params }: { params: { repoId: string } }) {
 
     setTabIndex(parseInt(target.id, 10));
     sessionStorage.setItem("tabIndex", target.id);
-    window.scrollTo(0, 410);
+
+    if (window.scrollY < 410) {
+      window.scrollTo(0, 410);
+    }
   };
 
   const onClickUpdateBtn = () => {

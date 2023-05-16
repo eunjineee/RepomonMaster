@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -48,6 +48,9 @@ export default function GrowthChart({ histories }: { histories: HistoryType }) {
     labels: [],
     datasets: [],
   });
+  const chartRef = useRef<HTMLDivElement>(null);
+  const [autoSkipPadding, setAutoSkipPadding] = useState<number>(150);
+  const [pointBorderWidth, setPointBorderWidth] = useState<number>(1.5);
 
   useEffect(() => {
     const apiLabels: string[] = [];
@@ -87,6 +90,33 @@ export default function GrowthChart({ histories }: { histories: HistoryType }) {
     }));
   }, []);
 
+  /** 반응형 */
+  useEffect(() => {
+    if (chartRef.current && chartRef.current.offsetWidth < 700) {
+      setAutoSkipPadding(70);
+      setPointBorderWidth(0);
+    } else {
+      setAutoSkipPadding(150);
+      setPointBorderWidth(1.5);
+    }
+
+    const handleResize = () => {
+      if (chartRef.current && chartRef.current.offsetWidth < 700) {
+        setAutoSkipPadding(70);
+        setPointBorderWidth(0);
+      } else {
+        setAutoSkipPadding(150);
+        setPointBorderWidth(1.5);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const onClickChartDiv = () => {
     if (!isCumul) {
       setChartData((prevState) => ({
@@ -104,7 +134,11 @@ export default function GrowthChart({ histories }: { histories: HistoryType }) {
   };
 
   return (
-    <div className={styles["chart-div"]} onClick={onClickChartDiv}>
+    <div
+      className={styles["chart-div"]}
+      onClick={onClickChartDiv}
+      ref={chartRef}
+    >
       <Line
         data={chartData}
         options={{
@@ -146,7 +180,7 @@ export default function GrowthChart({ histories }: { histories: HistoryType }) {
                   weight: "bold",
                 },
                 color: "rgb(50, 50, 50)",
-                autoSkipPadding: 150,
+                autoSkipPadding,
                 maxRotation: 0,
               },
             },
@@ -173,7 +207,7 @@ export default function GrowthChart({ histories }: { histories: HistoryType }) {
             },
             point: {
               pointStyle: "rectRot",
-              borderWidth: 1.5,
+              borderWidth: pointBorderWidth,
             },
           },
           plugins: {

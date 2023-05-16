@@ -3,6 +3,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { ConventionChartType } from "@/types/repoDetail";
 import styles from "react-day-picker/dist/style.css";
+import scssStyles from "./ConventionChart.module.scss";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -65,6 +66,7 @@ export function ConventionChart({
 
   return (
     <div
+      className={scssStyles["chart-div"]}
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <Pie
@@ -77,7 +79,7 @@ export function ConventionChart({
           },
         }}
       />
-      <p style={{ color: "gray", margin: "1rem 0 0 0.5rem" }}>
+      <p className={scssStyles.obey}>
         컨벤션 준수율{" "}
         <span style={{ color: "rgba(109, 130, 250, 1)" }}>
           {((obey / total) * 100.0).toFixed(2)}
