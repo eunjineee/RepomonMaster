@@ -78,6 +78,7 @@ function Page({ params }: { params: { repoId: string } }) {
   const router = useRouter();
   const lanRef = useRef<HTMLDivElement>(null);
   const tabRef = useRef<HTMLDivElement>(null);
+  const [isUpdated3, setIsUpdated3] = useState<boolean>(false); // 대표 레포 설정
 
   /** =============================================== useEffect =============================================== */
   /** 레포 기본 정보 불러오기 + 레포몬 닉네임, 기간 업데이트 시 정보 재요청 */
@@ -86,7 +87,7 @@ function Page({ params }: { params: { repoId: string } }) {
       parseInt(params.repoId, 10),
       parseInt(loginUserId as string, 10)
     );
-  }, [isUpdated, isUpdated2]);
+  }, [isUpdated, isUpdated2, isUpdated3]);
 
   useEffect(() => {
     requestRepoDetailResearch(parseInt(params.repoId, 10));
@@ -307,6 +308,7 @@ function Page({ params }: { params: { repoId: string } }) {
       const res = await axiosRequestSetRepresent(repoId, userId);
       console.log("대표 레포 설정: ", res);
       customAlert("대표 레포지토리로 설정되었습니다.");
+      setIsUpdated3(!isUpdated3);
     } catch (err) {
       console.error(err);
     }
