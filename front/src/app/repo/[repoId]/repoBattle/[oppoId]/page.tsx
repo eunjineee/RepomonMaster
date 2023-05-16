@@ -82,6 +82,13 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
     };
   }, []);
 
+  // 랜덤 공격 애니메이션 선정
+  const randomAttackNum: number[] = [0, 2, 3, 5, 6, 7, 11, 13, 15, 16];
+  function getRandomAttackNum(): number {
+    const randomIndex = Math.floor(Math.random() * randomAttackNum.length);
+    return randomAttackNum[randomIndex];
+  }
+
   // 내 레포몬 출력
   const Model = (props: { url: string }) => {
     const filename = props.url.slice(props.url.lastIndexOf("/") + 1);
@@ -118,7 +125,8 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
       mixer = new THREE.AnimationMixer(gltf.scene);
       mixer.timeScale = 1;
       if (isMyAttack) {
-        const action = mixer.clipAction(gltf.animations[11]);
+        const ranIndex = getRandomAttackNum();
+        const action = mixer.clipAction(gltf.animations[ranIndex]);
         action.setLoop(THREE.LoopOnce, 1);
         mixer.timeScale = 0.5;
         action.play();
@@ -194,7 +202,8 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
       mixer.timeScale = 1;
 
       if (isOpAttack) {
-        action = mixer.clipAction(gltf.animations[11]);
+        const ranIndex = getRandomAttackNum();
+        const action = mixer.clipAction(gltf.animations[ranIndex]);
         action.setLoop(THREE.LoopOnce, 1);
         mixer.timeScale = 0.5;
         action.play();
@@ -335,7 +344,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
                 }}
                 style={{ fontWeight: "600", marginTop: "2em", width: "auto" }}
               >
-                <p id={styles.backTo}>유저 페이지로</p>
+                <p id={styles.backTo}>돌아가기</p>
               </button>
             </Modal>
           </div>

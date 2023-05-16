@@ -112,7 +112,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
     const MAX_VALUE = 10;
     const MIN_VALUE = 1;
     const NUM_ELEMENTS = 5;
-    const MAX_SUM = 30;
+    const MAX_SUM = 31;
 
     let sum = 0;
     let newArr = [];

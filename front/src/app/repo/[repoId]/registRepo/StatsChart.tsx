@@ -30,7 +30,7 @@ ChartJS.register(
 function StatsChart(props: statsData) {
   // chart Data
   const data = {
-    labels: ["공격", "회피", "체력", "치명타", "명중"],
+    labels: ["공격", "회피", "방어", "치명타", "명중"],
     datasets: [
       {
         label: "능력치",

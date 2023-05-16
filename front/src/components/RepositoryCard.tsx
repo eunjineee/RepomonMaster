@@ -150,8 +150,8 @@ function RepositoryCard(props: propType) {
             />
             <directionalLight
               color="white"
-              position={[-5, 0, -5]}
-              intensity={0.5}
+              position={[0, 0, 5]}
+              intensity={1}
             />
             <Model repomonUrl={props.repomonUrl} repoId={props.repoId} />
           </Canvas>
@@ -241,7 +241,7 @@ const Model = (props: modelProps) => {
       case "2":
         return [4.5, 4.5, 4.5];
       case "3":
-        return [4, 4, 4];
+        return [3, 3, 3];
       default:
         return [5, 5, 5];
     }

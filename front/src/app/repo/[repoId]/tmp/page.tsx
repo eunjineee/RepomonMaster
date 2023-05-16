@@ -18,20 +18,6 @@ function Page() {
     "https://repomon.s3.ap-northeast-2.amazonaws.com/models/Dora_1.glb"
   );
   const [repomonTier, setrepomonTier] = useState(1);
-  const [repoDetailConventionInfo, setRepoDetailConventionInfo] =
-    useState<RepoDetailConventionInfoType>();
-
-  const [cardUpdated, setCardUpdated] = useState<number>(2);
-  const [exportModalIsOpen, setExportModalIsOpen] = useState<boolean>(false);
-  const openModal = () => {
-    setExportModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setExportModalIsOpen(false);
-  };
-
-  const divRef = useRef<HTMLDivElement>(null);
 
   // useEffect(() => {
   //   Modal.setAppElement("#repo-detail");
@@ -47,17 +33,18 @@ function Page() {
   //     console.error(err);
   //   }
   // };
-  
+
   return (
     <div className={styles.pageContainer} id="repo-detail">
-      <HeartIcon style={{ color: "red" }} />
-      {/* <div className={styles.info}>
-        <div className={styles["repo-mon-card-div"]}>
-          <div className={styles["repo-mon-card"]}> */}
       {/* <DetailRepomon repomonUrl={repomonUrl} repomonTier={repomonTier} /> */}
-      {/* </div>
+      {/* <HeartIcon style={{ color: "red" }} /> */}
+      <div className={styles.info}>
+        <div className={styles["repo-mon-card-div"]}>
+          <div className={styles["repo-mon-card"]}>
+            <DetailRepomon repomonUrl={repomonUrl} repomonTier={repomonTier} />
+          </div>
         </div>
-      </div> */}
+      </div>
       {/* <button className={styles.btn}>
         <LoadingSpinner ml={4} mr={4} size={6} />
       </button> */}
@@ -76,12 +63,12 @@ function Page() {
           "HTML",
         ]}
       /> */}
-      <MatchModal repoId={"4"} />
+      {/* <MatchModal repoId={"4"} />
       <div style={{ height: "500px" }}></div>
       <div
         ref={divRef}
         style={{ height: "500px", backgroundColor: "skyblue" }}
-      ></div>
+      ></div> */}
     </div>
   );
 }

@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Canvas, useLoader, useFrame } from "@react-three/fiber";
+import Nature from "@/app/repo/[repoId]/Nature";
+import { OrbitControls } from "@react-three/drei";
 
 const Model = ({
   repomonUrl,
@@ -30,7 +32,7 @@ const Model = ({
       const action = mixer.clipAction(gltf.animations[randomIndex]);
       action.play();
     } else if (gltf.animations.length >= 9) {
-      const action = mixer.clipAction(gltf.animations[8]);
+      const action = mixer.clipAction(gltf.animations[8]); //8
       action.clampWhenFinished = true;
       action.play();
     } else {
@@ -53,9 +55,9 @@ const Model = ({
       repomonUrl.includes("Whale_3") ||
       repomonUrl.includes("Ker_3") ||
       repomonUrl.includes("Tails_3")
-    ? 4
+    ? 3
     : repomonUrl.includes("Dora_3")
-    ? 3.5
+    ? 3.3
     : repomonUrl.includes("Tuna_3")
     ? 3.3
     : 3;
@@ -84,8 +86,8 @@ const Model = ({
     <primitive
       object={gltf.scene}
       scale={[scaleNum, scaleNum, scaleNum]}
-      position={[-0.5 + longPositionWeight, -2, 0]}
-      rotation={[0.3, -0.5 + longRotationWeight, 0]}
+      position={[-0.5 + longPositionWeight, -2.5, -1]}
+      rotation={[0.2, -0.6 + longRotationWeight, 0]}
       onClick={() => {
         setIsClicked(!isClicked);
       }}
@@ -110,19 +112,19 @@ function DetailRepomon({
         backgroundColor: "white",
         margin: "0.5rem auto 0 auto",
         borderRadius: "10px",
+        backgroundImage: `url('/static/images/sky.jpg')`,
       }}
     >
-      <ambientLight intensity={0.1} />
-      <ambientLight intensity={0.1} />
-      <ambientLight intensity={0.3} position={[0, 5, 0]} />
-      <directionalLight color="white" position={[0, 0, 5]} intensity={0.6} />
-      <directionalLight color="white" position={[-5, 0, -5]} intensity={0.6} />
+      <ambientLight intensity={0.4} position={[0, 5, 0]} />
+      <directionalLight color="white" position={[0, 0, 5]} intensity={1.0} />
       <Model
         repomonUrl={repomonUrl}
         isClicked={isClicked}
         setIsClicked={setIsClicked}
         repomonTier={repomonTier}
       />
+      <OrbitControls />
+      <Nature />
     </Canvas>
   );
 }

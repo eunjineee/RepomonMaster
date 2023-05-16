@@ -22,6 +22,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 import UserExportModal from "@/components/UserExportModal";
 import { customAlert } from "@/app/utils/CustomAlert";
+import { OrbitControls } from "@react-three/drei";
 
 const Page = ({ params }: { params: { userId: string } }) => {
   // 레포지토리 유저 정보 GET
@@ -238,8 +239,8 @@ const Page = ({ params }: { params: { userId: string } }) => {
                     />
                     <directionalLight
                       color="white"
-                      position={[-5, 0, -5]}
-                      intensity={0.5}
+                      position={[0, 0, 5]}
+                      intensity={1}
                     />
                     <Model
                       repomonUrl={userInfo?.representRepo?.repomon.repomonUrl}
@@ -382,7 +383,7 @@ const Model = (props: modelProps) => {
       case "2":
         return [4.5, 4.5, 4.5];
       case "3":
-        return [4, 4, 4];
+        return [3, 3, 3];
       default:
         return [5, 5, 5];
     }
