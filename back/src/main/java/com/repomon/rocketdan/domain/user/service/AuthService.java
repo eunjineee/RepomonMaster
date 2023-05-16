@@ -26,16 +26,21 @@ public class AuthService {
 	 * 로그인: 깃허브 소셜 로그인
 	 * @param userName
 	 */
-	public Long login(String userName) {
+	public Long login(String userName, String accessToken) {
 
 		UserEntity user = userRepository.findByUserName(userName).orElseGet(() -> {
 			UserEntity userEntity = UserEntity.builder()
 				.userName(userName)
 				.totalExp(0L)
+				.accessToken(accessToken)
 				.build();
 
 			return userRepository.save(userEntity);
 		});
+
+		if(!accessToken.equals(user.getAccessToken())){
+			user.updateAccessToken(accessToken);
+		}
 
 		return user.getUserId();
 	}

@@ -302,7 +302,6 @@ public class RepoService {
 	 * @param requestDto
 	 */
 	public void modifyRepoPeriod(Long repoId, RepoPeriodRequestDto requestDto) {
-
 		String userName = SecurityUtils.getCurrentUserId();
 
 		RepoEntity repoEntity = repoRepository.findById(repoId).orElseThrow(() -> {

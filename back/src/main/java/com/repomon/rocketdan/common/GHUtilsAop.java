@@ -1,14 +1,12 @@
 package com.repomon.rocketdan.common;
 
 import com.repomon.rocketdan.common.utils.GHUtils;
+import com.repomon.rocketdan.common.utils.SecurityUtils;
 import com.repomon.rocketdan.domain.repo.repository.RepoRepository;
 import com.repomon.rocketdan.domain.user.entity.UserEntity;
 import com.repomon.rocketdan.domain.user.repository.UserRepository;
 import com.repomon.rocketdan.exception.CustomException;
 import com.repomon.rocketdan.exception.ErrorCode;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -19,38 +17,46 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.kohsuke.github.GHRateLimit;
-import org.kohsuke.github.GHRateLimit.Record;
 import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-@Aspect @Slf4j
 @Component
+@Aspect @Slf4j @Order(10)
 @RequiredArgsConstructor
 public class GHUtilsAop {
     private Set<Long> usingUsers = new HashSet<>();
     private Set<Long> usingKeys = new HashSet<>();
+
+
+    @Value("${github.accessToken}")
+    private String accessToken;
     private final UserRepository userRepository;
     private final RepoRepository repoRepository;
     private final GHUtils ghUtils;
 
-    @Around("execution(* com.repomon.rocketdan.common.utils.GHUtils.*(..))")
+    @Around("execution(* com.repomon.rocketdan.common.utils.GHUtils.*(..))" +
+        "&& !@annotation(com.repomon.rocketdan.common.NotAop)")
     public Object aroundRetriesAnno(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         String methodName = proceedingJoinPoint.getSignature().getName();
         try {
-            GHUtils ghUtils = (GHUtils) proceedingJoinPoint.getTarget();
-            GitHub gitHub = ghUtils.gitHub;
+            String userName = SecurityUtils.getCurrentOrAnonymousUser();
 
-            GHRateLimit rateLimit = gitHub.getRateLimit();
-            Record core = rateLimit.getCore();
+            log.info("Request userName => {}", userName);
+            if(userName.equals("anonymousUser")){
+                ghUtils.initGitHub(accessToken);
+            }else {
+                String gitHubLogin = ghUtils.getLoginUser();
+                log.info("GitHub userName => {}", gitHubLogin);
+                if(!userName.equals(gitHubLogin)){
+                    UserEntity userEntity = userRepository.findByUserName(userName).orElseThrow(() -> {
+                        throw new CustomException(ErrorCode.NOT_FOUND_USER);
+                    });
 
-            log.info("remaining 개수 => {}", core.getRemaining());
-            if (core.getRemaining() == 0) {
-                ghUtils.changeUserToken();
+                    ghUtils.initGitHub(userEntity.getAccessToken());
+                }
             }
-
             return proceedingJoinPoint.proceed();
         } catch (RuntimeException e) {
             return aroundRetriesAnno(proceedingJoinPoint);

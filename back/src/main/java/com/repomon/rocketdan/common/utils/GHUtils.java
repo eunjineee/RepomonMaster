@@ -1,14 +1,13 @@
 package com.repomon.rocketdan.common.utils;
 
 
+import com.repomon.rocketdan.common.NotAop;
 import com.repomon.rocketdan.domain.repo.app.GrowthFactor;
 import com.repomon.rocketdan.domain.repo.app.UserCardDetail;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
 import com.repomon.rocketdan.domain.repo.entity.RepoHistoryEntity;
 import com.repomon.rocketdan.domain.repo.repository.RepoHistoryRepository;
 import com.repomon.rocketdan.domain.repo.repository.RepoRepository;
-import com.repomon.rocketdan.exception.CustomException;
-import com.repomon.rocketdan.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.*;
@@ -25,44 +24,36 @@ import java.time.LocalDate;
 import java.util.*;
 
 
-@Component @Slf4j
+@Component("GHUtils") @Slf4j
 @RequiredArgsConstructor
 public class GHUtils {
-
 	@Value("${github.accessToken}")
-	private List<String> accessTokens;
-	public GitHub gitHub;
+	private String accessToken;
+	private GitHub gitHub;
 	private final Integer maxStarAndFork = 200;
 	private final RepoRepository repoRepository;
 	private final RepoHistoryRepository repoHistoryRepository;
 
 
+	@NotAop
+	public String getLoginUser() throws IOException {
+		return this.gitHub.getMyself().getLogin();
+	}
+
+	@NotAop
 	@PostConstruct
-	private void init() {
-		for(String accessToken : accessTokens){
-			try {
-				gitHub = new GitHubBuilder().withOAuthToken(accessToken).withRateLimitChecker(RateLimitChecker.NONE).build();
-				GHRateLimit rateLimit = gitHub.getRateLimit();
-				if(rateLimit.getCore().getRemaining() > 0) break;
-			} catch (IOException e) {
-				log.info("사용할 수 없는 토큰!! => {} ", accessToken);
-			}
-		}
+	private void init() throws IOException{
+		gitHub = new GitHubBuilder()
+			.withOAuthToken(accessToken)
+			.build();
 	}
 
-	public void changeUserToken() {
-		for(String accessToken : accessTokens){
-			try {
-				gitHub = new GitHubBuilder().withOAuthToken(accessToken).withRateLimitChecker(RateLimitChecker.NONE).build();
-				GHRateLimit rateLimit = gitHub.getRateLimit();
-				if(rateLimit.getCore().getRemaining() > 0) break;
-			} catch (IOException e) {
-				log.info("사용할 수 없는 토큰!! => {} ", accessToken);
-			}
-		}
-		log.info("교체 완료!");
+	@NotAop
+	public void initGitHub(String accessToken) throws IOException {
+		gitHub = new GitHubBuilder()
+			.withOAuthToken(accessToken)
+			.build();
 	}
-
 
 	public String getOrganizationFirstOwner(String orgName) {
 		try {

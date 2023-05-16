@@ -23,6 +23,7 @@ public class UserEntity {
 	private Long userId;
 	private String userName;
 	private Long totalExp;
+	private String accessToken;
 
 	@OneToOne
 	@JoinColumn(name = "represent_repo_id")
@@ -40,5 +41,9 @@ public class UserEntity {
 
 	public void updateTotalExp(Long exp) {
 		this.totalExp += exp;
+	}
+
+	public void updateAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
 }

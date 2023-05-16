@@ -49,7 +49,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		String login = (String) userAttributes.get("login");
 //		String name = (String) userAttributes.get("name");
 		String avatarUrl = (String) userAttributes.get("avatar_url");
-		Long userId = authService.login(login);
+		Long userId = authService.login(login, accessToken);
 
 //		name = name == null ? "" : name;
 		GithubOAuth2UserInfo userInfo = new GithubOAuth2UserInfo(userId, login, accessToken, avatarUrl);
