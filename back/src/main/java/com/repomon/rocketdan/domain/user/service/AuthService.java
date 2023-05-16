@@ -11,6 +11,7 @@ import com.repomon.rocketdan.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -26,6 +27,7 @@ public class AuthService {
 	 * 로그인: 깃허브 소셜 로그인
 	 * @param userName
 	 */
+	@Transactional
 	public Long login(String userName, String accessToken) {
 
 		UserEntity user = userRepository.findByUserName(userName).orElseGet(() -> {
