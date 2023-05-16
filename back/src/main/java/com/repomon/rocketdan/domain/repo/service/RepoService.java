@@ -78,7 +78,7 @@ public class RepoService {
 
 		int currentPage = pageable.getPageNumber();
 		RepoListResponseDto responseDto = redisListRepository.findByUserNameAndCurrentPage(userName, currentPage)
-			.orElseGet(() -> RepoListResponseDto.empty(userName,currentPage));
+			.orElseGet(() -> RepoListResponseDto.empty(userName, currentPage));
 
 		if (responseDto.getRepoListItems().size() != pageable.getPageSize()) {
 			Page<ActiveRepoEntity> activeRepoPage = activeRepoRepository.findByUser(userEntity,
@@ -492,7 +492,7 @@ public class RepoService {
 
 					boolean present = conventions.stream().anyMatch(convention -> {
 						String prefix = convention.getRepoConventionType();
-						if(message.startsWith(prefix)) {
+						if (message.startsWith(prefix)) {
 							if (conventionInfo.containsKey(prefix)) {
 								conventionInfo.replace(prefix, conventionInfo.get(prefix) + 1);
 							} else {
@@ -503,7 +503,7 @@ public class RepoService {
 						return false;
 					});
 
-					if(present) collectCnt++;
+					if (present) collectCnt++;
 				}
 			} catch (IOException e) {
 				throw new RuntimeException(e);
@@ -608,7 +608,7 @@ public class RepoService {
 	public void checkRepomonEvolution(RepoEntity repoEntity) {
 		log.info("======================== 진화 여부 확인 ============================");
 		RepomonEntity repomon = repoEntity.getRepomon();
-		while ((repomon.getRepomonTier() == 1 && repoEntity.getRepoExp() >= 5000) || (repomon.getRepomonTier() == 2 && repoEntity.getRepoExp() >= 10000)) {
+		while ((repomon.getRepomonTier() == 1 && repoEntity.getRepoExp() >= 3000) || (repomon.getRepomonTier() == 2 && repoEntity.getRepoExp() >= 6000)) {
 			log.info("========================== 레포몬 진화 =========================");
 			RepomonEntity newRepomon = repomonRepository.findByRepomonTierAndRepomonName(repomon.getRepomonTier() + 1, repomon.getRepomonName()).orElseThrow(
 				() -> new CustomException(ErrorCode.NOT_FOUND_ENTITY)
@@ -634,9 +634,9 @@ public class RepoService {
 	public void modifyPersonalRepo(Long repoId, RepoCardRequestDto requestDto) {
 		String userName = SecurityUtils.getCurrentUserId();
 		UserEntity user = userRepository.findByUserName(userName).orElseThrow(
-				() -> {
-					throw new CustomException(ErrorCode.NOT_FOUND_USER);
-				}
+			() -> {
+				throw new CustomException(ErrorCode.NOT_FOUND_USER);
+			}
 		);
 		RepoEntity repo = repoRepository.findById(repoId).orElseThrow(() -> {
 			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
@@ -646,9 +646,9 @@ public class RepoService {
 		});
 
 		List<PersonalLanguageEntity> pastLanguage = languageRepository.findAllByActiveRepoEntity(activeRepoEntity)
-				.orElseThrow(() -> {
-					throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);
-				});
+			.orElseThrow(() -> {
+				throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);
+			});
 		if (null != pastLanguage) {
 			for (PersonalLanguageEntity item : pastLanguage) {
 				languageRepository.delete(item);
@@ -659,10 +659,11 @@ public class RepoService {
 		}
 	}
 
+
 	public List<String> modifyPersonalRepoNow(Long repoId) {
 		String userName = SecurityUtils.getCurrentUserId();
 		UserEntity user = userRepository.findByUserName(userName).orElseThrow(
-				() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);}
+			() -> {throw new CustomException(ErrorCode.NOT_FOUND_USER);}
 		);
 		RepoEntity repo = repoRepository.findById(repoId).orElseThrow(() -> {
 			throw new CustomException(ErrorCode.NOT_FOUND_ENTITY);
@@ -672,11 +673,11 @@ public class RepoService {
 		});
 
 		List<PersonalLanguageEntity> pastLanguage = languageRepository.findAllByActiveRepoEntity(activeRepoEntity)
-				.orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);});
+			.orElseThrow(() -> {throw new CustomException(ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY);});
 
 		List<String> personalLanguageNow = pastLanguage.stream()
-				.map(item -> item.getLanguageCode())
-				.collect(Collectors.toList());
+			.map(item -> item.getLanguageCode())
+			.collect(Collectors.toList());
 
 		return personalLanguageNow;
 	}
@@ -727,7 +728,7 @@ public class RepoService {
 			conventionrate = conventionDto.getCollectCnt() / conventionDto.getTotalCnt() * 100;
 		}
 
-		RepoRedisCardResponseDto responseDto =  RepoRedisCardResponseDto.fromEntityAndGHRepository(repoId, repoEntity, ghRepository, historyEntityList, totalLineCount, contributers, conventionrate);
+		RepoRedisCardResponseDto responseDto = RepoRedisCardResponseDto.fromEntityAndGHRepository(repoId, repoEntity, ghRepository, historyEntityList, totalLineCount, contributers, conventionrate);
 		repoRedisCardRepository.save(responseDto);
 		return responseDto;
 	}
@@ -810,25 +811,29 @@ public class RepoService {
 			conventionrate = conventionDto.getCollectCnt() / conventionDto.getTotalCnt() * 100;
 		}
 
-		RepoRedisPersonalCardResponseDto responseDto = RepoRedisPersonalCardResponseDto.fromEntityAndOthers(userId, repoEntity, historyEntityList, contributers, userInfo, contributeResponse, myIssue, mytotalcode, myMerges, conventionrate, languages);
+		RepoRedisPersonalCardResponseDto responseDto = RepoRedisPersonalCardResponseDto.fromEntityAndOthers(userId, repoEntity, historyEntityList, contributers, userInfo, contributeResponse, myIssue,
+			mytotalcode, myMerges, conventionrate, languages);
 		repoRedisPersonalCardRespository.save(responseDto);
 		return responseDto;
 	}
+
 
 	/**
 	 * django용 요청
 	 */
 	public RepoRedisCardResponseDto findRepoCardDetail(Long repoId) {
-		RepoRedisCardResponseDto responseDto =  repoRedisCardRepository.findByRepoId(repoId).orElseThrow(
-				() -> {throw new CustomException(ErrorCode.NOT_FOUND_REPOSITORY);}
+		RepoRedisCardResponseDto responseDto = repoRedisCardRepository.findByRepoId(repoId).orElseThrow(
+			() -> {throw new CustomException(ErrorCode.NOT_FOUND_REPOSITORY);}
 		);
 		return responseDto;
 	}
 
+
 	public RepoRedisPersonalCardResponseDto findRepoPersonalCardDetail(Long repoId, Long userId) {
-		RepoRedisPersonalCardResponseDto responseDto =  repoRedisPersonalCardRespository.findByRepoIdAndUserId(repoId, userId).orElseThrow(
-				() -> {throw new CustomException(ErrorCode.NOT_FOUND_REPOSITORY);}
+		RepoRedisPersonalCardResponseDto responseDto = repoRedisPersonalCardRespository.findByRepoIdAndUserId(repoId, userId).orElseThrow(
+			() -> {throw new CustomException(ErrorCode.NOT_FOUND_REPOSITORY);}
 		);
 		return responseDto;
 	}
+
 }
