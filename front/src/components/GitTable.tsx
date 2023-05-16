@@ -47,9 +47,9 @@ function GitTable(props: propsData) {
 
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-      <div style={{ width: "80%", marginTop: "10%" }}>
+      <div style={{ width: "80%", marginTop: "8%" }}>
         <table
-          className="min-w-full text-center text-sm font-light"
+          className="w-full text-center text-sm font-light"
           style={{ position: "relative" }}
         >
           <colgroup>
@@ -70,7 +70,7 @@ function GitTable(props: propsData) {
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{ backgroundColor: "white" }}>
             {commits.slice(1).map((commit, index) => (
               <tr key={index} className="border-b dark:border-neutral-500">
                 <td className="whitespace-nowrap  px-6 py-4 font-medium">
@@ -90,7 +90,10 @@ function GitTable(props: propsData) {
               </tr>
             ))}
             <tr className="border-b dark:border-neutral-500">
-              <td className="whitespace-nowrap  px-6 py-4 font-medium">
+              <td
+                className="whitespace-nowrap  px-6 py-4 font-medium"
+                style={{ width: "20%" }}
+              >
                 <input
                   className="border-slate-200 placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"
                   style={{

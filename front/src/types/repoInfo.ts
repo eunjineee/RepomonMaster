@@ -49,3 +49,12 @@ export type RepomonType = {
   repomonSkillName: string;
   repomonTier: number;
 };
+
+// 레포몬 등록 페이지 차트 props TYPE
+export type statsData = {
+  attackStat: number;
+  avoidStat: number;
+  enduranceStat: number;
+  criticalStat: number;
+  hitStat: number;
+};

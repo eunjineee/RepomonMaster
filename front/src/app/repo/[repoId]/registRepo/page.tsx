@@ -15,6 +15,7 @@ import Button_OK from "@/components/Button_OK";
 import Button_NO from "@/components/Button_NO";
 import {
   getRandomRepo,
+  getRepoDetail,
   setCommitConvention,
   setRepoInit,
 } from "@/api/userRepo";
@@ -27,12 +28,14 @@ import { RepoInitType } from "@/types/repoRegist";
 import Modal from "react-modal";
 import { useRouter } from "next/navigation";
 import ArrowDown from "@/components/UI/ArrowDown";
+import { ModelSel } from "./ModelSel";
+import StatsChart from "./StatsChart";
+import { statsData } from "@/types/repoInfo";
 
 const Page: NextPage<PageProps> = ({ params }) => {
   const [numArr, setNumArr] = useState([0, 0, 0, 0, 0]);
   const dice = useRef<HTMLImageElement>(null);
   const diceShadow = useRef<HTMLDivElement>(null);
-
   const [repoName, setRepoName] = useState<string>("");
   const [selectedChar, setSelectedChar] = useState<number>(0);
   const [isReady, setIsReady] = useState<boolean>(false);
@@ -53,6 +56,20 @@ const Page: NextPage<PageProps> = ({ params }) => {
   const router = useRouter();
   const localUserId = sessionStorage.getItem("userId");
 
+  // 레포 정보 조회
+  useEffect(() => {
+    getRepoDetail(parseInt(params.repoId))
+      .then((response) => {
+        const res = response.data;
+        setRepoName(res.repoName);
+        console.log("레포 정보 조회: ", repoName);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  // 이름 설정 시 유효성 검사
   async function handlePostClick() {
     if (isReady && selectedChar !== 0) {
       setRepoInit(repoInitData);
@@ -71,6 +88,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
     }
   }
 
+  // 레포지토리 초기 설정값
   useEffect(() => {
     setRepoInitData({
       repoId: parseInt(params.repoId),
@@ -88,6 +106,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
     console.log("레포데이터", repoInitData);
   }, [repoInitData]);
 
+  // 난수 생성 후 Stats 설정
   function generateRandomNumArr() {
     const MAX_VALUE = 10;
     const MIN_VALUE = 1;
@@ -135,7 +154,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
     generateRandomNumArr();
 
     if (dice.current && diceShadow.current) {
-      dice.current.style.transform = `translate(-50%, -250%) rotate(720deg)`;
+      dice.current.style.transform = `translate(-50%, -300%) rotate(720deg)`;
       dice.current.style.filter = `blur(0.1em)`;
       diceShadow.current.style.transform = "translate(-50%, -50%) scaleX(0.7)";
 
@@ -176,7 +195,8 @@ const Page: NextPage<PageProps> = ({ params }) => {
       statRef: React.MutableRefObject<any | null>
     ) => {
       const isMax = stat === 10;
-      statRef.current!.style.color = isMax ? "red" : "white";
+      statRef.current!.style.color = isMax ? "red" : "black";
+      statRef.current!.style.fontWeight = isMax ? "700" : "500";
       statRef.current!.style.fontSize = isMax ? "1.2em" : "1em";
       if (isMax) {
         statRef.current!.classList.add("animate__animated", "animate__shakeX");
@@ -324,6 +344,15 @@ const Page: NextPage<PageProps> = ({ params }) => {
     }
   }, [isClickOne, isClickTwo, isClickThree]);
 
+  // props consts 모음
+  const stats: statsData = {
+    attackStat: numArr[0],
+    avoidStat: numArr[1],
+    enduranceStat: numArr[2],
+    criticalStat: numArr[3],
+    hitStat: numArr[4],
+  };
+
   return (
     <div className={styles.pageContainer} id="pageContainer">
       <Modal
@@ -364,7 +393,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
               </div>
             </div>
           ) : (
-            "함께할 레포몬을 선택해주세요!"
+            `${repoName}을(를) 대표할 레포몬을 선택해주세요!`
           )}
         </p>
         <div style={{ display: "flex" }}>
@@ -470,6 +499,30 @@ const Page: NextPage<PageProps> = ({ params }) => {
         </div>
       </div>
       <div className={styles.settingBox} ref={setBox}>
+        <div className={styles.repomonCanvas}>
+          <Canvas
+            style={{
+              backgroundColor: "#EFF0FF",
+              width: "90%",
+              height: "80%",
+              borderRadius: "10px",
+              marginTop: "5%",
+            }}
+          >
+            <ambientLight intensity={0.7} />
+            <ModelSel
+              repomonUrl={
+                isClickOne
+                  ? randomRepos?.selectRepomonList[0]?.repomonUrl + "?id=0"
+                  : isClickTwo
+                  ? randomRepos?.selectRepomonList[1]?.repomonUrl + "?id=1"
+                  : isClickThree
+                  ? randomRepos?.selectRepomonList[2]?.repomonUrl + "?id=2"
+                  : "/static/models/tempLoader.glb"
+              }
+            />
+          </Canvas>
+        </div>
         <div className={styles.conventionBox}>
           <div
             style={{
@@ -488,24 +541,22 @@ const Page: NextPage<PageProps> = ({ params }) => {
             </p>
             <InputField setRepoName={setRepoName} setIsReady={setIsReady} />
           </div>
-          <GitTable setConventionData={setConventionData} />
-        </div>
-        <div className={styles.diceContainer}>
-          <p className={styles.diceTitle}>초기 능력치 설정</p>
-          <div className={styles.diceBox} style={{ marginBottom: "15%" }}>
-            <Image
-              src="/static/images/dice.png"
-              alt="dice"
-              width={100}
-              height={100}
-              className={styles[`dice`]}
-              onClick={diceClick}
-              ref={dice}
-            />
-            <div className={styles.diceShadow} ref={diceShadow} />
+          <div>
+            <p style={{ width: "25%" }} id={styles.repomonConventionTitle}>
+              컨벤션 초기 등록
+            </p>
+            <GitTable setConventionData={setConventionData} />
           </div>
-          <div className={styles.statusBox}>
-            <div className="flex flex-col" style={{ width: "80%" }}>
+        </div>
+      </div>
+      <div className={styles.diceBlock}>
+        <div className={styles.chartBox}>
+          <div className={styles.titlebox}>스탯 설정하기</div>
+          <div className={styles.chartWrapper}>
+            <StatsChart {...stats} />
+          </div>
+          <div className={styles.statsWrapper}>
+            <div className="flex flex-col" style={{ width: "100%" }}>
               <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                   <div className="rounded-lg overflow-hidden">
@@ -518,12 +569,13 @@ const Page: NextPage<PageProps> = ({ params }) => {
                         id={styles.tableBody}
                       >
                         <tr
-                          className="border-white dark:border-neutral-500"
-                          style={{ borderWidth: "5px", height: "4em" }}
+                          className="border-stone-500 dark:border-neutral-500"
+                          style={{ borderWidth: "3px", height: "4em" }}
                         >
                           <td
-                            className=" border-white whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
-                            style={{ width: "50%", borderWidth: "5px" }}
+                            className=" border-stone-500 whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
+                            style={{ width: "50%", borderWidth: "3px" }}
+                            id={styles.tableHead}
                           >
                             공격력
                           </td>
@@ -536,90 +588,102 @@ const Page: NextPage<PageProps> = ({ params }) => {
                           </td>
                         </tr>
                         <tr
-                          className="border-white dark:border-neutral-500"
-                          style={{ borderWidth: "5px", height: "4em" }}
+                          className="border-stone-500 dark:border-neutral-500"
+                          style={{ borderWidth: "3px", height: "4em" }}
                         >
                           <td
-                            className="border-white whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
-                            style={{ width: "50%", borderWidth: "5px" }}
+                            className="border-stone-500 whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
+                            style={{ width: "50%", borderWidth: "3px" }}
+                            id={styles.tableHead}
                           >
                             회피
                           </td>
                           <td
                             className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500"
                             ref={avoidanceRef}
+                            id={styles.ranNumber}
                           >
                             {numArr[1]}
                           </td>
                         </tr>
                         <tr
-                          className="border-white dark:border-neutral-500"
-                          style={{ borderWidth: "5px", height: "4em" }}
+                          className="border-stone-500 dark:border-neutral-500"
+                          style={{ borderWidth: "3px", height: "4em" }}
                         >
                           <td
-                            className=" border-white whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
-                            style={{ width: "50%", borderWidth: "5px" }}
+                            className=" border-stone-500 whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
+                            style={{ width: "50%", borderWidth: "3px" }}
+                            id={styles.tableHead}
                           >
                             방어력
                           </td>
                           <td
                             className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500"
                             ref={enduranceRef}
+                            id={styles.ranNumber}
                           >
                             {numArr[2]}
                           </td>
                         </tr>
                         <tr
-                          className="border-white dark:border-neutral-500"
-                          style={{ borderWidth: "5px", height: "4em" }}
+                          className="border-stone-500 dark:border-neutral-500"
+                          style={{ borderWidth: "3px", height: "4em" }}
                         >
                           <td
-                            className="border-white whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
-                            style={{ width: "50%", borderWidth: "5px" }}
+                            className="border-stone-500 whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
+                            style={{ width: "50%", borderWidth: "3px" }}
+                            id={styles.tableHead}
                           >
                             치명타
                           </td>
                           <td
                             className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500"
                             ref={criticalRef}
+                            id={styles.ranNumber}
                           >
                             {numArr[3]}
                           </td>
                         </tr>
                         <tr
-                          className="border-white dark:border-neutral-500"
-                          style={{ borderWidth: "5px", height: "4em" }}
+                          className="border-stone-500 dark:border-neutral-500"
+                          style={{ borderWidth: "3px", height: "4em" }}
                         >
                           <td
-                            className="border-white whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
-                            style={{ width: "50%", borderWidth: "5px" }}
+                            className="border-stone-500 whitespace-nowrap border-r px-6 py-4  dark:border-neutral-500"
+                            style={{ width: "50%", borderWidth: "3px" }}
+                            id={styles.tableHead}
                           >
                             명중수치
                           </td>
                           <td
                             className="whitespace-nowrap border-r px-6 py-4 dark:border-neutral-500"
                             ref={hitRef}
+                            id={styles.ranNumber}
                           >
                             {numArr[4]}
                           </td>
                         </tr>
                       </tbody>
                     </table>
-                    <div
-                      style={{
-                        fontSize: "0.8em",
-                        color: "#4e4e4e",
-                        textAlign: "center",
-                        marginTop: "5%",
-                      }}
-                    >
-                      <p>(모든 능력치는 1~10 사이의 무작위 수치로 설정되며)</p>
-                      <p>(5개 능력치의 총합은 30 이하입니다.)</p>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className={styles.diceBox}>
+          <p className={styles.diceTitle}>초기 능력치 설정</p>
+          <div className={styles.diceBox} style={{ marginBottom: "15%" }}>
+            <Image
+              src="/static/images/dice.png"
+              alt="dice"
+              width={200}
+              height={200}
+              className={styles[`dice`]}
+              onClick={diceClick}
+              ref={dice}
+            />
+            <div className={styles.diceShadow} ref={diceShadow} />
           </div>
         </div>
       </div>

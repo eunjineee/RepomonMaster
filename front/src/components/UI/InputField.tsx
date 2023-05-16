@@ -55,9 +55,12 @@ function InputField(props: InputProps) {
 
   return (
     <form className="flex items-center" style={{ width: "70%" }}>
-      <div className="flex items-center border-b border-sky-500 py-2 w-100">
+      <div
+        className="flex items-center  py-2 w-100"
+        style={{ backgroundColor: "white" }}
+      >
         <input
-          className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+          className="appearance-none bg-transparent border-0 w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
           type="text"
           placeholder="이름 입력..."
           aria-label="Full name"
