@@ -96,6 +96,36 @@ public class BattleLogic {
 
 
 	/**
+	 * 랜덤 기본공격 로그
+	 */
+	private static final String[] normalAttack = {
+		"의 발차기!",
+		"의 어깨치기!",
+		"의 햘퀴기!",
+		"의 꼬리치기!",
+		"의 짓밟기!"
+	};
+
+	/**
+	 * 랜덤 크리티컬 로그
+	 */
+	private static final String[] criticalAttack = {
+		"의 헥토파스칼킥!",
+		"의 속여때리기!",
+		"강려크한공겨크!",
+		"의 급소때리기!",
+		"의 럭키펀치!"
+	};
+
+
+	private static String getRandomAttack(String[] attacks) {
+		Random random = new Random();
+		int randomIndex = random.nextInt(attacks.length);
+		return attacks[randomIndex];
+	}
+
+
+	/**
 	 * 사용자가 투자한 전체 스텟 조회
 	 *
 	 * @param repomon
@@ -261,9 +291,9 @@ public class BattleLogic {
 	private static String createAttackerLog(String repomonNickname, BattleFactor battleFactor, String skillName) {
 		switch (battleFactor) {
 		case ATTACK:
-			return repomonNickname + "의 평범한 공격!";
+			return repomonNickname + getRandomAttack(normalAttack);
 		case CRITICAL:
-			return repomonNickname + "의 강력한 공격!";
+			return repomonNickname + getRandomAttack(criticalAttack);
 		case SKILL:
 			return repomonNickname + "의 " + skillName + " 발동!";
 		}
