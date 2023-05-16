@@ -57,8 +57,7 @@ function Page({ params }: { params: { repoId: string } }) {
   const [repoDetailInfo, setRepoDetailInfo] = useState<RepoDetailType>();
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
-  /** 갱신 버튼 업데이트 */
-  const [isUpdated2, setIsUpdated2] = useState<boolean>(false);
+  const [isUpdated2, setIsUpdated2] = useState<boolean>(false); // 갱신 버튼
   const [repoDetailResearchInfo, setRepoDetailResearchInfo] =
     useState<RepoDetailResearchType>();
   const [repoDetailBattleInfo, setRepoDetailBattleInfo] =
@@ -97,7 +96,7 @@ function Page({ params }: { params: { repoId: string } }) {
   /** 배틀 정보 불러오기 + 스탯 변경 시 재요청 */
   useEffect(() => {
     requestRepoDetailBattleInfo(parseInt(params.repoId, 10));
-  }, [statUpdated]);
+  }, [statUpdated, isUpdated2]);
 
   /** 컨벤션 정보 불러오기 + 컨벤션 수정 시 재요청 */
   useEffect(() => {
@@ -384,7 +383,7 @@ function Page({ params }: { params: { repoId: string } }) {
               <div className={styles["btn-div"]}>
                 <button onClick={onClickUpdateBtn} className={styles.update}>
                   {updateLoading ? (
-                    <LoadingSpinner ml={4} mr={4} size={6} />
+                    <LoadingSpinner ml={4} mr={4} size={4} />
                   ) : (
                     <span>레포지토리 갱신</span>
                   )}

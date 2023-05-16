@@ -47,17 +47,10 @@ function Page() {
   //     console.error(err);
   //   }
   // };
-
-  const onClickSibal = () => {
-    if (divRef.current) {
-      divRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
+  
   return (
     <div className={styles.pageContainer} id="repo-detail">
       <HeartIcon style={{ color: "red" }} />
-      <button onClick={onClickSibal}>시발</button>
       {/* <div className={styles.info}>
         <div className={styles["repo-mon-card-div"]}>
           <div className={styles["repo-mon-card"]}> */}

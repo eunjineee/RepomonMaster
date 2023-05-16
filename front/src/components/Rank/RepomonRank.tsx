@@ -119,7 +119,7 @@ const RepomonRank = ({
                 <span
                   style={{
                     justifyContent: "flex-start",
-                    transform: "translateX(30%)",
+                    transform: "translateX(25%)",
                   }}
                   onClick={() => onClickRepoItem(item.repoId)}
                   className={styles.hover}
