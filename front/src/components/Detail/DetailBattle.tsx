@@ -63,7 +63,7 @@ const DetailBattle = ({
     if (battleInfo.rating >= 1600) {
       setTier("다이아몬드");
       setTierImg(diamond);
-      setTierColor("#CBD9FE");
+      setTierColor("#85ccff");
     } else if (battleInfo.rating >= 1400) {
       setTier("플래티넘");
       setTierImg(platinum);
@@ -75,7 +75,7 @@ const DetailBattle = ({
     } else if (battleInfo.rating >= 1000) {
       setTier("실버");
       setTierImg(silver);
-      setTierColor("#B1B1B1");
+      setTierColor("gray");
     } else {
       setTier("브론즈");
       setTierImg(bronze);
@@ -154,7 +154,17 @@ const DetailBattle = ({
                 height={40}
                 className={styles.image}
               ></Image>
-              {tier}
+              <span
+                className={
+                  tier === "다이아몬드"
+                    ? styles.dia
+                    : tier === "플래티넘"
+                    ? styles.platinum
+                    : undefined
+                }
+              >
+                {tier}
+              </span>
             </span>
             <span>{rank}위</span>
             <span>{battleInfo.winCnt}</span>

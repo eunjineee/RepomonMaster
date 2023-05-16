@@ -105,9 +105,9 @@ const ExportModal = ({
     let copyUrl: string;
 
     if (kind === "레포 카드") {
-      copyUrl = `[![RepomonRepoCard](https://repomon.kr/card/repo?repoId=${repoId})](https://repomon.kr)`;
+      copyUrl = `[![RepomonRepoCard](https://repomon.kr/card/repo?repoId=${repoId})](https://repomon.kr/repo/${repoId})`;
     } else {
-      copyUrl = `[![RepomonRepoPersonalCard](https://repomon.kr/card/repo_personal?repoId=${repoId}&userId=${userId})](https://repomon.kr)`;
+      copyUrl = `[![RepomonRepoPersonalCard](https://repomon.kr/card/repo_personal?repoId=${repoId}&userId=${userId})](https://repomon.kr/repo/${repoId})`;
     }
 
     window.navigator.clipboard.writeText(copyUrl).then(() => {
