@@ -32,27 +32,28 @@ public class GHUtils {
 	@Value("${github.accessToken}")
 	private List<String> accessTokens;
 	public GitHub gitHub;
-
 	private final Integer maxStarAndFork = 200;
 	private final RepoRepository repoRepository;
 	private final RepoHistoryRepository repoHistoryRepository;
 
 
 	@PostConstruct
-	private void init() throws IOException {
-		RateLimitChecker limitChecker = RateLimitChecker.NONE;
+	private void init() {
 		for(String accessToken : accessTokens){
-			gitHub = new GitHubBuilder().withOAuthToken(accessToken).withRateLimitChecker(limitChecker).build();
-			GHRateLimit rateLimit = gitHub.getRateLimit();
-			if(rateLimit.getCore().getRemaining() > 0) break;
+			try {
+				gitHub = new GitHubBuilder().withOAuthToken(accessToken).withRateLimitChecker(RateLimitChecker.NONE).build();
+				GHRateLimit rateLimit = gitHub.getRateLimit();
+				if(rateLimit.getCore().getRemaining() > 0) break;
+			} catch (IOException e) {
+				log.info("사용할 수 없는 토큰!! => {} ", accessToken);
+			}
 		}
 	}
 
 	public void changeUserToken() {
-		RateLimitChecker limitChecker = RateLimitChecker.NONE;
 		for(String accessToken : accessTokens){
 			try {
-				gitHub = new GitHubBuilder().withOAuthToken(accessToken).withRateLimitChecker(limitChecker).build();
+				gitHub = new GitHubBuilder().withOAuthToken(accessToken).withRateLimitChecker(RateLimitChecker.NONE).build();
 				GHRateLimit rateLimit = gitHub.getRateLimit();
 				if(rateLimit.getCore().getRemaining() > 0) break;
 			} catch (IOException e) {
