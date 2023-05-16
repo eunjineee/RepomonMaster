@@ -83,7 +83,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
   }, []);
 
   // 랜덤 공격 애니메이션 선정
-  const randomAttackNum: number[] = [0, 2, 3, 5, 6, 7, 11, 13, 15, 16];
+  const randomAttackNum: number[] = [0, 2, 5, 6, 7, 11, 13, 15, 16];
   function getRandomAttackNum(): number {
     const randomIndex = Math.floor(Math.random() * randomAttackNum.length);
     return randomAttackNum[randomIndex];
