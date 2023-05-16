@@ -27,7 +27,8 @@ public enum ErrorCode {
 	DATA_CONVENTION_TOO_SHORT(BAD_REQUEST, "입력된 컨벤션이 너무 짧습니다."),
 	NOT_ALLOW_EGG(BAD_REQUEST, "알은 허용되지 않는 접근입니다."),
 	MESSAGE_REQUEST_ERROR(BAD_REQUEST, "입력된 메세지에 문제가 있습니다."),
-
+	REPEATED_REQUEST(BAD_REQUEST, "반복된 요청입니다."),
+	
 	/* 401 UNAUTHORIZED : 권한 인증 문제. JWT 토큰과 관련된 에러 */
 	UNAUTHORIZED_USER(UNAUTHORIZED, "권한이 허용되지 않은 유저입니다."),
 	TOKEN_ERROR(UNAUTHORIZED, "토큰에 문제가 있습니다."),

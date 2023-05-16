@@ -50,6 +50,8 @@ public class RepomonService {
 	private final RepoRedisListRepository redisListRepository;
 	private final ActiveRepoRepository activeRepoRepository;
 
+	private static final long BATTLE_TIMEOUT = 5000; // 5초
+
 
 	/**
 	 * 해당 레포에 속한 레포몬의 상세 정보 반환
@@ -181,15 +183,28 @@ public class RepomonService {
 			throw new CustomException(NO_ACCESS);
 		}
 
-		// 알인지 확인
-		if (myRepomon.getRepomon().getRepomonId() > 9000) {
-			throw new CustomException(NOT_ALLOW_EGG);
-		}
-
 		RepomonStatusEntity yourRepomon = repomonStatusRepository.findById(
 			battleLogRequestDto.getOpponentRepoId()).orElseThrow(
 			() -> new CustomException(NOT_FOUND_REPOSITORY)
 		);
+
+		// 타임아웃 확인
+		Optional<BattleLogEntity> lastBattleLog = battleLogRepository.findTopByAttackRepoOrderByCreatedAtDesc(myRepomon);
+		if (lastBattleLog.isPresent()) {
+			log.info("최근 전투 시간 : " + lastBattleLog.get().getCreatedAt().toString());
+			LocalDateTime currentDateTime = LocalDateTime.now();
+			log.info("현재 시간 : " + currentDateTime);
+			LocalDateTime lastBattleTime = lastBattleLog.get().getCreatedAt();
+			long diffInMillis = java.time.Duration.between(lastBattleTime, currentDateTime).toMillis();
+			if (diffInMillis <= BATTLE_TIMEOUT) {
+				throw new CustomException(REPEATED_REQUEST);
+			}
+		}
+
+		// 알인지 확인
+		if (myRepomon.getRepomon().getRepomonId() > 9000 || yourRepomon.getRepomon().getRepomonId() > 9000) {
+			throw new CustomException(NOT_ALLOW_EGG);
+		}
 
 		List<HashMap<String, Object>> battleLogList = new ArrayList<>();
 
