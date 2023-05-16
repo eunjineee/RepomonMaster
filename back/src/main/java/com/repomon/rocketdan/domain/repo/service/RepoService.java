@@ -143,7 +143,7 @@ public class RepoService {
 		if(userEntity != null){
 			myRepo = activeRepoRepository.existsByUserAndRepo(userEntity, repoEntity);
 			if(myRepo){
-				ActiveRepoEntity activeRepoEntity = userEntity.getRepresentRepo().orElseGet(null);
+				ActiveRepoEntity activeRepoEntity = userEntity.getRepresentRepo().orElse(null);
 				if(activeRepoEntity != null){
 					myPresentRepo = repoEntity.getRepoId() == activeRepoEntity.getRepo().getRepoId();
 				}
@@ -476,7 +476,7 @@ public class RepoService {
 			}
 
 			RepoHistoryEntity history = repoHistoryRepository.findFirstByRepoOrderByWorkedAtDesc(
-				repoEntity).orElseGet(null);
+				repoEntity).orElse(null);
 
 			try {
 				PagedIterable<GHCommit> ghCommits = history == null ? ghRepository.queryCommits().list()
@@ -788,7 +788,7 @@ public class RepoService {
 		//내 이슈, 머지, 리뷰 가져오기 >> 깃유틸에 넣기 째(getMyIssueToHistory)는 프라이빗, 예는 퍼블릭
 		Integer myIssue;
 		List<Integer> myMerges;
-		RepoHistoryEntity history = repoHistoryRepository.findFirstByRepoOrderByWorkedAtDesc(repoEntity).orElseGet(null);
+		RepoHistoryEntity history = repoHistoryRepository.findFirstByRepoOrderByWorkedAtDesc(repoEntity).orElse(null);
 		if (history != null) {
 			LocalDate workedAt = history.getWorkedAt();
 			Date workDate = DateUtils.LocalDateToDate(workedAt);
