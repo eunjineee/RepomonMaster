@@ -474,12 +474,16 @@ public class GHUtils {
 	 * @throws InterruptedException
 	 */
 	public Long getTotalCodeLineCountByUser(Map<String, GHRepository> repos, String userName) throws IOException, InterruptedException {
-		Long totalCodeLineCount = 0L;
-		for (GHRepository repo : repos.values()) {
-			GHRepositoryStatistics statistics = repo.getStatistics();
-			totalCodeLineCount += getLineCountWithUser(statistics, userName);
+		try {
+			Long totalCodeLineCount = 0L;
+			for (GHRepository repo : repos.values()) {
+				GHRepositoryStatistics statistics = repo.getStatistics();
+				totalCodeLineCount += getLineCountWithUser(statistics, userName);
+			}
+			return totalCodeLineCount;
+		} catch (IOException | InterruptedException e) {
+			return getTotalCodeLineCountByUser(repos, userName);
 		}
-		return totalCodeLineCount;
 	}
 
 
@@ -508,19 +512,23 @@ public class GHUtils {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public Long getAvgContributionByUser(Map<String, GHRepository> repos, String userName) throws IOException, InterruptedException {
-		double avgContribution = 0;
-		for (GHRepository repo : repos.values()) {
-			GHRepositoryStatistics statistics = repo.getStatistics();
-			double totalCommitCount = getTotalCommitCount(statistics);
-			double myCommitCount = getCommitCountWithUser(statistics, userName);
-			if (totalCommitCount == 0.0) {
-				avgContribution += 100.0;
-			} else {
-				avgContribution += myCommitCount / totalCommitCount * 100;
+	public Long getAvgContributionByUser(Map<String, GHRepository> repos, String userName) {
+		try {
+			double avgContribution = 0;
+			for (GHRepository repo : repos.values()) {
+				GHRepositoryStatistics statistics = repo.getStatistics();
+				double totalCommitCount = getTotalCommitCount(statistics);
+				double myCommitCount = getCommitCountWithUser(statistics, userName);
+				if (totalCommitCount == 0.0) {
+					avgContribution += 100.0;
+				} else {
+					avgContribution += myCommitCount / totalCommitCount * 100;
+				}
 			}
+			return Math.round(avgContribution / repos.size());
+		} catch (IOException | InterruptedException e) {
+			return getAvgContributionByUser(repos, userName);
 		}
-		return Math.round(avgContribution / repos.size());
 	}
 
 
@@ -534,9 +542,8 @@ public class GHUtils {
 
 		for (GHRepository repo : repos.values()) {
 			String nodeId = repo.getNodeId();
-			RepoEntity repoEntity = repoRepository.findByRepoKey(nodeId).orElseThrow(() -> {
-				throw new CustomException(ErrorCode.NOT_FOUND_PUBLIC_REPOSITORY);
-			});
+			RepoEntity repoEntity = repoRepository.findByRepoKey(nodeId).orElse(null);
+			if(repoEntity == null) continue;
 			StarCount += repoEntity.getStarCnt();
 			ForkCount += repoEntity.getForkCnt();
 		}
@@ -559,12 +566,11 @@ public class GHUtils {
 
 		for (GHRepository repo : repos.values()) {
 			String nodeId = repo.getNodeId();
-			RepoEntity repoEntity = repoRepository.findByRepoKey(nodeId).orElseThrow(() -> {
-				throw new CustomException(ErrorCode.NOT_FOUND_PUBLIC_REPOSITORY);
-			});
+			RepoEntity repoEntity = repoRepository.findByRepoKey(nodeId).orElse(null);
+			if(repoEntity == null) continue;
 
 			RepoHistoryEntity history = repoHistoryRepository.findFirstByRepoOrderByWorkedAtDesc(
-				repoEntity).orElseGet(null);
+				repoEntity).orElse(null);
 
 			Date lastDate = history == null ? null : DateUtils.LocalDateToDate(history.getWorkedAt());
 			List<Integer> myMergeToHistory = getMyMergeToHistory(repo, lastDate, userName);
@@ -599,10 +605,14 @@ public class GHUtils {
 
 		userCardInfo.setAvgContribution(getAvgContributionByUser(repos, userName));
 		userCardInfo.setTotalIssueExp(getTotalIssueCountByUser(userName) * GrowthFactor.ISSUE.getExp());
-		userCardInfo.setStarExp(getStarAndForkByUser(repos).get(0) * GrowthFactor.STAR.getExp());
-		userCardInfo.setForkExp(getStarAndForkByUser(repos).get(1) * GrowthFactor.FORK.getExp());
-		userCardInfo.setTotalMergeExp(getMergeAndReviewByUser(repos, userName).get(0) * GrowthFactor.MERGE.getExp());
-		userCardInfo.setTotalReviewExp(getMergeAndReviewByUser(repos, userName).get(1) * GrowthFactor.REVIEW.getExp());
+
+		List<Long> starAndForkByUser = getStarAndForkByUser(repos);
+		userCardInfo.setStarExp(starAndForkByUser.get(0) * GrowthFactor.STAR.getExp());
+		userCardInfo.setForkExp(starAndForkByUser.get(1) * GrowthFactor.FORK.getExp());
+
+		List<Long> mergeAndReviewByUser = getMergeAndReviewByUser(repos, userName);
+		userCardInfo.setTotalMergeExp(mergeAndReviewByUser.get(0) * GrowthFactor.MERGE.getExp());
+		userCardInfo.setTotalReviewExp(mergeAndReviewByUser.get(1) * GrowthFactor.REVIEW.getExp());
 		userCardInfo.setTotalCommitExp(getTotalCommitCountByUser(repos, userName) * GrowthFactor.COMMIT.getExp());
 
 		return userCardInfo;
