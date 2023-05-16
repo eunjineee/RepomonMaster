@@ -170,20 +170,20 @@ class UrlSettings(object):
         if repo_type == 'repo':
             print('🎨',repo_type)
             self.api_server = 'https://repomon.kr/api/v1/repo/'
-            self.repo_handle = request.GET.get("repoId", "1")
+            self.repo_handle = request.GET.get("repoId", "0")
             self.repo_information_url = self.api_server + self.repo_handle + '/card/detail/django'
             print('🎨',self.repo_information_url)
         elif repo_type == 'repo_personal':
             print('🎨',repo_type)
             self.api_server = 'https://repomon.kr/api/v1/repo/'
-            self.repo_handle = request.GET.get("repoId", "1")
-            self.user_handle = request.GET.get("userId", "1")
+            self.repo_handle = request.GET.get("repoId", "0")
+            self.user_handle = request.GET.get("userId", "0")
             self.repo_information_url = self.api_server + self.repo_handle + '/card/personal/' + self.user_handle + '/django'
             print('🎨🖼',self.repo_information_url)
         elif repo_type == 'user':
             print('🎨',repo_type)
             self.api_server = 'https://repomon.kr/api/v1/user/'
-            self.repo_handle = request.GET.get("userId", "1")
+            self.repo_handle = request.GET.get("userId", "0")
             self.repo_information_url = self.api_server + self.repo_handle + '/card/django'
             print('🎨🖼',self.repo_information_url)
     
