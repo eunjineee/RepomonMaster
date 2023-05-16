@@ -31,6 +31,7 @@ import ArrowDown from "@/components/UI/ArrowDown";
 import { ModelSel } from "./ModelSel";
 import StatsChart from "./StatsChart";
 import { statsData } from "@/types/repoInfo";
+import { pretreatModelUrl } from "@/app/utils/PretreatModelUrl";
 
 const Page: NextPage<PageProps> = ({ params }) => {
   const [numArr, setNumArr] = useState([0, 0, 0, 0, 0]);
@@ -248,7 +249,14 @@ const Page: NextPage<PageProps> = ({ params }) => {
   }, []);
 
   // 레포몬 선택 시 스포트라이트
-  function clickMonHandle(refDiv: React.RefObject<HTMLDivElement>) {
+  const [selCharUrl, setSelCharUrl] = useState<string>(
+    "/static/models/tempLoader.glb"
+  );
+  function clickMonHandle(
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    refDiv: React.RefObject<HTMLDivElement>
+  ) {
+    event.preventDefault();
     if (
       refDiv.current &&
       monRef1.current &&
@@ -266,6 +274,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
         setIsClickTwo(false);
         setIsClickThree(false);
         setSelectedChar(randomRepos?.selectRepomonList[0].repomonId);
+        setSelCharUrl(randomRepos?.selectRepomonList[0].repomonUrl);
       } else if (refDiv === monRef2) {
         (refDiv.current.style as CSSStyleDeclaration).backgroundColor =
           "rgba(201,199,194,255)";
@@ -277,6 +286,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
         setIsClickTwo(true);
         setIsClickThree(false);
         setSelectedChar(randomRepos?.selectRepomonList[1].repomonId);
+        setSelCharUrl(randomRepos?.selectRepomonList[1].repomonUrl);
       } else if (refDiv === monRef3) {
         (refDiv.current.style as CSSStyleDeclaration).backgroundColor =
           "rgba(201,199,194,255)";
@@ -288,6 +298,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
         setIsClickTwo(false);
         setIsClickThree(true);
         setSelectedChar(randomRepos?.selectRepomonList[2].repomonId);
+        setSelCharUrl(randomRepos?.selectRepomonList[2].repomonUrl);
       }
     }
   }
@@ -400,7 +411,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
           <div
             className={styles.monChar}
             ref={monRef1}
-            onClick={() => clickMonHandle(monRef1)}
+            onClick={(event) => clickMonHandle(event, monRef1)}
             onMouseOver={() => setIsHoveredOne(true)}
             onMouseLeave={() => setIsHoveredOne(false)}
           >
@@ -433,7 +444,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
           <div
             className={styles.monChar}
             ref={monRef2}
-            onClick={() => clickMonHandle(monRef2)}
+            onClick={(e) => clickMonHandle(e, monRef2)}
             onMouseOver={() => setIsHoveredTwo(true)}
             onMouseLeave={() => setIsHoveredTwo(false)}
           >
@@ -466,7 +477,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
           <div
             className={styles.monChar}
             ref={monRef3}
-            onClick={() => clickMonHandle(monRef3)}
+            onClick={(event) => clickMonHandle(event, monRef3)}
             onMouseOver={() => setIsHoveredThree(true)}
             onMouseLeave={() => setIsHoveredThree(false)}
           >
@@ -500,7 +511,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
       </div>
       <div className={styles.settingBox} ref={setBox}>
         <div className={styles.repomonCanvas}>
-          <Canvas
+          <div
             style={{
               backgroundColor: "#EFF0FF",
               width: "90%",
@@ -509,19 +520,15 @@ const Page: NextPage<PageProps> = ({ params }) => {
               marginTop: "5%",
             }}
           >
-            <ambientLight intensity={0.7} />
-            <ModelSel
-              repomonUrl={
-                isClickOne
-                  ? randomRepos?.selectRepomonList[0]?.repomonUrl + "?id=0"
-                  : isClickTwo
-                  ? randomRepos?.selectRepomonList[1]?.repomonUrl + "?id=1"
-                  : isClickThree
-                  ? randomRepos?.selectRepomonList[2]?.repomonUrl + "?id=2"
-                  : "/static/models/tempLoader.glb"
-              }
+            <Image
+              src={`/static/models_png/${pretreatModelUrl(selCharUrl)}.png`}
+              sizes="100vw"
+              width={0}
+              height={0}
+              alt="레포몬"
+              style={{ width: "100%", height: "100%", borderRadius: "10px" }}
             />
-          </Canvas>
+          </div>
         </div>
         <div className={styles.conventionBox}>
           <div
@@ -685,6 +692,9 @@ const Page: NextPage<PageProps> = ({ params }) => {
             />
             <div className={styles.diceShadow} ref={diceShadow} />
           </div>
+          <p className={styles.diceDetail}>
+            주사위를 굴려 초기 능력치를 설정하세요!
+          </p>
         </div>
       </div>
       <div style={{ display: "flex", marginBlock: "3%" }}>

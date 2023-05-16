@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
   TimeScale,
+  RadialLinearScale,
 } from "chart.js";
 
 ChartJS.register(
@@ -22,7 +23,8 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  TimeScale
+  TimeScale,
+  RadialLinearScale
 );
 
 function StatsChart(props: statsData) {

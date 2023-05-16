@@ -119,7 +119,7 @@
       width: 100px;
       height: auto;
       position: absolute;
-      bottom: -2em;
+      bottom: -5em;
       left: 15em;
       transform: translate(-50%, -50%);
       z-index: 9;
@@ -139,7 +139,7 @@
       background-color: rgba(0, 0, 0, 0.781);
       border-radius: 50%;
       filter: blur(0.4em);
-      bottom: 1em;
+      bottom: -2em;
       left: 15em;
       transform: translate(-50%, -50%);
       transition: all 0.2s ease-in-out;
@@ -148,6 +148,14 @@
         height: 1em;
         bottom: -4em;
       }
+    }
+    & .diceDetail {
+      width: 100%;
+      color: white;
+      font-size: 1.4em;
+      text-align: center;
+      margin-bottom: 10%;
+      animation: blink 3s ease-in-out infinite;
     }
   }
 }
