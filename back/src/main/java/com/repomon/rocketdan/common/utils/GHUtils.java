@@ -10,6 +10,7 @@ import com.repomon.rocketdan.domain.repo.repository.RepoRepository;
 import com.repomon.rocketdan.exception.CustomException;
 import com.repomon.rocketdan.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.*;
 import org.kohsuke.github.GHIssueQueryBuilder.Sort;
 import org.kohsuke.github.GHRepositoryStatistics.CodeFrequency;
@@ -24,7 +25,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 
-@Component
+@Component @Slf4j
 @RequiredArgsConstructor
 public class GHUtils {
 
@@ -50,10 +51,12 @@ public class GHUtils {
 	public void changeUserToken() throws IOException {
 		RateLimitChecker limitChecker = RateLimitChecker.NONE;
 		for(String accessToken : accessTokens){
+			log.info("gitHub AccessToken 교체 => {} ", accessToken);
 			gitHub = new GitHubBuilder().withOAuthToken(accessToken).withRateLimitChecker(limitChecker).build();
 			GHRateLimit rateLimit = gitHub.getRateLimit();
 			if(rateLimit.getCore().getRemaining() > 0) break;
 		}
+		log.info("교체 완료!");
 	}
 
 
