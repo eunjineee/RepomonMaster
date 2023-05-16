@@ -48,13 +48,16 @@ public class GHUtils {
 		}
 	}
 
-	public void changeUserToken() throws IOException {
+	public void changeUserToken() {
 		RateLimitChecker limitChecker = RateLimitChecker.NONE;
 		for(String accessToken : accessTokens){
-			log.info("gitHub AccessToken 교체 => {} ", accessToken);
-			gitHub = new GitHubBuilder().withOAuthToken(accessToken).withRateLimitChecker(limitChecker).build();
-			GHRateLimit rateLimit = gitHub.getRateLimit();
-			if(rateLimit.getCore().getRemaining() > 0) break;
+			try {
+				gitHub = new GitHubBuilder().withOAuthToken(accessToken).withRateLimitChecker(limitChecker).build();
+				GHRateLimit rateLimit = gitHub.getRateLimit();
+				if(rateLimit.getCore().getRemaining() > 0) break;
+			} catch (IOException e) {
+				log.info("사용할 수 없는 토큰!! => {} ", accessToken);
+			}
 		}
 		log.info("교체 완료!");
 	}
