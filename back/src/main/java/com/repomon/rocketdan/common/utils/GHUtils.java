@@ -430,13 +430,18 @@ public class GHUtils {
 	 * @throws InterruptedException
 	 */
 	public Long getTotalCommitCountByUser(Map<String, GHRepository> repos, String userName) throws IOException, InterruptedException {
-		Long totalCommitCount = 0L;
-		for (GHRepository repo : repos.values()) {
-			GHRepositoryStatistics statistics = repo.getStatistics();
-			Long commitCountWithUser = getCommitCountWithUser(statistics, userName);
-			totalCommitCount += commitCountWithUser;
+		try {
+			Long totalCommitCount = 0L;
+			for (GHRepository repo : repos.values()) {
+				GHRepositoryStatistics statistics = repo.getStatistics();
+				Long commitCountWithUser = getCommitCountWithUser(statistics, userName);
+				totalCommitCount += commitCountWithUser;
+			}
+			return totalCommitCount;
+
+		} catch (IOException | InterruptedException e) {
+			return getTotalCommitCountByUser(repos, userName);
 		}
-		return totalCommitCount;
 	}
 
 
