@@ -8,7 +8,7 @@ import base64
 import random
 
 from django.http import HttpResponse
-from .images import PER, POCKET, img0, img1,img2,img3,img4,img5,img6,img7,img8,img9,img10,img11,img12,img13,img14,img15,img16,img17,img18,img19,img20,img21,img22,img23,img24,img25,img26,img27,img28,img29,img30
+from .images import PER, POCKET, ROIROSA, img0, img1,img2,img3,img4,img5,img6,img7,img8,img9,img10,img11,img12,img13,img14,img15,img16,img17,img18,img19,img20,img21,img22,img23,img24,img25,img26,img27,img28,img29,img30
 from .templates.COLOR_DICT import COLOR_DICT
 import cairosvg
 import pygal
@@ -110,6 +110,7 @@ def languageCount(data):
 IMG = {
     'Per' : PER,
     'pocket': POCKET,
+    'roirosa' : ROIROSA,
     'img0': img0,
     'img1': img1,
     'img2': img2,
@@ -215,48 +216,46 @@ class RepoDefaultSettings(object):
                 self.conventionrate_percent = self.percent(self.json['conventionrate'])
                 self.chart = svg_chart([self.commits, self.issues, self.reviews, self.forkCnt, self.starCnt, self.merges])
             else:
-                self.repomonId = 1
-                self.repoExp = 123456
+                self.repomonId = 4
+                self.repoExp = 1234
                 self.repomonTier = 1
-                self.repoName = '레포몬'
+                self.repoName = '레포몬 마스터'
                 self.contributers = 6
                 self.repoStart = '23.03.10'
                 self.repoEnd = '23.04.20'
-                self.languages = [('JavaScript', '#F7DF1E',0,60),('Java','#007396',65,30),('','0','0','0'),('','0','0','0'),('','0','0','0'),('','0','0','0')]
-                self.totalcommit = 123456
-                self.totalcode = 654321
-                self.starCnt = 10
-                self.forkCnt = 5
+                self.languages = languageCount(['TypeScript','Java','JavaScript','CSS','Python','HTML'])
+                self.totalcommit = 12345
+                self.totalcode = 5321
+                self.starCnt = 55
+                self.forkCnt = 50
                 self.commits = 82
-                self.issues = 75
+                self.issues = 60
                 self.merges = 70
                 self.reviews = 80
                 self.conventionrate = 60
                 self.conventionrate_percent = self.percent(self.conventionrate)
-                self.chart = svg_chart([self.commits, self.merges, self.issues, self.reviews, self.starCnt, self.forkCnt])
-
+                self.chart = svg_chart([self.commits, self.issues, self.reviews, self.forkCnt, self.starCnt, self.merges])
         except JSONDecodeError as e:
             logger.error(e)
-            self.repomonId = 1
-            self.repoExp = 123456
+            self.repomonId = 4
+            self.repoExp = 1234
             self.repomonTier = 1
-            self.repoName = '레포몬'
+            self.repoName = '레포몬 마스터'
             self.contributers = 6
             self.repoStart = '23.03.10'
             self.repoEnd = '23.04.20'
-            self.languages = [('JavaScript', '#F7DF1E',0,60),('Java','#007396',65,30),('','0','0','0'),('','0','0','0'),('','0','0','0'),('','0','0','0')]
-            self.totalcommit = 123456
-            self.totalcode = 654321
-            self.starCnt = 10
-            self.forkCnt = 5
+            self.languages = languageCount(['TypeScript','Java','JavaScript','CSS','Python','HTML'])
+            self.totalcommit = 12345
+            self.totalcode = 5321
+            self.starCnt = 55
+            self.forkCnt = 50
             self.commits = 82
-            self.issues = 75
+            self.issues = 60
             self.merges = 70
             self.reviews = 80
             self.conventionrate = 60
             self.conventionrate_percent = self.percent(self.conventionrate)
-            self.chart = svg_chart([self.commits, self.merges, self.issues, self.reviews, self.starCnt, self.forkCnt])
-
+            self.chart = svg_chart([self.commits, self.issues, self.reviews, self.forkCnt, self.starCnt, self.merges])
     def day(self, day):
         if day != None:
             new_day = str(day[2:4])+'.'+str(day[5:7])+'.'+str(day[8:10]) 
@@ -487,13 +486,13 @@ def repo_card(request):
     <text x="{lang5_2t}" y="107" class="language  language_pop">{lang5_0}</text>
 
 
-    <image href="{chart}" x="425" y="25" height="160px" class="chartmain"/>
-    <text x="502" y="28" class="charttitle">Commit</text>
-    <text x="575" y="70" class="charttitle">Merge</text>
-    <text x="432" y="70" class="charttitle">Issue</text>
-    <text x="432" y="137" class="charttitle">Review</text>
-    <text x="575" y="137" class="charttitle">Star</text>
-    <text x="504" y="178" class="charttitle">Fork</text>
+    <image href="{chart}" x="420" y="25" height="160px" class="chartmain"/>
+    <text x="497" y="28" class="charttitle">Commit</text>
+    <text x="568" y="70" class="charttitle">Merge</text>
+    <text x="429" y="70" class="charttitle">Issue</text>
+    <text x="425" y="137" class="charttitle">Review</text>
+    <text x="570" y="137" class="charttitle">Star</text>
+    <text x="499" y="178" class="charttitle">Fork</text>
 </svg>
     '''.format( repoName = handle_set.repoName,
                 repoExp = format(int(handle_set.repoExp),','),
@@ -590,11 +589,11 @@ class RepoPersonalDefaultSettings(object):
 
                 self.chart = svg_chart_personal([self.commits, self.issues, self.reviews, self.forkCnt, self.starCnt, self.merges],[self.mycommits, self.myissues, self.myreviews, self.forkCnt, self.starCnt, self.mymerges])
             else:
-                self.repomonId = 0
+                self.repomonId = 6
                 self.repoExp = 12345
-                self.repomonTier = 0
+                self.repomonTier = 3
                 self.contribution = 30
-                self.repoName = '레포몬'
+                self.repoName = '레포몬 마스터'
                 self.contributers = 1
                 self.repoStart = '23.03.10'
                 self.repoEnd = '23.04.20'
@@ -614,8 +613,8 @@ class RepoPersonalDefaultSettings(object):
                 self.merges = 8000
                 self.reviews = 4800
 
-                self.gitname = '로켓단'
-                self.avatarUrl = IMG['img0']
+                self.gitname = '로이로사'
+                self.avatarUrl = IMG['roirosa']
 
                 self.mycommits = 10000
                 self.myissues = 6000
@@ -626,11 +625,11 @@ class RepoPersonalDefaultSettings(object):
 
         except JSONDecodeError as e:
             logger.error(e)
-            self.repomonId = 1
+            self.repomonId = 6
             self.repoExp = 12345
-            self.repomonTier = 1
+            self.repomonTier = 3
             self.contribution = 30
-            self.repoName = '레포몬'
+            self.repoName = '레포몬 마스터'
             self.contributers = 1
             self.repoStart = '23.03.10'
             self.repoEnd = '23.04.20'
@@ -650,8 +649,9 @@ class RepoPersonalDefaultSettings(object):
             self.merges = 8000
             self.reviews = 4800
 
-            self.gitname = '로켓단'
-            self.avatarUrl = IMG['img0']
+
+            self.gitname = '로이로사'
+            self.avatarUrl = IMG['roirosa']
 
             self.mycommits = 10000
             self.myissues = 6000
@@ -994,34 +994,34 @@ class UserDefaultSettings(object):
                 self.avatarUrl = avatarUrl_to(self.json['avatarUrl'])
                 self.introduce = self.is_none(self.json['introduce']) 
                 self.repoCount = self.json['repoCount'] 
-            
-                self.chart = svg_chart([self.totalCommitExp, self.totalMergeExp, self.totalIssueExp, self.totalReviewExp, self.starExp, self.forkExp])
+
+                self.chart = svg_chart([self.totalCommitExp, self.totalIssueExp, self.totalReviewExp, self.forkExp, self.starExp, self.totalMergeExp])
             else:
-                self.myrepomonId = 3
+                self.myrepomonId = 12
                 self.myrepoExp = 321
                 self.myrepomonTier = 3
-                self.myrepoName = '레포몬'
+                self.myrepoName = '레포몬 마스터'
                 self.totalExp = 12345
 
                 self.totalCommitCount = 54321
                 self.totalCodeLineCount = 1234567
                 self.languages = [('Java', '#007396', '0', '30'), ('Vue', '#4FC08D', '35', '25'), ('Python', '#3776AB', '65', '40'), ('TypeScript', '#3178C6', '0', '60'), ('CSS', '#1572B6', '65', '25'), ('HTML', '#E34F26', '95', '30'), ('', '0', '0', '0')]
 
-                self.totalCommitExp = 30
-                self.totalMergeExp = 30
-                self.totalReviewExp = 20
-                self.totalIssueExp = 10
-                self.starExp = 5
-                self.forkExp = 5
+                self.totalCommitExp = 82
+                self.totalMergeExp = 70
+                self.totalReviewExp = 80
+                self.totalIssueExp = 60
+                self.starExp = 55
+                self.forkExp = 50
 
                 self.avgContribution = 77
                 self.avgContribution_percent = self.percent(self.avgContribution)
 
-                self.userName = '로켓단'
-                self.avatarUrl = IMG['img0']
-                self.introduce = '주소를 다시 확인해주세요'
-                self.repoCount = 0 
-                self.chart = svg_chart([self.totalCommitExp, self.totalMergeExp, self.totalIssueExp, self.totalReviewExp, self.starExp, self.forkExp])
+                self.userName = '로이로사'
+                self.avatarUrl = IMG['roirosa']
+                self.introduce = '로이! 로사! 냐옹이다옹~!'
+                self.repoCount = 2 
+                self.chart = svg_chart([self.totalCommitExp, self.totalIssueExp, self.totalReviewExp, self.forkExp, self.starExp, self.totalMergeExp])
         
         except JSONDecodeError as e:
             logger.error(e)
@@ -1049,7 +1049,7 @@ class UserDefaultSettings(object):
             self.avatarUrl = IMG['img0']
             self.introduce = '주소를 다시 확인해주세요'
             self.repoCount = 0 
-            self.chart = svg_chart([self.totalCommitExp, self.totalMergeExp, self.totalIssueExp, self.totalReviewExp, self.starExp, self.forkExp])
+            self.chart = svg_chart([self.totalCommitExp, self.totalIssueExp, self.totalReviewExp, self.forkExp, self.starExp, self.totalMergeExp])
         
     def percent(self, num):
         percent = round(num/100*80)
@@ -1279,7 +1279,7 @@ def user_card(request):
     <text x="{lang5_2t}" y="111" class="language language_pop">{lang5_0}</text>
 
 
-    <image href="{chart}" x="370" y="12" height="220px" class="chartmain"/>
+    <image href="{chart}" x="372" y="12" height="220px" class="chartmain"/>
     <text x="479" y="22" class="charttitle">Commit</text>
     <text x="570" y="73" class="charttitle">Merge</text>
     <text x="395" y="73" class="charttitle">Issue</text>
