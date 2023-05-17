@@ -1,29 +1,15 @@
+import { Html } from "@react-three/drei";
 import { useFrame, useLoader } from "@react-three/fiber";
-import React from "react";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import Image from "next/image";
+import React, { useRef } from "react";
+import Effect from "/public/static/effects/explosion.gif";
 import * as THREE from "three";
 
-export type EffectProps = {
-  effectUrl: string;
-  isSkilled: boolean;
-};
-
 const MyEffect = () => {
-  const texture = useLoader(
-    THREE.TextureLoader,
-    "/static/effects/explosion.gif"
-  );
-
-  useFrame(() => {
-    // Update the texture frame if necessary
-    texture.needsUpdate = true;
-  });
-
   return (
-    <mesh>
-      <planeBufferGeometry args={[1, 1]} />
-      <meshBasicMaterial transparent={true} map={texture} />
-    </mesh>
+    <Html position={[0, 0, 3]}>
+      <Image src={Effect} alt="explosion" width={10} height={10} />
+    </Html>
   );
 };
 

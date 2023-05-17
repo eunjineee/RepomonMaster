@@ -50,6 +50,8 @@ import { customAlert } from "@/app/utils/CustomAlert";
 import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
 import ExportModal from "@/components/Detail/ExportModal";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 
 function Page({ params }: { params: { repoId: string } }) {
   const loginUserId: string | null =
@@ -382,6 +384,19 @@ function Page({ params }: { params: { repoId: string } }) {
                   <span className={styles.share}>
                     <ShareIcon />
                     {repoDetailInfo.forkCnt}
+                  </span>
+                  <span className={styles.github}>
+                    <Link
+                      href={`https://github.com/${repoDetailConventionInfo?.repoOwner.toLowerCase()}`}
+                      target="_blank"
+                    >
+                      <Image
+                        src="/static/images/github.png"
+                        alt="logo"
+                        width={24}
+                        height={24}
+                      />
+                    </Link>
                   </span>
                 </div>
               </div>

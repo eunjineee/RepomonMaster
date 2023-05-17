@@ -1,4 +1,4 @@
-@import '@/styles/variables.scss';
+@import "@/styles/variables.scss";
 
 .container {
   width: 100%;
@@ -20,7 +20,7 @@
       color: white;
       font-weight: 600;
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-      font-family: 'SUIT-Thin';
+      font-family: "SUIT-Thin";
 
       @include desktop125 {
         height: 480px;
@@ -161,7 +161,7 @@
         }
 
         & p {
-          font-family: 'SUIT-Bold';
+          font-family: "SUIT-Bold";
           display: none;
           background-color: rgba(90, 167, 255, 0.6);
           position: absolute;
@@ -215,4 +215,12 @@
   @include desktop125 {
     font-size: 2.5rem;
   }
+}
+
+.registBtn {
+  width: 9em;
+  height: 3em;
+  border: 3px solid white;
+  border-radius: 10px;
+  font-size: 1.3em;
 }

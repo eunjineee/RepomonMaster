@@ -23,6 +23,7 @@ import * as THREE from "three";
 import UserExportModal from "@/components/UserExportModal";
 import { customAlert } from "@/app/utils/CustomAlert";
 import { OrbitControls } from "@react-three/drei";
+import Link from "next/link";
 
 const Page = ({ params }: { params: { userId: string } }) => {
   // 레포지토리 유저 정보 GET
@@ -36,6 +37,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
   const [isReloaded, setIsReloaded] = useState<boolean>(false);
   const [isListLoaded, setIsListLoaded] = useState<boolean>(true);
   const arrowRef = useRef<SVGSVGElement>(null);
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [activeChanged, setActiveChanged] = useState<boolean>(false);
 
@@ -127,8 +129,9 @@ const Page = ({ params }: { params: { userId: string } }) => {
               <p className={styles.boxTitle}>{userInfo?.username}</p>
               <p className="py-2">{userInfo?.userDescription}</p>
               <UserExportModal userId={params.userId} />
-              <a
+              <Link
                 href={`https://github.com/${userInfo?.username.toLowerCase()}`}
+                target="_blank"
               >
                 <div className={`${styles.boxContent} flex items-center`}>
                   <div className="pr-3 py-1.5">
@@ -141,7 +144,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
                   </div>
                   <div>github.com/{userInfo?.username.toLowerCase()}</div>
                 </div>
-              </a>
+              </Link>
               <div className={`${styles.boxContent} flex items-center`}>
                 <div className="pr-3 py-1.5">
                   <Image

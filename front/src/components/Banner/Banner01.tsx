@@ -11,6 +11,8 @@ import { GitTipType, RepoInfo } from "@/types/repomons";
 import { getModelLists } from "@/api/modelLoader";
 import "@/styles/speechBubble.scss";
 import { gitTipData } from "../../app/dashboard/gitData";
+import MyEffect from "@/app/repo/[repoId]/repoBattle/MyEffect";
+import { getBaseURL } from "@/api/axios";
 
 const Model = ({ isClicked, onIsClickedChange }: any) => {
   // const [isClicked, SetIsClicked] = useState<boolean>(false);
@@ -28,7 +30,6 @@ const Model = ({ isClicked, onIsClickedChange }: any) => {
       try {
         const response = await getModelLists();
         setRepomonURL(response.data.repomonUrls);
-        console.log(typeof response.data.repomonUrls);
       } catch (error) {
         console.error(error);
       }
@@ -76,9 +77,8 @@ const Model = ({ isClicked, onIsClickedChange }: any) => {
 
 const Banner01 = () => {
   const speech = useRef<HTMLDivElement>(null);
-  const params = useSearchParams();
-  const dispatch = useAppDispatch();
   const router = useRouter();
+  const githubLoginUrl = getBaseURL() + "/oauth2/authorization/github";
 
   // git tips
   const [isClicked, setIsClicked] = useState(false);
@@ -111,6 +111,14 @@ const Banner01 = () => {
     console.log(gitTipsString?.msg);
   }
 
+  function handleRegistBtn() {
+    if (localStorage.getItem("accessToken")) {
+      router.push(`/user/${localStorage.getItem("userId")}`);
+    } else {
+      router.push(githubLoginUrl);
+    }
+  }
+
   return (
     <div className={`${styles.container}`}>
       <div className={styles.banner}>
@@ -122,6 +130,9 @@ const Banner01 = () => {
           <p className="text-xl py-10">
             레포몬을 클릭해 깃허브 사용 팁을 확인할 수 있어요 👍
           </p>
+          <button className={styles.registBtn} onClick={handleRegistBtn}>
+            레포몬 등록하기
+          </button>
         </div>
         <div className={styles.right}>
           <div

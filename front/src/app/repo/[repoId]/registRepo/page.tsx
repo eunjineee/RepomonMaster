@@ -28,7 +28,6 @@ import { RepoInitType } from "@/types/repoRegist";
 import Modal from "react-modal";
 import { useRouter } from "next/navigation";
 import ArrowDown from "@/components/UI/ArrowDown";
-import { ModelSel } from "./ModelSel";
 import StatsChart from "./StatsChart";
 import { statsData } from "@/types/repoInfo";
 import { pretreatModelUrl } from "@/app/utils/PretreatModelUrl";
