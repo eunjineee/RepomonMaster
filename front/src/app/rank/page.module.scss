@@ -1,4 +1,4 @@
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 .banner {
   height: 350px;
@@ -10,7 +10,8 @@
 
   .banner-inner {
     position: relative;
-    width: 1300px;
+    width: 70%;
+    // width: 1300px;
     height: 100%;
     margin: 0 auto;
 
@@ -30,7 +31,7 @@
       .banner-comment {
         margin: 0 0 0 0.1rem;
         font-size: 1.75rem;
-        font-family: "SUIT-Thin";
+        font-family: 'SUIT-Thin';
 
         @include desktop125 {
           font-size: 1.5rem;
@@ -86,11 +87,13 @@
 
 .tab {
   position: relative;
-  width: 1280px;
-  margin: 2rem auto 2rem auto;
+  // width: 1280px;
+  // margin: 2rem auto 2rem auto;
+  width: 70%;
+  margin: 2rem 15% 2rem 15%;
 
   @include desktop125 {
-    width: 1040px;
+    // width: 1040px;
   }
 
   & button {
@@ -104,14 +107,14 @@
     }
 
     &::after {
-      content: "";
+      content: '';
       width: 0%;
     }
   }
 
   .selected {
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: -10%;
       left: -10%;
@@ -122,9 +125,9 @@
   }
 
   .clear {
-    position: absolute;
-    top: 10px;
-    right: 0;
+    // position: absolute;
+    // top: 10px;
+    // right: 100px;
     margin: 0;
     color: gray;
     font-size: 1.125rem;
@@ -136,11 +139,12 @@
 }
 
 .content {
-  width: 1300px;
+  width: 70%;
+  // width: 1300px;
   min-height: 500px;
-  margin: 0 auto;
+  margin: 0% 15% 0% 15%;
 
   @include desktop125 {
-    width: 1060px;
+    // width: 1060px;
   }
 }
