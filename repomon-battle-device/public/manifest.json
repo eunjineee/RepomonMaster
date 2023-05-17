@@ -1,0 +1,15 @@
+{
+  "short_name": "RBD",
+  "name": "Repomon Battle Device",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "click to open device"
+  },
+  "icons": {
+    "16": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  }
+}
