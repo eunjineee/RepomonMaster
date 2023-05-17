@@ -63,7 +63,9 @@
 
   .avatar-div {
     position: relative;
-
+    display: flex;
+    align-items: center;
+    color: $highlight;
     .avatar {
       border-radius: 100%;
 

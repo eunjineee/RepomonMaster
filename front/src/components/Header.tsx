@@ -18,6 +18,7 @@ const Header = () => {
   const [userId, setUserId] = useState<number>();
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
@@ -27,6 +28,7 @@ const Header = () => {
     if (login || sessionStorage.getItem("accessToken")) {
       setUserId(parseInt(sessionStorage.getItem("userId") as string, 10));
       setAvatarUrl(sessionStorage.getItem("avatarUrl") as string);
+      setUsername(sessionStorage.getItem("userName") as string);
       console.log(typeof sessionStorage.getItem("avatarUrl") as string);
     } else {
       setUserId(-1);
@@ -107,6 +109,15 @@ const Header = () => {
             )}
             {userId && userId !== -1 && (
               <div className={styles["avatar-div"]}>
+                <p
+                  style={{
+                    fontSize: "1.3em",
+                    fontWeight: "600",
+                    marginRight: "1.5em",
+                  }}
+                >
+                  {username}님
+                </p>
                 <Image
                   alt="프로필 이미지"
                   src={avatarUrl ? avatarUrl : gitCat}
