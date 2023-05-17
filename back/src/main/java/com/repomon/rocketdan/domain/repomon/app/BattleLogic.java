@@ -282,7 +282,7 @@ public class BattleLogic {
 		Integer statusGap = createGap(myRepomon, yourRepomon);
 
 		return (int) Math.round((1 - (1 / (1 + Math.pow(10,
-			((double) (yourRepomon.getRating() - myRepomon.getRating() - statusGap) / 400)))))
+			((double) (yourRepomon.getRating() - myRepomon.getRating() + statusGap) / 400)))))
 			* maxRating);
 
 	}
