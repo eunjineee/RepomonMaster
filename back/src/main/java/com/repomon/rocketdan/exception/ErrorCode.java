@@ -1,26 +1,28 @@
 package com.repomon.rocketdan.exception;
 
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-
-import static org.springframework.http.HttpStatus.*;
 
 
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
-
-	/* 208 */
-	ALREADY_WORKED(ALREADY_REPORTED, "이미 수행중인 작업입니다."),
-
 	/* 404 */
 	ERROR_NAME(NOT_FOUND, "에러 메세지 입니다")
 
 	/* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */,
 	DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다"),
 	MISMATCH_REQUEST(BAD_REQUEST, "데이터 간 의미가 어긋납니다 (예: 공통코드와 대응되는 데이터)"),
+	ALREADY_WORKED(CONFLICT, "이미 수행중인 작업입니다."),
+
 
 	/* 400 BAD REQUEST : 잘못된 요청. 입력된 데이터에 문제가 있음 */
 	DATA_BAD_REQUEST(BAD_REQUEST, "입력된 데이터에 문제가 있습니다."),
