@@ -22,7 +22,7 @@ export type RepomonType = {
   repomonUrl: string;
 };
 
-export type BattleInfoType = {
+export type RepomonBattleInfoType = {
   atk: number;
   atkPoint: number;
   critical: number;
@@ -51,8 +51,34 @@ export type BattleInfoType = {
 
 export type BattleRecordType = {
   attackPoint: number;
-  attackRepo: BattleInfoType;
+  attackRepo: RepomonBattleInfoType;
   defensePoint: number;
-  defenseRepo: BattleInfoType;
+  defenseRepo: RepomonBattleInfoType;
   isWin: boolean;
+};
+
+export type BattleLogType = {
+  attack_act: number;
+  damage: number;
+  defense_act: number;
+  defense_log: string;
+  attack_log: string;
+  attacker: number;
+  turn: number;
+  defender: number;
+};
+
+export type BattleType = {
+  isWin: boolean;
+  attackPoint: number;
+  defensePoint: number;
+  startPlayer: boolean;
+  battleLog: BattleLogType[];
+  attackRepo: RepomonBattleInfoType;
+  defenseRepo: RepomonBattleInfoType;
+};
+
+export type BattleHpLogType = {
+  hp: number;
+  oppoHp: number;
 };

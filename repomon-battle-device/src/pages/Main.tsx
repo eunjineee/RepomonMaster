@@ -4,26 +4,36 @@ import {
   axiosGetBattleInfo,
   axiosGetBattleRanking,
   axiosGetBattleRecord,
+  axiosGetOppo,
   axiosGetRepoList,
 } from "../api/api";
 import Loading from "../components/Loading";
-import { BattleInfoType, BattleRecordType, RepoType } from "../types/type";
+import {
+  RepomonBattleInfoType,
+  BattleRecordType,
+  RepoType,
+} from "../types/type";
 import styles from "./Main.module.scss";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { pretreatModelUrl } from "../utils/PretreatModelUrl";
+import { ImSpinner2 } from "react-icons/im";
 
 function Main() {
+  /** ================================== 변수, useState ================================== */
   const navigate = useNavigate();
   const [repoList, setRepoList] = useState<RepoType[]>();
   const [selectedRepo, setSelectedRepo] = useState<RepoType>();
   const [showSelectList, setShowSelectList] = useState<boolean>(false);
-  const [battleInfo, setBattleInfo] = useState<BattleInfoType>();
+  const [repomonBattleInfo, setRepomonBattleInfo] =
+    useState<RepomonBattleInfoType>();
   const [rank, setRank] = useState<number>();
   const [battleRecords, setBattleRecords] = useState<BattleRecordType[]>();
   const [battleLoading, setBattleLoading] = useState<boolean>(false);
   const [tier, setTier] = useState<string>("");
   const [tierColor, setTierColor] = useState<string>("");
+  const [matchLoading, setMatchLoading] = useState<boolean>(false);
 
+  /** ================================== useEffect ================================== */
   useEffect(() => {
     if (!localStorage || !localStorage.getItem("accessToken")) {
       navigate("/");
@@ -33,25 +43,35 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    if (battleInfo && rank && battleRecords) {
+    if (repomonBattleInfo && rank && battleRecords) {
       setTimeout(() => {
         setBattleLoading(false);
       }, 500);
     }
-  }, [battleInfo, rank, battleRecords]);
+  }, [repomonBattleInfo, rank, battleRecords]);
 
-  const getRepoList = async (userId: string) => {
-    try {
-      const res = await axiosGetRepoList(userId);
-      console.log("레포 리스트: ", res);
-      setTimeout(() => {
-        setRepoList(res.data.repoList);
-      }, 500);
-    } catch (err) {
-      console.error(err);
+  useEffect(() => {
+    if (repomonBattleInfo) {
+      if (repomonBattleInfo.rating >= 1600) {
+        setTier("다이아몬드");
+        setTierColor("#85CCFF");
+      } else if (repomonBattleInfo.rating >= 1400) {
+        setTier("플래티넘");
+        setTierColor("#25BBA2");
+      } else if (repomonBattleInfo.rating >= 1200) {
+        setTier("골드");
+        setTierColor("#D7BC6A");
+      } else if (repomonBattleInfo.rating >= 1000) {
+        setTier("실버");
+        setTierColor("gray");
+      } else {
+        setTier("브론즈");
+        setTierColor("#BD6E40");
+      }
     }
-  };
+  }, [repomonBattleInfo]);
 
+  /** ================================== 함수, Event Handler ================================== */
   const onClickRepoItem = (repo: RepoType) => {
     setShowSelectList(false);
     setSelectedRepo(repo);
@@ -68,16 +88,37 @@ function Main() {
     window.open(url, "_blank");
   };
 
+  const onClickMatch = () => {
+    if (matchLoading || !selectedRepo) {
+      return;
+    }
+
+    getOppo(selectedRepo.repoId);
+  };
+
+  /** ================================== Axios ================================== */
+  const getRepoList = async (userId: string) => {
+    try {
+      const res = await axiosGetRepoList(userId);
+      console.log("레포 리스트: ", res);
+      setTimeout(() => {
+        setRepoList(res.data.repoList);
+      }, 500);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const getBattleInfo = async (repoId: number) => {
     setBattleLoading(true);
     try {
       const res1 = await axiosGetBattleInfo(repoId);
       const res2 = await axiosGetBattleRanking(repoId);
       const res3 = await axiosGetBattleRecord(repoId);
-      console.log("배틀: ", res1);
+      console.log("배틀 정보: ", res1);
       console.log("배틀 랭킹: ", res2);
       console.log("배틀 전적: ", res3);
-      setBattleInfo(res1.data.data);
+      setRepomonBattleInfo(res1.data.data);
       setRank(res2.data.rank);
       setBattleRecords(res3.data.data.battleLogList);
     } catch (err) {
@@ -85,26 +126,23 @@ function Main() {
     }
   };
 
-  useEffect(() => {
-    if (battleInfo) {
-      if (battleInfo.rating >= 1600) {
-        setTier("다이아몬드");
-        setTierColor("#85ccff");
-      } else if (battleInfo.rating >= 1400) {
-        setTier("플래티넘");
-        setTierColor("#25BBA2");
-      } else if (battleInfo.rating >= 1200) {
-        setTier("골드");
-        setTierColor("#D7BC6A");
-      } else if (battleInfo.rating >= 1000) {
-        setTier("실버");
-        setTierColor("gray");
-      } else {
-        setTier("브론즈");
-        setTierColor("#BD6E40");
-      }
+  const getOppo = async (repoId: number) => {
+    setMatchLoading(true);
+    try {
+      const res = await axiosGetOppo(repoId);
+      console.log("매칭: ", res);
+      setTimeout(() => {
+        navigate("/battle", {
+          state: {
+            repoId,
+            oppoId: res.data.data.repoId as number,
+          },
+        });
+      }, 1000);
+    } catch (err) {
+      console.error(err);
     }
-  }, [battleInfo]);
+  };
 
   return (
     <div style={{ minHeight: "500px" }}>
@@ -211,15 +249,16 @@ function Main() {
               </div>
               <div>
                 <p>레이팅</p>
-                <p className={styles.content}> {battleInfo?.rating} </p>
+                <p className={styles.content}> {repomonBattleInfo?.rating} </p>
               </div>
               <p>티어</p>
               <p className={styles.content}>
                 <span style={{ color: tierColor }}>{tier}</span>
               </p>
             </div>
-            <button className={styles.match}>
-              <span>배틀 매칭</span>
+            <button className={styles.match} onClick={onClickMatch}>
+              {!matchLoading && <span>배틀 매칭</span>}
+              {matchLoading && <ImSpinner2 />}
             </button>
           </div>
           <div className={styles.records}>

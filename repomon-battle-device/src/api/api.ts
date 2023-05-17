@@ -23,3 +23,19 @@ export const axiosGetBattleRecord = async (repoId: number) => {
 
   return res;
 };
+
+export const axiosGetOppo = async (repoId: number) => {
+  const res = await http.get(`repomon/${repoId}/match`);
+
+  return res;
+};
+
+export const axiosBattle = async (repoId: number, oppoId: number) => {
+  const data = {
+    opponentRepoId: oppoId,
+  };
+
+  const res = await http.post(`repomon/${repoId}/match`, data);
+
+  return res;
+};

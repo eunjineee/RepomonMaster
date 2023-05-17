@@ -2,7 +2,7 @@
 
 .user-div {
   width: 90%;
-  margin: 3rem auto 1rem auto;
+  margin: 3rem auto 2rem auto;
   padding: 0 0 0 1rem;
   display: flex;
   align-items: center;
@@ -112,7 +112,7 @@
 
       &:hover {
         cursor: pointer;
-        background-color: rgb(249, 249, 249);
+        background-color: rgba(161, 205, 255, 0.3);
       }
 
       & img {
@@ -153,6 +153,7 @@
     .repomon-name {
       margin: 0.5rem 0 0 0;
       padding: 0 0.5rem;
+      font-weight: bold;
     }
   }
 
@@ -176,13 +177,18 @@
 
   .match {
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 85px;
+    height: 33px;
     bottom: 10px;
     right: 10px;
     margin: 0 auto;
-    padding: 0.4rem 0.7rem;
     border: none;
     border-radius: 5px;
     background-color: rgb(255, 90, 90);
+    color: white;
 
     &:hover {
       cursor: pointer;
@@ -190,9 +196,21 @@
     }
 
     & span {
-      color: white;
       font-family: "SUIT-Regular";
       font-size: 1rem;
+    }
+
+    & svg {
+      animation: rotate 3s;
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0);
+        }
+        100% {
+          transform: rotate(720deg);
+        }
+      }
     }
   }
 }
