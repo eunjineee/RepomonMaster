@@ -11,7 +11,6 @@ import { GitTipType, RepoInfo } from "@/types/repomons";
 import { getModelLists } from "@/api/modelLoader";
 import "@/styles/speechBubble.scss";
 import { gitTipData } from "../../app/dashboard/gitData";
-import MyEffect from "@/app/repo/[repoId]/repoBattle/MyEffect";
 import { getBaseURL } from "@/api/axios";
 
 const Model = ({ isClicked, onIsClickedChange }: any) => {

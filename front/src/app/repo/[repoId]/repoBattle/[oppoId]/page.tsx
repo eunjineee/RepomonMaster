@@ -22,7 +22,6 @@ import SoundOn from "@/components/UI/SoundOn";
 import Modal from "react-modal";
 import { useRouter } from "next/navigation";
 import Grass from "../Grass";
-import MyEffect from "../MyEffect";
 
 const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
   const [loadData, setLoadData] = useState<boolean>(false);
