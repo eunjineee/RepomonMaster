@@ -155,10 +155,14 @@ public class RepomonService {
 
 			if (repomon.isPresent()) {
 				Optional<BattleLogEntity> lastBattleLog = battleLogRepository.findTopByAttackRepoOrderByCreatedAtDesc(repomonStatus);
-				if (!lastBattleLog.get().getDefenseRepo().equals(repomon)) {
+				if (lastBattleLog.isPresent() && !lastBattleLog.get().getDefenseRepo().equals(repomon)) {
+					return RepomonStatusResponseDto.fromEntity(repomon.get());
+				} else {
 					return RepomonStatusResponseDto.fromEntity(repomon.get());
 				}
+
 			}
+		
 			index += 1;
 
 		}
