@@ -154,7 +154,10 @@ public class RepomonService {
 				startRating, endRating, repomonOwner);
 
 			if (repomon.isPresent()) {
-				return RepomonStatusResponseDto.fromEntity(repomon.get());
+				Optional<BattleLogEntity> lastBattleLog = battleLogRepository.findTopByAttackRepoOrderByCreatedAtDesc(repomonStatus);
+				if (!lastBattleLog.get().getDefenseRepo().equals(repomon)) {
+					return RepomonStatusResponseDto.fromEntity(repomon.get());
+				}
 			}
 			index += 1;
 
@@ -190,7 +193,12 @@ public class RepomonService {
 
 		// 타임아웃 확인
 		Optional<BattleLogEntity> lastBattleLog = battleLogRepository.findTopByAttackRepoOrderByCreatedAtDesc(myRepomon);
+
 		if (lastBattleLog.isPresent()) {
+			if (lastBattleLog.get().getDefenseRepo().equals(yourRepomon)) {
+				throw new CustomException(REPEATED_REQUEST);
+			}
+
 			log.info("최근 전투 시간 : " + lastBattleLog.get().getCreatedAt().toString());
 			LocalDateTime currentDateTime = LocalDateTime.now();
 			log.info("현재 시간 : " + currentDateTime);
