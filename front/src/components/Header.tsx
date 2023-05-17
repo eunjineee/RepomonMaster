@@ -112,7 +112,7 @@ const Header = () => {
             )}
             {userId && userId !== -1 && (
               <div className={styles["right-inner"]}>
-                <p>{username}</p>
+                <p onClick={onClickRepoList}>{username}</p>
                 <div className={styles["avatar-div"]}>
                   <Image
                     alt="프로필 이미지"

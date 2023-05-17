@@ -90,6 +90,10 @@
         display: none;
       }
     }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .avatar-div {
@@ -145,6 +149,7 @@
         border-radius: 5px;
         text-align: center;
         font-size: 18px;
+        color: rgb(50, 50, 50);
 
         @include desktop125 {
           font-size: 16px;

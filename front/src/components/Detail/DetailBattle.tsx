@@ -113,7 +113,7 @@ const DetailBattle = ({
     }
   };
 
-  const onClickRepominNickname = (mine: boolean, repoId: number) => {
+  const onClickRepomonNickname = (mine: boolean, repoId: number) => {
     if (mine) {
       return;
     }
@@ -324,6 +324,7 @@ const DetailBattle = ({
                           {record.isWin ? "승리" : "패배"}
                         </p>
                         <p className={record.isWin ? styles.win : styles.lose}>
+                          {record.attackPoint > 0 && "+"}
                           {record.attackPoint}
                         </p>
                       </>
@@ -335,6 +336,7 @@ const DetailBattle = ({
                           {!record.isWin ? "승리" : "패배"}
                         </p>
                         <p className={!record.isWin ? styles.win : styles.lose}>
+                          {record.defensePoint > 0 && "+"}
                           {record.defensePoint}
                         </p>
                       </>
@@ -361,7 +363,7 @@ const DetailBattle = ({
                             : `${styles["repomon-nickname"]} ${styles["not-mine"]}`
                         }
                         onClick={() =>
-                          onClickRepominNickname(
+                          onClickRepomonNickname(
                             myRepomonNickname ===
                               record.attackRepo.repomonNickname,
                             record.attackRepo.repoId
@@ -392,7 +394,7 @@ const DetailBattle = ({
                             : `${styles["repomon-nickname"]} ${styles["not-mine"]}`
                         }
                         onClick={() =>
-                          onClickRepominNickname(
+                          onClickRepomonNickname(
                             myRepomonNickname ===
                               record.defenseRepo.repomonNickname,
                             record.defenseRepo.repoId
