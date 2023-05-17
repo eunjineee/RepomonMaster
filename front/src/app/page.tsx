@@ -172,7 +172,6 @@ const Home = () => {
       );
       sessionStorage.setItem("userId", params.get("userId") as string);
       sessionStorage.setItem("userName", params.get("username") as string);
-      sessionStorage.setItem("nickName", params.get("name") as string);
       sessionStorage.setItem("avatarUrl", params.get("avatarUrl") as string);
       dispatch(setAuthLoginState());
       router.push("/");

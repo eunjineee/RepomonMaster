@@ -168,3 +168,19 @@
     flex-direction: column;
   }
 }
+
+.lottie {
+  width: 300px;
+
+  @include detail {
+    width: 250px;
+  }
+
+  @include tablet {
+    width: 200px;
+  }
+
+  @include mobile {
+    width: 150px;
+  }
+}

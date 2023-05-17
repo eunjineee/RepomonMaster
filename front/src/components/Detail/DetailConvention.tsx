@@ -100,7 +100,7 @@ function DetailConvention({
                   loop={true}
                   animationData={notFound}
                   play
-                  style={{ width: "300px" }}
+                  className={styles.lottie}
                 />
                 <p className={styles.comment}>등록된 컨벤션이 없어요.</p>
               </div>
