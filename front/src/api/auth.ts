@@ -1,7 +1,7 @@
 import { http } from "./axios";
 
 export const axiosRequestLogout = async () => {
-  const refreshToken = sessionStorage.getItem("refreshToken");
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const res = await http.get("auth/logout", {
     headers: {
@@ -13,8 +13,8 @@ export const axiosRequestLogout = async () => {
 };
 
 export const axiosRequestRefresh = async () => {
-  const accessToken = sessionStorage.getItem("accessToken");
-  const refreshToken = sessionStorage.getItem("refreshToken");
+  const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const res = await http.post(
     "auth/refresh",

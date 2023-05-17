@@ -22,7 +22,7 @@ const Page = () => {
     if (document.referrer !== window.location.href) {
       setTabIndex("레포몬");
     } else {
-      setTabIndex(sessionStorage.getItem("rankTabIndex") as string);
+      setTabIndex(localStorage.getItem("rankTabIndex") as string);
     }
   }, []);
 
@@ -31,7 +31,7 @@ const Page = () => {
     const target = e.target as HTMLElement;
 
     setTabIndex(target.id);
-    sessionStorage.setItem("rankTabIndex", target.id);
+    localStorage.setItem("rankTabIndex", target.id);
     setSearchInput("");
   };
 

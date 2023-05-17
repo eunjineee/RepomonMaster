@@ -62,8 +62,8 @@ function RepositoryCard(props: propType) {
   // 3D 모델 렌더링
 
   useEffect(() => {
-    if (sessionStorage.getItem("accessToken")) {
-      setUserOriginId(parseInt(sessionStorage.getItem("userId") as string, 10));
+    if (localStorage.getItem("accessToken")) {
+      setUserOriginId(parseInt(localStorage.getItem("userId") as string, 10));
     } else {
       setUserOriginId(-1);
     }

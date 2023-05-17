@@ -43,6 +43,12 @@
     }
   }
 
+  .my-profile {
+    @include tablet {
+      display: none;
+    }
+  }
+
   .left {
     display: flex;
     align-items: center;
@@ -61,11 +67,37 @@
     }
   }
 
+  .right-inner {
+    display: flex;
+    align-items: center;
+
+    & > p {
+      font-size: 20px;
+      color: $highlight;
+      margin-right: 1.5rem;
+
+      @include desktop125 {
+        font-size: 18px;
+        margin-right: 1.25rem;
+      }
+
+      @include tablet {
+        font-size: 16px;
+        margin-right: 1rem;
+      }
+
+      @include mobile {
+        display: none;
+      }
+    }
+  }
+
   .avatar-div {
     position: relative;
     display: flex;
     align-items: center;
     color: $highlight;
+
     .avatar {
       border-radius: 100%;
 

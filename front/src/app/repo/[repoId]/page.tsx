@@ -53,7 +53,7 @@ import { useRouter } from "next/navigation";
 
 function Page({ params }: { params: { repoId: string } }) {
   const loginUserId: string | null =
-    sessionStorage && sessionStorage.getItem("userId");
+    localStorage && localStorage.getItem("userId");
   const [repoDetailInfo, setRepoDetailInfo] = useState<RepoDetailType>();
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
@@ -148,9 +148,9 @@ function Page({ params }: { params: { repoId: string } }) {
   useEffect(() => {
     if (document.referrer !== window.location.href) {
       setTabIndex(1);
-      sessionStorage.setItem("tabIndex", "1");
+      localStorage.setItem("tabIndex", "1");
     } else {
-      setTabIndex(parseInt(sessionStorage.getItem("tabIndex") as string, 10));
+      setTabIndex(parseInt(localStorage.getItem("tabIndex") as string, 10));
     }
   }, []);
 
@@ -161,7 +161,7 @@ function Page({ params }: { params: { repoId: string } }) {
     console.log(e.target);
 
     setTabIndex(parseInt(target.id, 10));
-    sessionStorage.setItem("tabIndex", target.id);
+    localStorage.setItem("tabIndex", target.id);
 
     if (window.scrollY < 410) {
       window.scrollTo(0, 410);

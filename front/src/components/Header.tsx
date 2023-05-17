@@ -25,11 +25,11 @@ const Header = () => {
 
   /** ======================================== useEffect ======================================== */
   useEffect(() => {
-    if (login || sessionStorage.getItem("accessToken")) {
-      setUserId(parseInt(sessionStorage.getItem("userId") as string, 10));
-      setAvatarUrl(sessionStorage.getItem("avatarUrl") as string);
-      setUsername(sessionStorage.getItem("userName") as string);
-      console.log(typeof sessionStorage.getItem("avatarUrl") as string);
+    if (login || localStorage.getItem("accessToken")) {
+      setUserId(parseInt(localStorage.getItem("userId") as string, 10));
+      setAvatarUrl(localStorage.getItem("avatarUrl") as string);
+      setUsername(localStorage.getItem("userName") as string);
+      console.log(typeof localStorage.getItem("avatarUrl") as string);
     } else {
       setUserId(-1);
     }
@@ -64,7 +64,7 @@ const Header = () => {
     try {
       const res = await axiosRequestLogout();
       console.log(res);
-      sessionStorage.clear();
+      localStorage.clear();
       setUserId(-1);
       router.push(".");
       dispatch(setAuthLogoutState());
@@ -96,7 +96,10 @@ const Header = () => {
               랭킹
             </Link>
             {userId && userId !== -1 && (
-              <Link href={`user/${userId}`} className={styles.item}>
+              <Link
+                href={`user/${userId}`}
+                className={`${styles.item} ${styles["my-profile"]}`}
+              >
                 내 프로필
               </Link>
             )}
@@ -108,35 +111,29 @@ const Header = () => {
               </Link>
             )}
             {userId && userId !== -1 && (
-              <div className={styles["avatar-div"]}>
-                <p
-                  style={{
-                    fontSize: "1.3em",
-                    fontWeight: "600",
-                    marginRight: "1.5em",
-                  }}
-                >
-                  {username}님
-                </p>
-                <Image
-                  alt="프로필 이미지"
-                  src={avatarUrl ? avatarUrl : gitCat}
-                  width={50}
-                  height={50}
-                  className={styles.avatar}
-                  onClick={onClickAvatar}
-                />
-                {showMenu && (
-                  <div ref={menuRef} className={styles.menu}>
-                    <button
-                      style={{ marginBottom: "1rem" }}
-                      onClick={onClickRepoList}
-                    >
-                      내 프로필
-                    </button>
-                    <button onClick={onClickLogout}>로그아웃</button>
-                  </div>
-                )}
+              <div className={styles["right-inner"]}>
+                <p>{username}</p>
+                <div className={styles["avatar-div"]}>
+                  <Image
+                    alt="프로필 이미지"
+                    src={avatarUrl ? avatarUrl : gitCat}
+                    width={50}
+                    height={50}
+                    className={styles.avatar}
+                    onClick={onClickAvatar}
+                  />
+                  {showMenu && (
+                    <div ref={menuRef} className={styles.menu}>
+                      <button
+                        style={{ marginBottom: "1rem" }}
+                        onClick={onClickRepoList}
+                      >
+                        내 프로필
+                      </button>
+                      <button onClick={onClickLogout}>로그아웃</button>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>

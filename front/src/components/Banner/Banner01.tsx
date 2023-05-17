@@ -1,20 +1,22 @@
-'use client';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import styles from './banner.module.scss';
-import { Canvas, useLoader, useFrame } from '@react-three/fiber';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { useAppDispatch } from '@/redux/hooks';
-import { setAuthLoginState } from '@/redux/features/authSlice';
-import * as THREE from 'three';
-import { GitTipType, RepoInfo } from '@/types/repomons';
-import { getModelLists } from '@/api/modelLoader';
-import '@/styles/speechBubble.scss';
-import { gitTipData } from '../../app/dashboard/gitData';
+"use client";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import styles from "./banner.module.scss";
+import { Canvas, useLoader, useFrame } from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { useAppDispatch } from "@/redux/hooks";
+import { setAuthLoginState } from "@/redux/features/authSlice";
+import * as THREE from "three";
+import { GitTipType, RepoInfo } from "@/types/repomons";
+import { getModelLists } from "@/api/modelLoader";
+import "@/styles/speechBubble.scss";
+import { gitTipData } from "../../app/dashboard/gitData";
 
 const Model = ({ isClicked, onIsClickedChange }: any) => {
   // const [isClicked, SetIsClicked] = useState<boolean>(false);
-  const [repomonURL, setRepomonURL] = useState<string>('/static/models/tempLoader.glb');
+  const [repomonURL, setRepomonURL] = useState<string>(
+    "/static/models/tempLoader.glb"
+  );
 
   const handleClick = useCallback(() => {
     onIsClickedChange(!isClicked);
@@ -86,11 +88,11 @@ const Banner01 = () => {
     getClickTipHandler();
 
     if (speech.current) {
-      speech.current.style.opacity = '1';
-      speech.current.style.transition = 'opacity 1s cubic-bezier(0,1.21,1,1)';
+      speech.current.style.opacity = "1";
+      speech.current.style.transition = "opacity 1s cubic-bezier(0,1.21,1,1)";
       setTimeout(() => {
         if (speech.current) {
-          speech.current.style.opacity = '0';
+          speech.current.style.opacity = "0";
         }
       }, 5000);
     }
@@ -109,37 +111,44 @@ const Banner01 = () => {
     console.log(gitTipsString?.msg);
   }
 
-  useEffect(() => {
-    if (params.get('access-token')) {
-      sessionStorage.setItem('accessToken', params.get('access-token') as string);
-      sessionStorage.setItem('refreshToken', params.get('refresh-token') as string);
-      sessionStorage.setItem('userId', params.get('userId') as string);
-      sessionStorage.setItem('userName', params.get('username') as string);
-      sessionStorage.setItem('nickName', params.get('name') as string);
-      sessionStorage.setItem('avatarUrl', params.get('avatarUrl') as string);
-      dispatch(setAuthLoginState());
-      router.push('/');
-    }
-  }, []);
-
   return (
     <div className={`${styles.container}`}>
       <div className={styles.banner}>
         <div className={styles.left}>
           <p className={styles.title}>개발자이지만, 레포몬 마스터 !</p>
-          <p className={`${styles.desk125text3xl}`}>나만의 레포몬을 생성해 보세요</p>
-          <p className='text-xl py-10'>레포몬을 클릭해 깃허브 사용 팁을 확인할 수 있어요 👍</p>
+          <p className={`${styles.desk125text3xl}`}>
+            나만의 레포몬을 생성해 보세요
+          </p>
+          <p className="text-xl py-10">
+            레포몬을 클릭해 깃허브 사용 팁을 확인할 수 있어요 👍
+          </p>
         </div>
         <div className={styles.right}>
-          <div className='bubble shadow large bottom' id={styles.speechBubble} style={{ opacity: '0', zIndex: '999' }} ref={speech}>
+          <div
+            className="bubble shadow large bottom"
+            id={styles.speechBubble}
+            style={{ opacity: "0", zIndex: "999" }}
+            ref={speech}
+          >
             {gitTipsString?.msg}
           </div>
           <Canvas className={styles.rightCanvas}>
             <ambientLight intensity={0.1} />
             <ambientLight intensity={0.1} />
-            <directionalLight color='white' position={[0, 0, 5]} intensity={0.5} />
-            <directionalLight color='white' position={[-5, 0, -5]} intensity={0.5} />
-            <Model isClicked={isClicked} onIsClickedChange={handleIsClickedChange} />
+            <directionalLight
+              color="white"
+              position={[0, 0, 5]}
+              intensity={0.5}
+            />
+            <directionalLight
+              color="white"
+              position={[-5, 0, -5]}
+              intensity={0.5}
+            />
+            <Model
+              isClicked={isClicked}
+              onIsClickedChange={handleIsClickedChange}
+            />
           </Canvas>
         </div>
       </div>

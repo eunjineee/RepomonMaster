@@ -55,7 +55,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
   ]);
 
   const router = useRouter();
-  const localUserId = sessionStorage.getItem("userId");
+  const localUserId = localStorage.getItem("userId");
 
   // 레포 정보 조회
   useEffect(() => {
