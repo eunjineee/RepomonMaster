@@ -130,9 +130,9 @@ function Battle() {
             ))}
             <div className={styles.result}>
               {battleInfo.isWin ? (
-                <p className={styles.win}>승리 (+ {battleInfo.attackPoint}) </p>
+                <p className={styles.win}>승리 (+{battleInfo.attackPoint}) </p>
               ) : (
-                <p className={styles.lose}>패배 (- {battleInfo.attackPoint})</p>
+                <p className={styles.lose}>패배 ({battleInfo.attackPoint})</p>
               )}
             </div>
           </div>
@@ -143,7 +143,7 @@ function Battle() {
             }}
           >
             <AiOutlineRollback />
-            메인 화면으로
+            뒤로가기
           </p>
         </div>
       )}

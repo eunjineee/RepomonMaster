@@ -43,6 +43,20 @@ function Main() {
   }, []);
 
   useEffect(() => {
+    if (localStorage && localStorage.getItem("selectedRepoId")) {
+      const localRepo: RepoType = {
+        repoId: parseInt(localStorage.getItem("selectedRepoId") as string, 10),
+        repoName: localStorage.getItem("selectedRepoName") as string,
+        repomonName: localStorage.getItem("selectedRepomonName") as string,
+        repomonUrl: localStorage.getItem("selectedRepomonUrl") as string,
+      };
+
+      setSelectedRepo(localRepo);
+      getBattleInfo(localRepo.repoId);
+    }
+  }, []);
+
+  useEffect(() => {
     if (repomonBattleInfo && rank && battleRecords) {
       setTimeout(() => {
         setBattleLoading(false);
@@ -76,6 +90,11 @@ function Main() {
     setShowSelectList(false);
     setSelectedRepo(repo);
     getBattleInfo(repo.repoId);
+
+    localStorage.setItem("selectedRepoId", repo.repoId.toString());
+    localStorage.setItem("selectedRepoName", repo.repoName);
+    localStorage.setItem("selectedRepomonName", repo.repomonName);
+    localStorage.setItem("selectedRepomonUrl", repo.repomonUrl);
   };
 
   const onClickRepomonNickname = (mine: boolean, repoId: number) => {
@@ -101,9 +120,7 @@ function Main() {
     try {
       const res = await axiosGetRepoList(userId);
       console.log("레포 리스트: ", res);
-      setTimeout(() => {
-        setRepoList(res.data.repoList);
-      }, 500);
+      setRepoList(res.data.repoList);
     } catch (err) {
       console.error(err);
     }
@@ -153,8 +170,8 @@ function Main() {
         />
         <span>
           <a
-            href={`https://github.com/${
-              localStorage.getItem("userName") as string
+            href={`https://repomon.kr/user/${
+              localStorage.getItem("userId") as string
             }`}
             target="_blank"
           >
@@ -163,11 +180,6 @@ function Main() {
           님, 어서오세요.
         </span>
       </div>
-      {!repoList && (
-        <div className={styles["loading-container"]}>
-          <Loading />
-        </div>
-      )}
       {repoList && (
         <div className={styles["select-div"]}>
           <button
