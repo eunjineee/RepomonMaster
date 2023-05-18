@@ -114,7 +114,6 @@ const UserExportModal = ({ userId }: { userId: string }) => {
     }
     try {
       const res = await axiosUpdateUserCard(userId);
-      console.log("유저 카드 갱신: ", res);
       if (first) {
         setFirst(false);
       } else {
@@ -128,7 +127,6 @@ const UserExportModal = ({ userId }: { userId: string }) => {
   const getUserLan = async (userId: number) => {
     try {
       const res = await axiosGetUserLan(userId);
-      console.log("유저 전체 언어 조회: ", res);
       setLans(res.data.data);
     } catch (err) {
       console.error(err);
@@ -138,7 +136,6 @@ const UserExportModal = ({ userId }: { userId: string }) => {
   const getUserCardLan = async (userId: number) => {
     try {
       const res = await axiosGetUserCardLan(userId);
-      console.log("유저 카드에 설정된 언어 조회: ", res);
       setApplied(res.data.data);
     } catch (err) {
       console.error(err);
@@ -148,7 +145,6 @@ const UserExportModal = ({ userId }: { userId: string }) => {
   const setUserCardLan = async (userId: number) => {
     try {
       const res = await axiosSetUserCardLan(userId, selected);
-      console.log("유저 카드 언어 설정: ", res);
       if (res.data.resultCode === "SUCCESS") {
         setSelected([]);
         updateUserCard(userId);

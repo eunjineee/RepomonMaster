@@ -23,9 +23,7 @@ const ConventionEdit = ({
   const [edittingPrefix, setEdittingPrefix] = useState<string>("");
   const [edittingDescription, setEdittingDescription] = useState<string>("");
 
-  useEffect(() => {
-    console.log(conventions);
-  }, [conventions]);
+  useEffect(() => {}, [conventions]);
 
   const onChangePrefix = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPrefix(e.target.value);
@@ -148,7 +146,6 @@ const ConventionEdit = ({
   const onClickEditModeApplyBtn = async () => {
     try {
       const res = await axiosRequestEditConventions(repoId, conventions);
-      console.log("컨벤션 수정: ", res);
       setConventionUpdated((prev) => !prev);
       setEditMode(false);
     } catch (err) {

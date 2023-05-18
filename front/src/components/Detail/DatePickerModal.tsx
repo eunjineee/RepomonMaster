@@ -109,14 +109,12 @@ const DatePickerModal = ({
 
   /** ============================== Axios ============================== */
   const requestSetPeriod = async () => {
-    console.log(parseInt(repoId, 10), startDateForRequest, endDateForRequest);
     try {
       const res = await axiosRequestSetPeriod(
         parseInt(repoId, 10),
         startDateForRequest as string,
         endDateForRequest as string
       );
-      console.log(res);
       setIsUpdated((prev) => !prev);
       closeModal();
     } catch (err) {

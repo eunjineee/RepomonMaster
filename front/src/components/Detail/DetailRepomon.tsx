@@ -24,7 +24,6 @@ const Model = ({
 
   if (gltf.animations.length) {
     mixer = new THREE.AnimationMixer(gltf.scene);
-    console.log(mixer);
 
     mixer.timeScale = 0.3;
     if (isClicked) {

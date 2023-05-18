@@ -29,7 +29,6 @@ const Header = () => {
       setUserId(parseInt(localStorage.getItem("userId") as string, 10));
       setAvatarUrl(localStorage.getItem("avatarUrl") as string);
       setUsername(localStorage.getItem("userName") as string);
-      console.log(typeof localStorage.getItem("avatarUrl") as string);
     } else {
       setUserId(-1);
     }
@@ -63,7 +62,6 @@ const Header = () => {
     setShowMenu(false);
     try {
       const res = await axiosRequestLogout();
-      console.log(res);
       localStorage.clear();
       setUserId(-1);
       router.push(".");

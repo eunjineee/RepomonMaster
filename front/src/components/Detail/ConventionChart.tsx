@@ -39,15 +39,11 @@ export function ConventionChart({
     const apiLabels: string[] = [];
     const apiData: number[] = [];
 
-    console.log(total);
-    console.log(obey);
-    console.log(conventionInfo);
     for (let prefix in conventionInfo) {
       apiLabels.push(prefix);
       apiData.push(conventionInfo[prefix]);
     }
 
-    console.log(apiData);
     setData((prevState) => ({
       labels: apiLabels,
       datasets: [

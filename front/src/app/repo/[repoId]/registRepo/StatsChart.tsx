@@ -65,7 +65,7 @@ function StatsChart(props: statsData) {
         pointLabels: {
           font: {
             family: "SUIT-Thin",
-            size: 23,
+            size: 20,
             weight: "bold",
           },
         },

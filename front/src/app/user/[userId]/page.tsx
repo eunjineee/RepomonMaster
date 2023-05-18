@@ -380,7 +380,6 @@ const Model = (props: modelProps) => {
   const filename = repomonURL.slice(repomonURL.lastIndexOf("/") + 1);
   const num = filename.slice(-5, filename.length - 4);
   const str = num.toString();
-  // console.log(repomonURL + "?id=" + repoId);
   const getModelLevel = (str: string): number[] => {
     switch (str) {
       case "2":
@@ -417,7 +416,6 @@ const Model = (props: modelProps) => {
   if (gltf.animations.length) {
     mixer = new THREE.AnimationMixer(gltf.scene);
     mixer.timeScale = 0.4;
-    console.log(gltf.animations);
     const action = mixer.clipAction(gltf.animations[8]);
     action.clampWhenFinished = true;
     action.play();

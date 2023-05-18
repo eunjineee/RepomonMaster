@@ -75,10 +75,8 @@ const RenameModal = ({
 
   /** ============================== Axios ============================== */
   const requestCheckNicknameDuplicated = async () => {
-    console.log("레포몬 닉네임 중복 요청: ", nickName);
     try {
       const res = await axiosRequestCheckNicknameDuplicated(nickName);
-      console.log("레포몬 닉네임 중복 체크 응답: ", res);
       setIsDuplicated(false);
     } catch (err) {
       customAlert("중복된 레포몬 닉네임입니다.");
@@ -87,13 +85,11 @@ const RenameModal = ({
   };
 
   const requestChangeNickname = async () => {
-    console.log("레포몬 닉네임 변경 요청: ", repoId, nickName);
     try {
       const res = await axiosRequestChangeNickname(
         parseInt(repoId, 10),
         nickName
       );
-      console.log("레포몬 닉네임 변경 응답: ", res);
       setIsUpdated((prev) => !prev);
       closeModal();
     } catch (err) {

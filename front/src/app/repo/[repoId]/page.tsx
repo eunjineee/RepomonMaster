@@ -160,8 +160,6 @@ function Page({ params }: { params: { repoId: string } }) {
   const onClickTabBtn = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
 
-    console.log(e.target);
-
     setTabIndex(parseInt(target.id, 10));
     localStorage.setItem("tabIndex", target.id);
 
@@ -208,7 +206,6 @@ function Page({ params }: { params: { repoId: string } }) {
   const requestRepoDetail = async (repoId: number, userId: number) => {
     try {
       const res = await axiosRequestRepoDetail(repoId, userId);
-      console.log("레포 디테일 기본: ", res);
       setRepoDetailInfo(res.data);
     } catch (err) {
       console.error(err);
@@ -219,7 +216,6 @@ function Page({ params }: { params: { repoId: string } }) {
   const requestRepoDetailResearch = async (repoId: number) => {
     try {
       const res = await axiosRequestRepoDetailResearch(repoId);
-      console.log("레포 디테일 분석: ", res);
       setRepoDetailResearchInfo(res.data);
     } catch (err) {
       console.error(err);
@@ -230,7 +226,6 @@ function Page({ params }: { params: { repoId: string } }) {
   const requestRepoDetailBattleInfo = async (repoId: number) => {
     try {
       const res = await axiosRequestRepoDetailBattleInfo(repoId);
-      console.log("레포 디테일 배틀: ", res);
       setRepoDetailBattleInfo(res.data.data);
     } catch (err) {
       console.error(err);
@@ -241,7 +236,6 @@ function Page({ params }: { params: { repoId: string } }) {
   const requestBattleRanking = async (repoId: number) => {
     try {
       const res = await axiosRequestBattleRanking(repoId);
-      console.log("레포 디테일 배틀 랭킹: ", res.data.rank);
       setBattleRank(res.data.rank);
     } catch (err) {
       console.error(err);
@@ -252,7 +246,6 @@ function Page({ params }: { params: { repoId: string } }) {
   const requestBattleRecord = async (repoId: number) => {
     try {
       const res = await axiosRequestBattleRecord(repoId);
-      console.log("레포 디테일 배틀 전적: ", res.data.data.battleLogList);
       setBattleRecordInfo(res.data.data.battleLogList);
     } catch (err: any) {
       console.error(err);
@@ -267,7 +260,7 @@ function Page({ params }: { params: { repoId: string } }) {
     setConventionLoading(true);
     try {
       const res = await axiosRequestRepoDetailConvention(repoId);
-      console.log("레포 디테일 컨벤션: ", res);
+
       setRepoDetailConventionInfo(res.data);
     } catch (err) {
       console.error(err);
@@ -280,7 +273,6 @@ function Page({ params }: { params: { repoId: string } }) {
   const requestRepoDetailContribution = async (repoId: number) => {
     try {
       const res = await axiosRequestRepoDetailContribution(repoId);
-      console.log("레포 디테일 기여도: ", res);
       setRepoDetailContributionInfo(res.data);
     } catch (err) {
       console.error(err);
@@ -292,7 +284,7 @@ function Page({ params }: { params: { repoId: string } }) {
     try {
       setUpdateLoading(true);
       const res = await axiosRequestRepoDetailUpdate(repoId);
-      console.log("레포 정보 갱신: ", res);
+
       setIsUpdated2(!isUpdated2);
     } catch (err) {
       console.error(err);
@@ -311,7 +303,6 @@ function Page({ params }: { params: { repoId: string } }) {
 
     try {
       const res = await axiosRequestSetRepresent(repoId, userId);
-      console.log("대표 레포 설정: ", res);
       customAlert("대표 레포지토리로 설정되었습니다.");
       setIsUpdated3(!isUpdated3);
     } catch (err) {

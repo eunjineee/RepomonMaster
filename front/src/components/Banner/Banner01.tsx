@@ -37,7 +37,6 @@ const Model = ({ isClicked, onIsClickedChange }: any) => {
     fetchData();
   }, []);
 
-  console.log(repomonURL);
   const gltf = useLoader(GLTFLoader, repomonURL);
 
   let mixer: THREE.AnimationMixer | undefined;
@@ -107,7 +106,6 @@ const Banner01 = () => {
   function getClickTipHandler() {
     const gitTip = getRandomGitTip<GitTipType>();
     setGitTipsString(gitTip);
-    console.log(gitTipsString?.msg);
   }
 
   function handleRegistBtn() {

@@ -27,8 +27,7 @@ function _404() {
       );
     }
   }, [count]);
-  console.log("s", startTime);
-  console.log(endTime);
+
   return (
     <div
       style={{

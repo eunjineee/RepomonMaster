@@ -61,7 +61,6 @@ const MatchModal = ({ repoId }: { repoId: string }) => {
   const requestMatchBattle = async () => {
     try {
       const res = await axiosRequestMatchBattle(repoId);
-      console.log("배틀 매칭: ", res);
       setOppoInfo(res.data.data.repomon);
       setOppoRepoId(res.data.data.repoId);
       setIsOpen(true);

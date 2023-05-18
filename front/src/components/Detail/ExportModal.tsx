@@ -143,7 +143,6 @@ const ExportModal = ({
     setLoading(true);
     try {
       const res = await axiosRequestUpdateRepoCard(repoId);
-      console.log("레포 카드 갱신: ", res);
       setRepoCardUpdated(true);
     } catch (err) {
       console.error(err);
@@ -159,7 +158,6 @@ const ExportModal = ({
 
     try {
       const res = await axiosRequestUpdateRepoPersonalCard(repoId, userId);
-      console.log("개인 레포 카드 갱신: ", res);
       if (isFirst) {
         setRepoPersonalCardUpdated(true);
       } else {
@@ -173,7 +171,6 @@ const ExportModal = ({
   const requestPersonalLans = async () => {
     try {
       const res = await axiosRequestPersonalLans(repoId);
-      console.log("개인 레포 카드 언어: ", res);
       setApplied(res.data.data);
     } catch (err) {
       console.error(err);
@@ -183,7 +180,6 @@ const ExportModal = ({
   const requestSetPersonalLans = async () => {
     try {
       const res = await axiosRequestSetPersonalLans(repoId, selected);
-      console.log("개인 레포 카드 언어 설정: ", res);
       if (res.data.resultCode === "SUCCESS") {
         setSelected([]);
         requestPersonalLans();

@@ -29,13 +29,13 @@
   }
   & .settingBox {
     width: 90%;
-    min-height: 90vh;
+    min-height: 70vh;
     height: auto;
     display: flex;
     justify-content: center;
     & .repomonCanvas {
-      width: 40%;
-      height: 40em;
+      width: 20%;
+      height: 25em;
       background-color: rgb(255, 255, 255);
       border-radius: 10px;
       margin-top: 6%;
@@ -43,6 +43,10 @@
         rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
       display: flex;
       justify-content: center;
+
+      @include desktop125 {
+        height: 20em;
+      }
     }
     & .conventionBox {
       width: 60%;
@@ -59,8 +63,8 @@
   & .chartBox {
     width: 55%;
     height: 90%;
-    margin-right: 5%;
-    border-radius: 15px;
+    margin-right: 2%;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,8 +72,8 @@
     border: 2px solid #818181;
     & .titlebox {
       position: absolute;
-      top: -0.1em;
-      left: -0.1em;
+      top: -0.2em;
+      left: -0.2em;
       width: 8em;
       height: 2em;
       background-color: #a1cdff;
@@ -80,14 +84,23 @@
       align-items: center;
       color: white;
       font-weight: 700;
+
+      @include desktop125 {
+        top: -0.1em;
+        left: -0.1em;
+      }
     }
     & .chartWrapper {
-      width: 55%;
+      width: 50%;
       height: 80%;
       margin-right: 5%;
       display: flex;
       justify-content: center;
       align-items: center;
+
+      @include desktop125 {
+        margin-right: 7%;
+      }
     }
     & .statsWrapper {
       width: 30%;
@@ -110,10 +123,14 @@
     & .diceTitle {
       width: 100%;
       color: white;
-      font-size: 2.5em;
+      font-size: 2.25em;
       text-align: center;
       font-weight: 700;
       margin-top: 10%;
+
+      @include desktop125 {
+        font-size: 1.75em;
+      }
     }
     & .dice {
       width: 100px;
@@ -177,7 +194,7 @@
 .repoTitleSelected {
   font-weight: 700;
   margin-bottom: 2em;
-  font-size: 4em;
+  font-size: 3.5em;
   color: #fdfdfe;
   transition: all 1s ease-in-out;
   @include desktop125 {
@@ -232,6 +249,10 @@
   font-weight: 700;
   margin-left: 10%;
   margin-top: 5%;
+
+  @include desktop125 {
+    font-size: 1.5em;
+  }
 }
 
 @keyframes arrowDownMove {

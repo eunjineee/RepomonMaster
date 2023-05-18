@@ -79,9 +79,7 @@ function InputField(props: InputProps) {
           disabled={isDisabled}
           onClick={() => {
             !isDuplicated && isGoodtoUse && isCompleted && !isEmpty
-              ? (props.setRepoName(name),
-                setIsDisabled(true),
-                console.log("확정됨"))
+              ? (props.setRepoName(name), setIsDisabled(true))
               : (checkDuplicated(), setIsDuplicated(false));
           }}
         >

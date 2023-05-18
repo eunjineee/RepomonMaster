@@ -62,7 +62,6 @@ const Page: NextPage<PageProps> = ({ params }) => {
       .then((response) => {
         const res = response.data;
         setRepoName(res.repoName);
-        console.log("레포 정보 조회: ", repoName);
       })
       .catch((error) => {
         console.error(error);
@@ -79,7 +78,6 @@ const Page: NextPage<PageProps> = ({ params }) => {
         setIsOpen(false);
         router.push(`/user/${localUserId}`);
       }, 2000);
-      console.log("post done");
     } else {
       setIsOpen(true);
       setTimeout(() => {
@@ -101,10 +99,6 @@ const Page: NextPage<PageProps> = ({ params }) => {
       startHit: numArr[4],
     });
   }, [numArr, repoName, selectedChar]);
-
-  useEffect(() => {
-    console.log("레포데이터", repoInitData);
-  }, [repoInitData]);
 
   // 난수 생성 후 Stats 설정
   function generateRandomNumArr() {
@@ -344,10 +338,8 @@ const Page: NextPage<PageProps> = ({ params }) => {
           "(min-width: 1160px) and (max-width: 1600px)"
         );
         if (mediaQuery.matches) {
-          console.log("125");
           window.scrollBy(0, rect.top - 10);
         } else {
-          console.log("100");
           window.scrollBy(0, rect.top - 20);
         }
       }
@@ -571,7 +563,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
                       id={styles.tableText}
                     >
                       <tbody
-                        style={{ textAlign: "center", fontSize: "1.2em" }}
+                        style={{ textAlign: "center", fontSize: "1.1em" }}
                         id={styles.tableBody}
                       >
                         <tr
@@ -697,15 +689,15 @@ const Page: NextPage<PageProps> = ({ params }) => {
         </div>
       </div>
       <div style={{ display: "flex", marginBlock: "3%" }}>
-        <div onClick={handlePostClick}>
-          <Button_OK msg={"결정하기"} />
-        </div>
         <div
           onClick={() => {
             router.push(`/user/${localUserId}`);
           }}
         >
           <Button_NO msg={"취소하기"} />
+        </div>
+        <div onClick={handlePostClick}>
+          <Button_OK msg={"결정하기"} />
         </div>
       </div>
     </div>

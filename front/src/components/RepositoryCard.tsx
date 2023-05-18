@@ -37,7 +37,6 @@ function RepositoryCard(props: propType) {
     if (props.repoId) {
       try {
         const res = await setActiveRepo(props.repoId);
-        console.log("레포 활성화 변경: ", res);
         props.handleChangeIsActive(props.repoId);
       } catch (err) {
         console.error(err);

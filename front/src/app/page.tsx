@@ -38,7 +38,6 @@ const Model = ({ isClicked, onIsClickedChange }: any) => {
       try {
         const response = await getModelLists();
         setRepomonURL(response.data.repomonUrls);
-        console.log(typeof response.data.repomonUrls);
       } catch (error) {
         console.error(error);
       }
@@ -47,7 +46,6 @@ const Model = ({ isClicked, onIsClickedChange }: any) => {
     fetchData();
   }, []);
 
-  console.log(repomonURL);
   const gltf = useLoader(GLTFLoader, repomonURL);
 
   let mixer: THREE.AnimationMixer | undefined;
@@ -87,7 +85,6 @@ const Model = ({ isClicked, onIsClickedChange }: any) => {
 const Particle = () => {
   const gltf = useLoader(GLTFLoader, "/static/models/Particle.glb");
 
-  console.log("particle: ", gltf.animations);
   let mixer: THREE.AnimationMixer | undefined;
 
   // if (gltf.animations.length) {
@@ -157,7 +154,6 @@ const Home = () => {
   function getClickTipHandler() {
     const gitTip = getRandomGitTip<GitTipType>();
     setGitTipsString(gitTip);
-    console.log(gitTipsString?.msg);
   }
 
   useEffect(() => {
@@ -185,7 +181,6 @@ const Home = () => {
     } else {
       setBannerCurPage(bannerCurPage + 1);
     }
-    console.log(bannerCurPage);
   }
 
   // 좌측버튼
@@ -197,7 +192,6 @@ const Home = () => {
     } else {
       setBannerCurPage(bannerCurPage - 1);
     }
-    console.log(bannerCurPage);
   }
 
   useEffect(() => {

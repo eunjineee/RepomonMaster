@@ -104,7 +104,6 @@ const DetailBattle = ({
   const onClickStatApply = async () => {
     try {
       const res = await axiosRequestUpStat(parseInt(repoId, 10), pointStats);
-      console.log("스탯 변경 응답: ", res);
       setStatChanged(false);
       setStatUpdated((prev) => !prev);
       setPointStats(defaultPointStats);
