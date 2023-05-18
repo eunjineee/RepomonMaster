@@ -28,7 +28,7 @@ import { statsData } from "@/types/repoInfo";
 import { pretreatModelUrl } from "@/app/utils/PretreatModelUrl";
 
 const Page: NextPage<PageProps> = ({ params }) => {
-  const [numArr, setNumArr] = useState([0, 0, 0, 0, 0]);
+  const [numArr, setNumArr] = useState([5, 5, 5, 5, 5]);
   const dice = useRef<HTMLImageElement>(null);
   const diceShadow = useRef<HTMLDivElement>(null);
   const [repoName, setRepoName] = useState<string>("");
