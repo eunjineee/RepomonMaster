@@ -68,6 +68,7 @@ const RenameModal = ({
   const onClickApplyBtn = () => {
     if (isDuplicated) {
       customAlert("중복체크를 완료해주세요.");
+      return;
     }
 
     requestChangeNickname();

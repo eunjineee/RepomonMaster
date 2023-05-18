@@ -1,7 +1,6 @@
 "use client";
 
 import { requestMatchResult } from "@/api/repoBattle";
-import Spinner from "@/components/Spinner";
 import { BattleResultResponseDataType, ScriptType } from "@/types/repoBattle";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import React, { Suspense, useEffect, useRef, useState } from "react";
@@ -9,13 +8,12 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import styles from "./page.module.scss";
 import Loader from "@/components/threeLoader";
 import HpBar from "@/components/HpBar";
-import Image from "next/image";
 import Lottie from "react-lottie-player";
 import lottieJson from "public/static/lotties/battle.json";
 import Panpare from "public/static/lotties/panpare.json";
 import GhostOne from "public/static/lotties/ghost1.json";
 import * as THREE from "three";
-import { Html, OrbitControls } from "@react-three/drei";
+import { Html } from "@react-three/drei";
 import { BattleLogType } from "@/types/repoBattle";
 import SoundOff from "@/components/UI/SoundOff";
 import SoundOn from "@/components/UI/SoundOn";

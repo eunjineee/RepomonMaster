@@ -3,12 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { NextPage } from "next";
 import styles from "./page.module.scss";
 import Image from "next/image";
-import {
-  conventionType,
-  PageProps,
-  RandomRepoType,
-  Todo,
-} from "@/types/repoRegist";
+import { conventionType, PageProps, RandomRepoType } from "@/types/repoRegist";
 import "animate.css";
 import GitTable from "@/components/GitTable";
 import Button_OK from "@/components/Button_OK";

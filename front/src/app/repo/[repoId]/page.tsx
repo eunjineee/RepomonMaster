@@ -378,7 +378,9 @@ function Page({ params }: { params: { repoId: string } }) {
                   </span>
                   <span className={styles.github}>
                     <Link
-                      href={`https://github.com/${repoDetailConventionInfo?.repoOwner.toLowerCase()}`}
+                      href={`https://github.com/${repoDetailConventionInfo?.repoOwner.toLowerCase()}/${
+                        repoDetailInfo.repoName
+                      }`}
                       target="_blank"
                     >
                       <Image

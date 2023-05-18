@@ -11,6 +11,7 @@ export type RepresentRepoType = {
 };
 
 export type UserInfoType = {
+  extensionKey: string;
   avatarUrl: string;
   nickname: string;
   representRepo: RepresentRepoType;

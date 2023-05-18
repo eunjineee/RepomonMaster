@@ -87,8 +87,7 @@
   .option {
     position: absolute;
     width: 170px;
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(3px);
+    background: rgba(255, 255, 255);
     box-shadow: 0 8px 20px 0 rgba(31, 38, 135, 0.1);
 
     @include desktop125 {

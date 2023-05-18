@@ -13,8 +13,6 @@ import {
 } from "@/api/userRepo";
 import { RepoListType, UserInfoType } from "@/types/repoInfo";
 import Paging from "@/components/UI/Pagination";
-import Modal from "react-modal";
-import LoadingSpinner from "@/components/Skeletons/LoadingSpinner";
 import Ballon from "public/static/lotties/balloon.json";
 import Lottie from "react-lottie-player";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
@@ -22,8 +20,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 import UserExportModal from "@/components/UserExportModal";
 import { customAlert } from "@/app/utils/CustomAlert";
-import { OrbitControls } from "@react-three/drei";
 import Link from "next/link";
+import { KeyIcon } from "@heroicons/react/24/solid";
 
 const Page = ({ params }: { params: { userId: string } }) => {
   // 레포지토리 유저 정보 GET
@@ -37,7 +35,6 @@ const Page = ({ params }: { params: { userId: string } }) => {
   const [isReloaded, setIsReloaded] = useState<boolean>(false);
   const [isListLoaded, setIsListLoaded] = useState<boolean>(true);
   const arrowRef = useRef<SVGSVGElement>(null);
-  const router = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [activeChanged, setActiveChanged] = useState<boolean>(false);
 
@@ -81,16 +78,10 @@ const Page = ({ params }: { params: { userId: string } }) => {
   const [isSameUser, setIsSameUser] = useState<boolean>();
 
   // 카드 추출 이벤트
-  function copyUserCardUrl() {
-    const stringToCopy = `https://repomon.kr/card/user?userId=${userInfo?.userId}`;
-    navigator.clipboard
-      .writeText(stringToCopy)
-      .then(() => {
-        window.alert("복사 완료 ✅");
-      })
-      .catch((error) => {
-        window.alert("복사 실패 ❌");
-      });
+  function onClickKey(extensionKey: string) {
+    navigator.clipboard.writeText(extensionKey).then(() => {
+      window.alert("✅ 확장 프로그램 인증 키가 복사되었습니다.");
+    });
   }
 
   // active 상태 바꾸기
@@ -126,7 +117,19 @@ const Page = ({ params }: { params: { userId: string } }) => {
                   backgroundImage: `url('${userInfo?.avatarUrl}')`,
                 }}
               />
-              <p className={styles.boxTitle}>{userInfo?.username}</p>
+              <p className={`${styles.boxTitle} ${styles.username}`}>
+                {userInfo?.username}{" "}
+                <KeyIcon
+                  onClick={() => onClickKey(userInfo?.extensionKey as string)}
+                />
+                <p className={styles.tooltip}>
+                  <p>
+                    크롬 확장 프로그램 <span>Repomon Battle Device</span>의{" "}
+                    <br />
+                    로그인에 필요한 Key입니다. 클릭 시 복사됩니다.
+                  </p>
+                </p>
+              </p>
               <p className="py-2">{userInfo?.userDescription}</p>
               <UserExportModal userId={params.userId} />
               <Link
@@ -142,7 +145,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
                       height={24}
                     />
                   </div>
-                  <div>github.com/{userInfo?.username.toLowerCase()}</div>
+                  <div>github.com/{userInfo?.username.toLowerCase()} </div>
                 </div>
               </Link>
               <div className={`${styles.boxContent} flex items-center`}>
