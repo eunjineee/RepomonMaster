@@ -72,11 +72,11 @@ public class RepoRedisCardResponseDto {
     private Long merges;
     private Long reviews;
 
-        public static RepoRedisCardResponseDto fromEntityAndGHRepository(Long repoId,RepoEntity repoEntity, GHRepository ghRepository, List<RepoHistoryEntity> historyEntityList, Long totalcode, Integer contributers, Double conventionrate) {
-            try {
-                Map<String, Long> languageMap = ghRepository.listLanguages();
-                List<String> languages = new ArrayList<>();
-                languages.addAll(languageMap.keySet());
+    public static RepoRedisCardResponseDto fromEntityAndGHRepository(Long repoId,RepoEntity repoEntity, GHRepository ghRepository, List<RepoHistoryEntity> historyEntityList, Long totalcode, Integer contributers, Double conventionrate) {
+        try {
+            Map<String, Long> languageMap = ghRepository.listLanguages();
+            List<String> languages = new ArrayList<>();
+            languages.addAll(languageMap.keySet());
 
             Long totalCommit = 0L;
             Long commitsExp = 0L;
@@ -87,10 +87,10 @@ public class RepoRedisCardResponseDto {
             for (RepoHistoryEntity repoHistory : historyEntityList) {
                 Integer repoHistoryType = repoHistory.getRepoHistoryType();
                 GrowthFactor growthFactor = GrowthFactor.idxToEnum(repoHistoryType);
-
-                switch(repoHistoryType){
+                switch (repoHistoryType) {
                     case 1:
-                        totalCommit += 1L;
+                        Long repoHistoryExp = repoHistory.getRepoHistoryExp();
+                        totalCommit += (repoHistoryExp / growthFactor.getExp());
                         commitsExp += growthFactor.getExp();
                         break;
                     case 2:
@@ -106,25 +106,25 @@ public class RepoRedisCardResponseDto {
             }
             int convention = (int) Math.round(conventionrate);
             return RepoRedisCardResponseDto.builder()
-                    .repoId(repoId)
-                    .repomonId(repoEntity.getRepomon().getRepomonId())
-                    .repoExp(repoEntity.getRepoExp())
-                    .repomonTier(repoEntity.getRepomon().getRepomonTier())
-                    .repoName(repoEntity.getRepoName())
-                    .contributers(contributers)
-                    .repoStart(repoEntity.getRepoStart())
-                    .repoEnd(repoEntity.getRepoEnd())
-                    .languages(languages)
-                    .totalcommit(totalCommit)
-                    .totalcode(totalcode)
-                    .conventionrate(convention)
-                    .starCnt(repoEntity.getStarCnt())
-                    .forkCnt(repoEntity.getForkCnt())
-                    .commits(commitsExp)
-                    .issues(issuesExp)
-                    .merges(mergesExp)
-                    .reviews(reviewsExp)
-                    .build();
+                .repoId(repoId)
+                .repomonId(repoEntity.getRepomon().getRepomonId())
+                .repoExp(repoEntity.getRepoExp())
+                .repomonTier(repoEntity.getRepomon().getRepomonTier())
+                .repoName(repoEntity.getRepoName())
+                .contributers(contributers)
+                .repoStart(repoEntity.getRepoStart())
+                .repoEnd(repoEntity.getRepoEnd())
+                .languages(languages)
+                .totalcommit(totalCommit)
+                .totalcode(totalcode)
+                .conventionrate(convention)
+                .starCnt(repoEntity.getStarCnt())
+                .forkCnt(repoEntity.getForkCnt())
+                .commits(commitsExp)
+                .issues(issuesExp)
+                .merges(mergesExp)
+                .reviews(reviewsExp)
+                .build();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
