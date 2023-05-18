@@ -473,16 +473,7 @@ function Page({ params }: { params: { repoId: string } }) {
                   <PresentationChartLineIcon id="1" onClick={onClickTabBtn} />
                   성장
                 </button>
-                <button
-                  id="2"
-                  onClick={onClickTabBtn}
-                  className={tabIndex === 2 ? styles.selected : ""}
-                >
-                  <p id="2" className={styles.vs} onClick={onClickTabBtn}>
-                    VS
-                  </p>
-                  배틀
-                </button>
+
                 <button
                   id="3"
                   onClick={onClickTabBtn}
@@ -498,6 +489,16 @@ function Page({ params }: { params: { repoId: string } }) {
                 >
                   <ChartPieIcon id="4" onClick={onClickTabBtn} />
                   기여도
+                </button>
+                <button
+                  id="2"
+                  onClick={onClickTabBtn}
+                  className={tabIndex === 2 ? styles.selected : ""}
+                >
+                  <p id="2" className={styles.vs} onClick={onClickTabBtn}>
+                    VS
+                  </p>
+                  배틀
                 </button>
               </div>
             </div>
