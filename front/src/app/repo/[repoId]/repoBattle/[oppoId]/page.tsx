@@ -589,7 +589,11 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
         )}
         <>
           {loadData && (
-            <div className={styles.gameWrapper} ref={gameWrapper}>
+            <div
+              className={styles.gameWrapper}
+              ref={gameWrapper}
+              onClick={handleNext}
+            >
               <div className={styles.gameBox}>
                 <div
                   onClick={() => setSoundOn(!soundOn)}
@@ -642,7 +646,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
                   </Suspense>
                 </Canvas>
               </div>
-              <div className={styles.gameLogBox} onClick={handleNext}>
+              <div className={styles.gameLogBox}>
                 <div
                   style={{
                     overflowY: "auto",
