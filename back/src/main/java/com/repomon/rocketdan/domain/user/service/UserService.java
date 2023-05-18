@@ -1,11 +1,16 @@
 package com.repomon.rocketdan.domain.user.service;
 
 
+import static com.repomon.rocketdan.exception.ErrorCode.NOT_FOUND_ACTIVE_REPOSITORY;
+import static com.repomon.rocketdan.exception.ErrorCode.NOT_FOUND_ENTITY;
+import static com.repomon.rocketdan.exception.ErrorCode.NOT_FOUND_REPOSITORY;
+import static com.repomon.rocketdan.exception.ErrorCode.NOT_FOUND_USER;
+import static com.repomon.rocketdan.exception.ErrorCode.NO_ACCESS;
+
 import com.repomon.rocketdan.common.utils.GHUtils;
 import com.repomon.rocketdan.common.utils.SecurityUtils;
 import com.repomon.rocketdan.domain.repo.app.RepoDetail;
 import com.repomon.rocketdan.domain.repo.dto.request.RepoCardRequestDto;
-import com.repomon.rocketdan.domain.repo.dto.response.RepoRedisPersonalCardResponseDto;
 import com.repomon.rocketdan.domain.repo.entity.ActiveRepoEntity;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
 import com.repomon.rocketdan.domain.repo.repository.ActiveRepoRepository;
@@ -20,19 +25,16 @@ import com.repomon.rocketdan.domain.user.repository.UserRedisCardRepository;
 import com.repomon.rocketdan.domain.user.repository.UserRepository;
 import com.repomon.rocketdan.exception.CustomException;
 import com.repomon.rocketdan.exception.ErrorCode;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.kohsuke.github.GHRepository;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static com.repomon.rocketdan.exception.ErrorCode.*;
+import javax.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.kohsuke.github.GHRepository;
+import org.springframework.stereotype.Service;
 
 
 @Service
@@ -94,7 +96,12 @@ public class UserService {
 		UserEntity user = userRepository.findById(userId).orElseThrow(() -> {throw new CustomException(NOT_FOUND_USER);});
 		Map<String, String> userInfo = ghUtils.getUser(user.getUserName());
 
+		String loginUser = SecurityUtils.getCurrentOrAnonymousUser();
 		UserResponseDto userResponseDto = UserResponseDto.fromEntity(user, userInfo);
+
+		if(loginUser.equals(user.getUserName())){
+			userResponseDto.setExtensionKey(user.getAccessToken());
+		}
 
 		// 활성화된 레포 카운트
 		Integer activeRepoCnt = 0;

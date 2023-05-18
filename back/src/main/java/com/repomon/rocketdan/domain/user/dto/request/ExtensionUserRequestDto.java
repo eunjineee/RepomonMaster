@@ -7,4 +7,5 @@ import lombok.Data;
 @Data
 public class ExtensionUserRequestDto {
 	private String userName;
+	private String extensionKey;
 }

@@ -20,6 +20,7 @@ public class UserResponseDto {
 	private final String username;
 	private final String nickname;
 	private final String avatarUrl;
+	private String extensionKey;
 	private String userDescription;
 	private Integer activeRepoCnt;
 	private Long totalExp;

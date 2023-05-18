@@ -5,20 +5,20 @@ import com.repomon.rocketdan.common.dto.AuthResponseDto;
 import com.repomon.rocketdan.common.service.JwtTokenProvider;
 import com.repomon.rocketdan.common.service.RedisService;
 import com.repomon.rocketdan.common.utils.GHUtils;
-import com.repomon.rocketdan.common.utils.SecurityUtils;
 import com.repomon.rocketdan.domain.user.dto.request.ExtensionUserRequestDto;
 import com.repomon.rocketdan.domain.user.dto.response.ExtensionUserResponseDto;
 import com.repomon.rocketdan.domain.user.entity.UserEntity;
 import com.repomon.rocketdan.domain.user.repository.UserRepository;
 import com.repomon.rocketdan.exception.CustomException;
 import com.repomon.rocketdan.exception.ErrorCode;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.kohsuke.github.GHMyself;
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Map;
 
 
 @Service
@@ -101,15 +101,23 @@ public class AuthService {
 
 	public ExtensionUserResponseDto exLogin(ExtensionUserRequestDto requestDto) {
 		String userName = requestDto.getUserName();
-		UserEntity user = userRepository.findByUserName(userName).orElseThrow(() -> {
-			throw new CustomException(ErrorCode.NOT_FOUND_USER);
-		});
+		String oauthToken = requestDto.getExtensionKey();
 
-		AuthResponseDto token = jwtTokenProvider.createToken(user.getUserId());
+		try {
+			GitHub gitHub = new GitHubBuilder().withOAuthToken(oauthToken).build();
+			GHMyself myself = gitHub.getMyself();
+			if(myself.getLogin().equals(userName)){
+				UserEntity user = userRepository.findByUserName(userName).orElseThrow(() -> {
+					throw new CustomException(ErrorCode.NOT_FOUND_USER);
+				});
 
-		String avatarUrl = ghUtils.getUser(userName).get("avatarUrl");
-		return ExtensionUserResponseDto.of(user, token, avatarUrl);
-
+				AuthResponseDto token = jwtTokenProvider.createToken(user.getUserId());
+				return ExtensionUserResponseDto.of(user, token, myself.getAvatarUrl());
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		throw new CustomException(ErrorCode.NOT_FOUND_USER);
 	}
 
 }
