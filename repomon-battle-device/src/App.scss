@@ -1,0 +1,37 @@
+@import "styles/variables.scss";
+@import "styles/reset.css";
+
+.App {
+  width: 500px;
+  background-color: rgb(233, 246, 255);
+  color: rgb(50, 50, 50);
+  font-family: "SUIT-Regular";
+  border: none;
+
+  a {
+    text-decoration: none;
+
+    &:visited {
+      text-decoration: none;
+    }
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 7px;
+    background-color: white;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #9a9a9ac4;
+    transition: all 0.3s ease-in-out;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: #747474c4;
+    }
+  }
+}

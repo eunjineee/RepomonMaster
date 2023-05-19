@@ -1,0 +1,299 @@
+@import '@/styles/variables.scss';
+
+.container {
+  width: 100%;
+
+  .banner {
+    width: 100%;
+    height: 700px;
+    padding: 0 10%;
+    display: flex;
+    background: rgb(90, 167, 255);
+    background: linear-gradient(128deg, rgba(90, 167, 255, 1) 0%, rgba(122, 155, 241, 1) 73%);
+
+    @include desktop125 {
+      height: 550px;
+    }
+
+    .left {
+      width: 612px;
+      color: white;
+      font-weight: 600;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+      font-family: 'SUIT-Thin';
+
+      @include desktop125 {
+        height: 480px;
+      }
+
+      .title {
+        margin: 30% 0 0 0;
+        font-size: 6rem;
+
+        @include desktop125 {
+          font-size: 5rem;
+        }
+      }
+
+      .comment {
+        font-size: 2rem;
+
+        @include desktop125 {
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    .right {
+      width: 916px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      @include desktop125 {
+        width: 666px;
+      }
+    }
+  }
+
+  .service {
+    .service-title {
+      margin: 3rem 0 3rem 0;
+      text-align: center;
+      font-size: 2.25rem;
+
+      @include desktop125 {
+        font-size: 1.75rem;
+      }
+
+      & span {
+        color: $second;
+      }
+    }
+
+    .service-content {
+      width: 1528px;
+      height: 570px;
+      margin: 0 auto 10rem auto;
+      display: flex;
+      justify-content: center;
+
+      @include desktop125 {
+        width: 1070px;
+        height: calc(570px * 7 / 8);
+      }
+
+      & .img-div {
+        position: relative;
+        width: 600px;
+        max-height: 570px;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgb(215, 215, 215);
+
+        @include desktop125 {
+          width: calc(600px * 7 / 8);
+          max-height: calc(570px * 7 / 8);
+        }
+
+        &:hover {
+          & .des {
+            display: block;
+          }
+        }
+
+        & span {
+          position: absolute;
+          top: 1.5rem;
+          left: 2rem;
+          font-size: 2rem;
+          font-weight: bold;
+
+          @include desktop125 {
+            font-size: 1.5rem;
+          }
+        }
+
+        .fp {
+          width: 600px;
+          height: 570px;
+          transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
+
+          @include desktop125 {
+            width: calc(600px * 7 / 8);
+            max-height: calc(570px * 7 / 8);
+          }
+
+          &:hover {
+            transform: scale(1.03);
+          }
+        }
+
+        .sp {
+          width: 600px;
+          height: 275px;
+          transition: opacity 1s ease-in-out, transform 0.3s ease-in-out;
+
+          @include desktop125 {
+            width: calc(600px * 7 / 8);
+            max-height: calc(275px * 7 / 8);
+          }
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+
+        .tp {
+          width: 600px;
+          height: 275px;
+          transition: opacity 1.5s ease-in-out, transform 0.3s ease-in-out;
+
+          @include desktop125 {
+            width: calc(600px * 7 / 8);
+            max-height: calc(275px * 7 / 8);
+          }
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+
+        & p {
+          font-family: 'SUIT-Bold';
+          display: none;
+          background-color: rgba(90, 167, 255, 0.6);
+          position: absolute;
+          width: 100%;
+          bottom: 0;
+          padding: 2.5rem 1rem;
+          text-align: center;
+          font-size: 21px;
+          color: white;
+          animation: fade-in 0.4s ease-in-out;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+
+          @include desktop125 {
+            padding: 1.5rem 0.5rem;
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+
+#speechBubble {
+  position: absolute;
+  right: 10%;
+  top: 20%;
+  font-size: 1.2em;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fp-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideToLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideFromRightReverse {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideToLeftReverse {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.bannerContainer > div {
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+}
+
+.bannerContainer > div:first-child {
+  animation-name: slideToLeft;
+}
+
+.bannerContainer > div:last-child {
+  animation-name: slideFromRight;
+}
+
+.bannerContainerReverse {
+  // position: relative;
+}
+
+.bannerContainerReverse > div {
+  // position: absolute;
+
+  animation-duration: 1s;
+  animation-timing-function: ease;
+}
+
+.bannerContainerReverse > div:first-child {
+  animation-name: slideToLeftReverse;
+}
+
+.bannerContainerReverse > div:last-child {
+  animation-name: slideFromRightReverse;
+}
+
+.pageBtn {
+  color: $sub;
+  background-color: white;
+
+  &:hover {
+    cursor: pointer;
+    color: white;
+    background-color: $sub;
+  }
+}

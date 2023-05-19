@@ -1,0 +1,20 @@
+@import "@/styles/variables.scss";
+
+.chart-div {
+  position: relative;
+  height: 100%;
+  cursor: pointer;
+
+  select {
+    z-index: 10;
+    position: absolute;
+    top: -5%;
+    left: 7%;
+    border: none;
+    outline: none !important;
+    outline-offset: none !important;
+    border-radius: 10px;
+    font-size: 18px;
+    color: rgb(65, 255, 176);
+  }
+}

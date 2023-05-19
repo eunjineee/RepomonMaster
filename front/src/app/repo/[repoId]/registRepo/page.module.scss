@@ -1,0 +1,322 @@
+@import "@/styles/variables.scss";
+
+.pageContainer {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #f4f9ff;
+  & .selectBox {
+    width: 100%;
+    height: 95vh;
+    background-color: #000000c2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    & .monChar {
+      width: 30vw;
+      height: 30vw;
+      // background-color: transparent;
+      border-radius: 50%;
+      margin-inline: 1em;
+      transition: all 0.2 s ease-in-out;
+      &:hover {
+        background-color: rgba(255, 252, 241, 0.521);
+      }
+    }
+  }
+  & .settingBox {
+    width: 90%;
+    min-height: 70vh;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    & .repomonCanvas {
+      width: 20%;
+      height: 25em;
+      background-color: rgb(255, 255, 255);
+      border-radius: 10px;
+      margin-top: 6%;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+        rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+      display: flex;
+      justify-content: center;
+
+      @include desktop125 {
+        height: 20em;
+      }
+    }
+    & .conventionBox {
+      width: 60%;
+      margin-top: 3%;
+    }
+  }
+}
+.diceBlock {
+  width: 100%;
+  height: 40em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & .chartBox {
+    width: 55%;
+    height: 90%;
+    margin-right: 2%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border: 2px solid #818181;
+    & .titlebox {
+      position: absolute;
+      top: -0.2em;
+      left: -0.2em;
+      width: 8em;
+      height: 2em;
+      background-color: #a1cdff;
+      border-radius: 10px;
+      font-size: 1.5em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: 700;
+
+      @include desktop125 {
+        top: -0.1em;
+        left: -0.1em;
+      }
+    }
+    & .chartWrapper {
+      width: 50%;
+      height: 80%;
+      margin-right: 5%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @include desktop125 {
+        margin-right: 7%;
+      }
+    }
+    & .statsWrapper {
+      width: 30%;
+      height: 80%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: black;
+    }
+  }
+  & .diceBox {
+    width: 25%;
+    height: 90%;
+    background-color: #9db1e7;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    & .diceTitle {
+      width: 100%;
+      color: white;
+      font-size: 2.25em;
+      text-align: center;
+      font-weight: 700;
+      margin-top: 10%;
+
+      @include desktop125 {
+        font-size: 1.75em;
+      }
+    }
+    & .dice {
+      width: 100px;
+      height: auto;
+      position: absolute;
+      bottom: -5em;
+      left: 15em;
+      transform: translate(-50%, -50%);
+      z-index: 9;
+      transition: transform 0.2s ease-in-out;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      @include desktop125 {
+        width: 100%;
+        bottom: -3em;
+        left: 12em;
+      }
+    }
+    & .diceShadow {
+      position: absolute;
+      width: 5em;
+      height: 2em;
+      background-color: rgba(0, 0, 0, 0.781);
+      border-radius: 50%;
+      filter: blur(0.4em);
+      bottom: -2em;
+      left: 15em;
+      transform: translate(-50%, -50%);
+      transition: all 0.2s ease-in-out;
+      @include desktop125 {
+        width: 4em;
+        height: 1em;
+        bottom: 1em;
+        left: 12em;
+      }
+    }
+    & .diceDetail {
+      width: 100%;
+      color: white;
+      font-size: 1.4em;
+      text-align: center;
+      margin-bottom: 10%;
+      animation: blink 3s ease-in-out infinite;
+    }
+  }
+}
+
+.repoTitle {
+  font-weight: 700;
+  margin-bottom: 2em;
+  font-size: 4em;
+  color: #fdfdfe;
+  transition: all 1s ease-in-out;
+  animation: blink 3s ease-in-out infinite;
+  @include desktop125 {
+    font-size: 2.5em;
+  }
+}
+.repoTitleSelected {
+  font-weight: 700;
+  margin-bottom: 2em;
+  font-size: 3.5em;
+  color: #fdfdfe;
+  transition: all 1s ease-in-out;
+  @include desktop125 {
+    font-size: 2.5em;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+#tableText {
+  color: black;
+  font-size: large;
+  font-weight: 700;
+}
+
+#ranNumber {
+  color: black;
+}
+
+#tableBody {
+  @include desktop125 {
+    font-size: 0.9em !important;
+    font-weight: 500 !important;
+  }
+}
+#tableHead {
+  background-color: #daebff;
+}
+#repomonNameTitle {
+  @include desktop125 {
+    font-size: 0.8em !important;
+  }
+}
+
+#arrowDown {
+  animation: arrowDownMove 1.5s ease-in-out infinite;
+}
+
+#repomonConventionTitle {
+  color: #7291fa;
+  font-size: 1.7em;
+  font-weight: 700;
+  margin-left: 10%;
+  margin-top: 5%;
+
+  @include desktop125 {
+    font-size: 1.5em;
+  }
+}
+
+@keyframes arrowDownMove {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(-10deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@-webkit-keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@-moz-keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

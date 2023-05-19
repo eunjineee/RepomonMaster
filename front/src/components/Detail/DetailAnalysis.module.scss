@@ -1,0 +1,109 @@
+@import "@/styles/variables.scss";
+
+.tab-title {
+  font-size: 2rem;
+
+  @include desktop125 {
+    font-size: 1.75rem;
+  }
+
+  @include tablet {
+    font-size: 1.25rem;
+  }
+}
+
+.tab-des {
+  margin-left: 0.1%;
+  font-size: 1.5rem;
+  color: rgb(126, 126, 126);
+
+  @include desktop125 {
+    font-size: 1.25rem;
+  }
+
+  @include tablet {
+    font-size: 1rem;
+  }
+}
+
+.att {
+  margin: 0 0 0 -3%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 400px;
+  font-size: 1.5rem;
+
+  @include desktop125 {
+    width: 300px;
+    margin: 0 0 0 -2.5%;
+    font-size: 1.25rem;
+  }
+
+  @include tablet {
+    font-size: 1rem;
+  }
+
+  & span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.chart-div {
+  position: relative;
+  margin: 4rem 0 0 0;
+  padding: 1.5rem 1rem;
+  height: 450px;
+  border-radius: 10px;
+  border: 1px solid rgb(210, 210, 210);
+
+  @include desktop125 {
+    height: 400px;
+  }
+
+  & span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5rem 1rem;
+    background-color: $highlight;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    @include desktop125 {
+      font-size: 1.125rem;
+    }
+
+    @include tablet {
+      font-size: 1rem;
+    }
+  }
+}
+
+.chart-des {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4rem 0 0 0;
+  text-align: center;
+  font-size: 1.25rem;
+  color: rgb(65, 65, 65);
+
+  @include desktop125 {
+    font-size: 1.125rem;
+  }
+
+  @include tablet {
+    font-size: 1rem;
+  }
+
+  & img {
+    width: 33px;
+    margin: 0 0.5rem 0.5rem 0;
+    border-radius: 100%;
+  }
+}

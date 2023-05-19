@@ -1,0 +1,232 @@
+@import "@/styles/variables.scss";
+
+.userCardExport {
+  background-color: white;
+  height: 36px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $sub;
+    color: white;
+  }
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.25rem;
+  font-weight: bold;
+
+  & svg {
+    width: 25px;
+
+    &:hover {
+      cursor: pointer;
+      color: red;
+    }
+  }
+}
+
+.kind-select {
+  position: relative;
+
+  .btn-div {
+    margin: 0.5rem 0 0 0;
+    display: flex;
+    justify-content: space-between;
+
+    .cur-kind {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 0.3rem 1.5rem;
+      font-size: 1.125rem;
+      width: 170px;
+      background-color: $second;
+      color: white;
+
+      @include desktop125 {
+        width: 160px;
+        font-size: 1rem;
+        padding: 0.3rem 1.2rem;
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+
+      & svg {
+        position: absolute;
+        right: 10px;
+        width: 1.5rem;
+        margin: 0 0 0 0.5rem;
+
+        @include desktop125 {
+          width: 1.125rem;
+        }
+      }
+    }
+
+    .copy {
+      padding: 0 1rem;
+      background-color: $sub;
+      color: white;
+      border-radius: 5px;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .option {
+    position: absolute;
+    width: 170px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(3px);
+    box-shadow: 0 8px 20px 0 rgba(31, 38, 135, 0.1);
+
+    @include desktop125 {
+      width: 160px;
+    }
+
+    & li {
+      display: flex;
+      padding: 0.3rem 1.5rem;
+      font-size: 1.125rem;
+
+      @include desktop125 {
+        padding: 0.3rem 1.2rem;
+        font-size: 1rem;
+      }
+
+      &:hover {
+        color: rgb(117, 117, 117);
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.comment {
+  margin: 0.5rem 0 0 0;
+  color: rgb(114, 114, 114);
+}
+
+.set-lan-title {
+  margin: 2rem 0 0 0;
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+.set-lan-com {
+  margin: 0 0 0.5rem 0;
+}
+
+.set-lan-div {
+  display: flex;
+  width: 500px;
+  flex-wrap: wrap;
+
+  & span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $highlight;
+    border-radius: 20px;
+    padding: 0.2rem 0.8rem;
+    margin: 0 0.3rem 0.4rem 0;
+    color: $highlight;
+    font-size: 0.9rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .selected {
+    background-color: $highlight;
+    color: white;
+  }
+}
+
+.btn-div {
+  margin: 1rem 0 0 0;
+
+  & button {
+    padding: 0.1rem 1rem;
+    border-radius: 5px;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .clear {
+    margin: 0 0.5rem 0 0;
+    background-color: white;
+  }
+
+  .apply {
+    background-color: $sub;
+    color: white;
+  }
+}
+
+.exam {
+  margin: 0.3rem 0 0 0;
+  color: rgb(90, 90, 90);
+
+  & span {
+    color: rgb(255, 56, 56);
+  }
+}
+
+.lan-div {
+  margin: 0.2rem 0 0 0;
+
+  & span {
+    margin: 0 0.5rem 0.5rem 0;
+    padding: 0.3rem 0.5rem;
+    border-radius: 5px;
+    color: white;
+    font-size: 0.9rem;
+    white-space: nowrap;
+
+    @include desktop125 {
+      font-size: 0.8rem;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.spinner-div {
+  margin: 8rem auto 5rem auto;
+  width: 70px;
+}
+
+.card-div {
+  margin: 3rem 0 0 0;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+}
+
+.docs {
+  margin: 0.5rem 0 0 0;
+  text-align: end;
+
+  & a {
+    color: $highlight;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}

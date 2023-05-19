@@ -1,0 +1,127 @@
+@import "@/styles/variables.scss";
+
+.container {
+  margin-top: 4rem;
+  width: 900px;
+
+  @include desktop125 {
+    width: 800px;
+  }
+
+  @include detail {
+    width: 100%;
+  }
+}
+
+.line {
+  display: grid;
+  grid-template-columns: 1.5fr 4fr 1.5fr;
+  align-items: center;
+  border-bottom: 1px solid rgb(221, 221, 221);
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  @include desktop125 {
+    font-size: 0.9rem;
+  }
+
+  & p {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0 0.5rem 0.5rem;
+    min-height: 40px;
+  }
+
+  & input {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0 0.5rem 0.1rem;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background: none;
+    color: gray;
+
+    &:focus {
+      border: none;
+      outline: none;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      border: none;
+      outline: none;
+      box-shadow: none;
+    }
+
+    @include desktop125 {
+      font-size: 0.9rem;
+    }
+
+    &::placeholder {
+      color: gray;
+      font-size: 0.95rem;
+
+      @include desktop125 {
+        font-size: 0.85rem;
+      }
+    }
+  }
+}
+
+.title-line {
+  padding: 0.2rem 0;
+  background-color: rgb(72, 72, 72);
+  color: white;
+  border: none;
+}
+
+.item-line {
+}
+
+.input-item-line {
+}
+
+.edit-item-line {
+  background-color: rgb(249, 253, 255);
+}
+
+.btn-div {
+  margin: 0 0 0 5rem;
+
+  & button {
+    margin: 0 1rem 0 0;
+
+    &:hover {
+      color: $sub;
+    }
+  }
+}
+
+.container-btn-div {
+  display: flex;
+  justify-content: flex-end;
+
+  & button {
+    margin: 0.7rem 0 0 0;
+    padding: 0.3rem 0.7rem;
+    border-radius: 7px;
+    color: white;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .container-cancel {
+    background-color: gray;
+    margin: 0.7rem 0.5rem 0 0;
+  }
+
+  .container-apply {
+    background-color: $second;
+  }
+}

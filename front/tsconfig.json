@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -20,9 +21,20 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+      "public": ["./public"]
+    },
+    "typeRoots": ["./node_modules/@types", "types"],
+    "types": ["three"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "**/*.scss",
+    "**/*.module.scss",
+    "src/app/user/[userId]/[repoId]/registRepo/Model2tsx"
+  ],
   "exclude": ["node_modules"]
 }

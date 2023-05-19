@@ -1,0 +1,300 @@
+@import "../styles/variables.scss";
+
+.user-div {
+  width: 90%;
+  margin: 3rem auto 2rem auto;
+  padding: 0 0 0 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.125rem;
+
+  & img {
+    width: 27px;
+    border-radius: 100%;
+    margin: 0 0.5rem 0 0;
+  }
+
+  & a {
+    color: inherit;
+    font-weight: 600;
+
+    &:visited {
+      color: inherit;
+    }
+
+    &:hover {
+      color: $highlight;
+    }
+  }
+}
+
+.loading-container {
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.select-div {
+  position: relative;
+  margin: 0 0 1rem 0;
+
+  .select {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 90%;
+    min-height: 40px;
+    margin: 0 auto;
+    padding: 0.4rem;
+    background-color: white;
+    border: 0;
+    font-family: "SUIT-Regular";
+    color: rgb(50, 50, 50);
+
+    .placeholder {
+      color: gray;
+      padding: 0 0 0 1rem;
+    }
+
+    & svg {
+      position: absolute;
+      right: 5%;
+    }
+
+    .selected {
+      width: 90%;
+      display: flex;
+      align-items: center;
+      font-size: 1rem;
+
+      & img {
+        width: 30px;
+        border-radius: 100%;
+        margin: 0 0.5rem 0 0;
+      }
+    }
+  }
+
+  .show {
+    outline: 2px solid $primary;
+
+    & svg {
+      color: $primary;
+    }
+  }
+
+  .repo-list {
+    z-index: 10;
+    position: absolute;
+    top: 50px;
+    left: 5%;
+    width: 90%;
+    max-height: 300px;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8.5px);
+    -webkit-backdrop-filter: blur(8.5px);
+    animation: fade-in 0.5s ease-in-out;
+
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .repo {
+      padding: 0.4rem;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        cursor: pointer;
+        background-color: rgba(161, 205, 255, 0.3);
+      }
+
+      & img {
+        width: 30px;
+        border-radius: 100%;
+        margin: 0 0.5rem 0 0;
+      }
+    }
+  }
+}
+
+.card {
+  position: relative;
+  display: flex;
+  width: 90%;
+  margin: 0 auto 1rem auto;
+  height: 190px;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  & > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .left {
+    width: 45%;
+    align-items: center;
+
+    & img {
+      width: 60%;
+      border-radius: 10px;
+    }
+
+    .repomon-name {
+      margin: 0.5rem 0 0 0;
+      padding: 0 0.5rem;
+      font-weight: bold;
+    }
+  }
+
+  .right {
+    width: 55%;
+
+    & > div {
+      margin: 0 0 1rem 0;
+
+      .content {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+
+        & img {
+          width: 30px;
+        }
+      }
+    }
+  }
+
+  .match {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 85px;
+    height: 33px;
+    bottom: 10px;
+    right: 10px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(255, 90, 90);
+    color: white;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.7;
+    }
+
+    & span {
+      font-family: "SUIT-Regular";
+      font-size: 1rem;
+    }
+
+    & svg {
+      animation: rotate 3s;
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0);
+        }
+        100% {
+          transform: rotate(720deg);
+        }
+      }
+    }
+  }
+}
+
+.records {
+  margin: 1rem 0 2rem 0;
+
+  .record-item {
+    width: calc(90% - 2rem);
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem auto 0 auto;
+    padding: 0 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 0.8rem;
+
+    & > div {
+      display: flex;
+      align-items: center;
+
+      & img {
+        border-radius: 100%;
+        width: 25px;
+      }
+
+      .record-refo-info {
+        width: 120px;
+        text-align: center;
+
+        .repomon-nickname {
+          font-weight: bold;
+        }
+
+        .mine {
+          color: rgb(60, 191, 116);
+        }
+
+        .not-mine {
+          &:hover {
+            cursor: pointer;
+            color: rgb(155, 155, 155);
+          }
+        }
+      }
+    }
+
+    .result-div {
+      flex-direction: column;
+
+      & p {
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .win {
+        color: rgb(64, 166, 255);
+      }
+
+      .lose {
+        color: rgb(255, 94, 94);
+      }
+    }
+
+    .sword {
+      margin: 0 0.5rem;
+      width: 25px;
+      height: 25px;
+    }
+  }
+
+  .win-record-item {
+    background-color: rgb(249, 251, 253);
+  }
+
+  .lose-record-item {
+    background-color: rgb(255, 250, 250);
+  }
+
+  .no-record {
+    padding: 1rem 0 0 0;
+    text-align: center;
+    color: gray;
+  }
+}

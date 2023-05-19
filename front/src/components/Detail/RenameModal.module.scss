@@ -1,0 +1,83 @@
+.open {
+  margin-left: 0.3rem;
+  width: 25px;
+  color: rgb(140, 140, 140);
+  transition: transform 1s ease-in-out;
+
+  &:hover {
+    cursor: pointer;
+    color: rgb(130, 130, 130);
+    transform: rotate(180deg);
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & span {
+    font-size: 1.5rem;
+  }
+
+  & svg {
+    width: 25px;
+
+    &:hover {
+      cursor: pointer;
+      color: red;
+    }
+  }
+}
+
+.apply-div {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+
+  .apply {
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+    background-color: rgb(94, 130, 231);
+    color: white;
+
+    &:hover {
+      background-color: rgb(107, 140, 228);
+    }
+  }
+}
+
+.input-div {
+  margin: 1rem 0 0 0;
+  display: flex;
+  align-items: center;
+
+  & input {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid rgb(204, 204, 204);
+    box-shadow: 1px 2px 5px rgb(227, 227, 227);
+  }
+
+  .check {
+    height: 30px;
+    margin: 0 0 0 1rem;
+    padding: 0 0.5rem;
+    border-radius: 5px;
+    background-color: rgb(94, 130, 231);
+    color: white;
+
+    &:hover {
+      background-color: rgb(107, 140, 228);
+    }
+  }
+
+  .checked {
+    margin: 0 0 0 1rem;
+    color: rgb(94, 130, 231);
+  }
+}
