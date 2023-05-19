@@ -1,0 +1,117 @@
+@import "@/styles/variables.scss";
+
+.tab-title {
+  font-size: 2rem;
+
+  @include desktop125 {
+    font-size: 1.75rem;
+  }
+
+  @include tablet {
+    font-size: 1.25rem;
+  }
+}
+
+.tab-des {
+  margin-left: 0.1%;
+  font-size: 1.5rem;
+  color: rgb(126, 126, 126);
+
+  @include desktop125 {
+    font-size: 1.25rem;
+  }
+
+  @include tablet {
+    font-size: 1rem;
+  }
+}
+
+.content-div {
+  @include detail {
+    flex-direction: column;
+  }
+}
+
+.left {
+  margin: 0 5% 0 2.5%;
+  width: 35%;
+
+  @include detail {
+    margin: 0 auto;
+    width: 50%;
+  }
+}
+
+.right {
+  width: 55%;
+  font-size: 1.125rem;
+
+  @include desktop125 {
+    font-size: 1rem;
+  }
+
+  @include detail {
+    margin: 3rem 0 0 0;
+    width: 100%;
+  }
+
+  @include mobile {
+    font-size: 0.8rem;
+  }
+
+  .title-line {
+    display: grid;
+    grid-template-columns: 1fr 2.5fr 1fr;
+    border-radius: 5px;
+    margin: 0 0 0.5rem 0;
+    padding: 0.5rem 0;
+    background-color: $sub;
+    color: white;
+
+    & span {
+      text-align: center;
+    }
+  }
+
+  .item-div {
+    height: 400px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    .item-line {
+      margin: 0 0 0.5rem 0;
+      padding: 0.3rem 0;
+      display: grid;
+      grid-template-columns: 1fr 2.5fr 1fr;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: aliceblue;
+      }
+
+      & span {
+        text-align: center;
+      }
+    }
+
+    .top {
+      color: rgb(162, 101, 255);
+      font-weight: bold;
+    }
+  }
+}
+
+.no-commiter {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & p {
+    font-size: 1.5rem;
+  }
+}

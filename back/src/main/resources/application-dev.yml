@@ -1,0 +1,32 @@
+spring:
+  redis:
+    host: repomon.kr
+    port: 6379
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://repomon.kr:3306/rocketdan?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: rocketdan
+    password: 1234
+
+  sql:
+    init:
+      mode: never
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: fa4bb518c84e505d17c6
+            client-secret: 0366e11714d0a2b8408aaf7dfd608d97b42aadef
+
+front_url: https://repomon.kr

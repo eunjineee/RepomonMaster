@@ -8,9 +8,12 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(name = "personal_language")
 public class PersonalLanguageEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "personal_language_id")
@@ -19,6 +22,13 @@ public class PersonalLanguageEntity {
 	private String languageCode;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "personal_repo_card_id")
-	private PersonalRepoCardEntity personalRepoCard;
+	@JoinColumn(name = "active_repo_id")
+	private ActiveRepoEntity activeRepoEntity;
+
+	public static PersonalLanguageEntity of(String languageCode, ActiveRepoEntity repoEntity) {
+		return PersonalLanguageEntity.builder()
+				.languageCode(languageCode)
+				.activeRepoEntity(repoEntity)
+				.build();
+	}
 }

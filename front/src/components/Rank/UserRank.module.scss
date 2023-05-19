@@ -1,0 +1,248 @@
+@import "@/styles/variables.scss";
+
+.top-3-div {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+
+  & > div {
+    position: relative;
+    width: 32%;
+    height: 250px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 2rem 0 2.5rem;
+    font-size: 18px;
+    overflow: hidden;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    @include desktop125 {
+      height: 190px;
+      font-size: 16px;
+      padding: 1rem 2rem 0 3.5rem;
+    }
+
+    .main-element {
+      position: absolute;
+      top: 1%;
+      left: 1%;
+      display: block;
+      height: 98%;
+      width: 98%;
+      margin: auto;
+      align-self: center;
+      z-index: 1;
+    }
+
+    .border {
+      position: absolute;
+      display: block;
+      top: -50%;
+      left: -50%;
+      z-index: -9;
+      display: block;
+      height: 200%;
+      width: 200%;
+      transform: rotate(-45deg);
+      overflow: hidden;
+      animation: shine 5s linear infinite;
+
+      @keyframes shine {
+        to {
+          background-position: 200% center;
+        }
+      }
+    }
+
+    .rank-icon {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+
+      @include desktop125 {
+        width: 30px;
+      }
+    }
+
+    .img-div {
+      position: absolute;
+      left: 15%;
+      margin: 0 2rem 0 -1rem;
+
+      & img {
+        border-radius: 100%;
+
+        @include desktop125 {
+          width: 110px;
+        }
+      }
+
+      .repomon-name {
+        margin: 0.5rem 0 0 0;
+        text-align: center;
+        font-weight: bold;
+      }
+    }
+
+    .info-div {
+      position: absolute;
+      left: 55%;
+
+      @include desktop125 {
+        left: 50%;
+      }
+
+      .card-title {
+        font-size: 1rem;
+
+        @include desktop125 {
+          font-size: 0.9rem;
+        }
+      }
+
+      .card-content {
+        font-weight: bold;
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
+        color: rgb(80, 80, 80);
+
+        @include desktop125 {
+          font-size: 1.05rem;
+        }
+      }
+    }
+  }
+
+  .top-1 {
+    border: 2px solid rgb(255, 227, 132);
+    background: rgb(255, 227, 132);
+    background: linear-gradient(
+      347deg,
+      rgba(255, 227, 132, 0.7) 0%,
+      rgba(255, 249, 219, 0.5) 100%
+    );
+
+    .border {
+      background: linear-gradient(
+        to right,
+        #fff 20%,
+        #fff 40%,
+        #ecd08c 50%,
+        #ecd08c 55%,
+        #fff 70%,
+        #fff 100%
+      );
+      background-size: 200% auto;
+    }
+  }
+
+  .top-2 {
+    border: 2px solid rgb(182, 182, 182);
+    background: rgb(182, 182, 182);
+    background: linear-gradient(
+      347deg,
+      rgba(182, 182, 182, 0.4) 0%,
+      rgba(240, 240, 240, 0.4) 100%
+    );
+
+    .border {
+      background: linear-gradient(
+        to right,
+        #fff 20%,
+        rgb(252, 252, 252) 40%,
+        rgb(218, 218, 218) 50%,
+        rgb(216, 216, 216) 55%,
+        rgb(249, 249, 249) 70%,
+        #fff 100%
+      );
+      background-size: 200% auto;
+    }
+  }
+
+  .top-3 {
+    border: 2px solid rgb(174, 129, 103);
+    background: rgb(161, 97, 61);
+    background: linear-gradient(
+      347deg,
+      rgba(255, 94, 0, 0.3) 0%,
+      rgba(221, 132, 81, 0.2) 100%
+    );
+
+    .border {
+      background: linear-gradient(
+        to right,
+        #fff 20%,
+        rgb(255, 255, 255) 40%,
+        #fff5ef 50%,
+        #ffebe0 55%,
+        #fff 70%,
+        #fff 100%
+      );
+      background-size: 200% auto;
+    }
+  }
+}
+
+.list {
+  font-size: 1.125rem;
+
+  @include desktop125 {
+    font-size: 1rem;
+  }
+
+  & > div {
+    display: grid;
+    grid-template-columns: 1fr 2.5fr 2.5fr 2fr;
+
+    & > span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .user-name {
+        display: inline-block;
+        width: 300px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  .list-title {
+    margin: 0 0 0.2rem 0;
+    padding: 0.7rem 0;
+    border-radius: 5px;
+    background-color: rgb(59, 59, 59);
+    color: white;
+  }
+
+  .list-item {
+    margin: 0 0 0.2rem 0;
+    padding: 0.3rem 0;
+    border-radius: 5px;
+    background-color: rgba(142, 167, 233, 0.1);
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(142, 167, 233, 0.05);
+    }
+
+    & img {
+      border: 3px solid white;
+      border-radius: 100%;
+      margin: 0 0.5rem 0 0;
+    }
+  }
+}
+
+.pagination-div {
+  margin: 2rem 0 5rem 0;
+  display: flex;
+  justify-content: center;
+}

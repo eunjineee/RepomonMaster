@@ -1,0 +1,44 @@
+@import "../styles/variables.scss";
+
+.text-div {
+  margin: 3rem 0 2rem 0;
+  text-align: center;
+
+  & h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & input {
+    width: 220px;
+    padding: 0.5rem 0.7rem;
+    border-radius: 5px;
+    font-family: "SUIT-Regular";
+    border: none;
+    outline: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.login-btn {
+  display: block;
+  margin: 1rem auto 3rem auto;
+  width: 170px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.ver {
+  text-align: center;
+  margin: 1rem 0;
+  color: gray;
+}

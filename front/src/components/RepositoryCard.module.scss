@@ -1,0 +1,26 @@
+@import "@/styles/variables.scss";
+
+#cardContainer {
+  height: 200px;
+
+  #repoTitle {
+    // @include desktop125 {
+    //   font-size: 1.5em !important;
+    // }
+  }
+
+  #repoDesc {
+    @include desktop125 {
+      font-size: 0.9em;
+    }
+  }
+  #repoBtn {
+    // @include desktop125 {
+    //   width: 80%;
+    //   height: 2.5em;
+    // }
+    &:hover {
+      background-color: rgb(65, 119, 201) !important;
+    }
+  }
+}

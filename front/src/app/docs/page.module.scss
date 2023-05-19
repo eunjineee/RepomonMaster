@@ -1,0 +1,85 @@
+@import "@/styles/variables.scss";
+
+.docsDiv {
+  width: 70%;
+  margin: auto;
+}
+
+.navDiv {
+  width: 290px;
+  position: fixed;
+  max-height: calc(100vh - 130px - 10vh);
+  overflow-y: auto;
+  margin-top: 40px;
+  @include desktop125 {
+    margin: 30px 0 0 0;
+  }
+  @include mobile {
+    display: none;
+  }
+}
+
+.navBarListItem {
+  color: $sub;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-radius: 10px;
+  user-select: none;
+
+  @include desktop125 {
+    padding: 4px 0 4px 0;
+
+    & a {
+      font-size: 1rem;
+    }
+  }
+}
+
+.navBarListItem:hover {
+  background-color: $primary;
+}
+.navBarItem {
+  border-radius: 8px;
+  & p {
+    display: inline-block;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 12px;
+    margin-left: 5px;
+    user-select: none;
+
+    @include desktop125 {
+      font-size: 0.95rem;
+    }
+  }
+}
+.navBarItem:hover {
+  background-color: $primary;
+}
+
+.descriptionDiv {
+  margin: 0 0 0 300px;
+  width: auto;
+}
+
+.menu {
+  padding-left: 40px;
+}
+
+.table {
+  & table {
+    border-collapse: collapse;
+    width: 80%;
+  }
+  & th,
+  td {
+    border: 1px solid black;
+    padding: 8px;
+    width: 100px;
+    text-align: center;
+  }
+  & th {
+    background-color: #dddddd;
+  }
+}

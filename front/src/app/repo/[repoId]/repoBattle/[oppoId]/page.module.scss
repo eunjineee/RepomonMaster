@@ -1,0 +1,100 @@
+@import "@/styles/variables.scss";
+
+.pageContainer {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: #272727;
+  margin-top: -90px;
+  overflow-y: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  @include desktop125 {
+    margin-top: -70px;
+  }
+  & .headerTitle {
+    font-size: 2em;
+    margin-block: 1em;
+  }
+  & .gameWrapper {
+    width: 100em;
+    height: 50em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    @include desktop125 {
+      width: 90em;
+    }
+
+    & .gameBox {
+      width: 80%;
+      height: 35em;
+      border: 10px double black;
+      border-width: 10px 10px 5px 10px;
+      transition: all 1s ease-in-out;
+      background-color: white;
+      position: relative;
+    }
+    & .gameLogBox {
+      width: 80%;
+      height: 6em;
+      border: double black;
+      padding: 1em;
+      border-width: 5px 10px 10px 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2em;
+      font-family: "NeoDunggeunmo";
+      background-color: white;
+    }
+  }
+}
+
+#backTo {
+  &:hover {
+    color: rgb(0, 120, 218);
+  }
+}
+
+@keyframes arrowHover {
+  0% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(5px);
+  }
+}
+
+#repoNickTitle {
+  width: 8em;
+  font-weight: 900;
+  font-size: 1.3em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: "KOTRA_BOLD-Bold";
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: white;
+  text-shadow: 0px 1px 4px #23430c;
+}
+
+#triangle {
+  animation: trihover 1s ease-in-out infinite;
+}
+
+@keyframes trihover {
+  0% {
+    transform: translateY(-2px);
+  }
+  100% {
+    transform: translateY(2px);
+  }
+}
