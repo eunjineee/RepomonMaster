@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+import locale
+
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -25,8 +28,7 @@ SECRET_KEY = 'w$!*5a@j%h$k!i$k16%ej652rqav(n9&h2pw5imu-n8vyvj&il'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["repomon.kr"]
 
 # Application definition
 
