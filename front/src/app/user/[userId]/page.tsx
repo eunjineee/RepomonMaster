@@ -79,6 +79,10 @@ const Page = ({ params }: { params: { userId: string } }) => {
 
   // 카드 추출 이벤트
   function onClickKey(extensionKey: string) {
+    if (userInfo?.userId !== parseInt(params.userId)) {
+      return;
+    }
+
     navigator.clipboard.writeText(extensionKey).then(() => {
       window.alert("✅ 확장 프로그램 인증 키가 복사되었습니다.");
     });
@@ -119,9 +123,11 @@ const Page = ({ params }: { params: { userId: string } }) => {
               />
               <p className={`${styles.boxTitle} ${styles.username}`}>
                 {userInfo?.username}{" "}
-                <KeyIcon
-                  onClick={() => onClickKey(userInfo?.extensionKey as string)}
-                />
+                {userInfo?.userId === parseInt(params.userId) && (
+                  <KeyIcon
+                    onClick={() => onClickKey(userInfo?.extensionKey as string)}
+                  />
+                )}
                 <p className={styles.tooltip}>
                   <p>
                     크롬 확장 프로그램 <span>Repomon Battle Device</span>의{" "}
