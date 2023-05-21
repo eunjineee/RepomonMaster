@@ -149,11 +149,11 @@ Github의 사용자는 나날이 증가하는 가운데, 프로젝트의 지표�
         </td>
         <td>
             <ul>
-                <li>oauth2.0 를 사용한 소셜 로그인</li>
-                <li>spring security 적용</li>
-                <li>랭킹 시스템 api 설계 및 구현</li>
-                <li>유저 정보 api 설계 및 구현</li>
-                <li>docs 페이지 구현</li>
+                <li>oauth2.0 를 사용한 소셜 로그인을 구현했습니다.</li>
+                <li>spring security 적용했습니다.</li>
+                <li>랭킹 시스템 api 설계 및 구현을 담당했습니다.</li>
+                <li>유저 정보 api 설계 및 구현을 담당했습니다.</li>
+                <li>docs 페이지 구현을 담당했습니다</li>
             </ul>
         </td>
         </tr>
@@ -210,4 +210,3 @@ Github의 사용자는 나날이 증가하는 가운데, 프로젝트의 지표�
     </tr>
     </tbody>
 </table>
-
