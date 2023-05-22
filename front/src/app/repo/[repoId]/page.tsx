@@ -169,6 +169,10 @@ function Page({ params }: { params: { repoId: string } }) {
   };
 
   const onClickUpdateBtn = () => {
+    if (updateLoading) {
+      return;
+    }
+
     requestRepoDetailUpdate(parseInt(params.repoId, 10));
   };
 
@@ -247,6 +251,7 @@ function Page({ params }: { params: { repoId: string } }) {
     try {
       const res = await axiosRequestBattleRecord(repoId);
       setBattleRecordInfo(res.data.data.battleLogList);
+      console.log(res);
     } catch (err: any) {
       console.error(err);
       if (err.response.data.status === 404) {

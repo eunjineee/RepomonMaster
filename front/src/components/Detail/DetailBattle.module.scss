@@ -47,12 +47,12 @@
     font-size: 1.5rem;
 
     @include desktop125 {
-      width: 600px;
+      width: 550px;
       font-size: 1.25rem;
     }
 
     @include tablet {
-      width: 500px;
+      width: 480px;
       font-size: 1rem;
       margin: 0;
     }
@@ -139,7 +139,11 @@
   }
 
   .stat-line {
-    width: 70%;
+    width: 80%;
+
+    @include desktop125 {
+      width: 90%;
+    }
 
     @include detail {
       width: 100%;
@@ -255,7 +259,7 @@
 
   .record-item {
     width: 800px;
-    height: 70px;
+    height: 90px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -266,7 +270,7 @@
     font-size: 1.125rem;
 
     @include desktop125 {
-      width: 650px;
+      width: 600px;
       font-size: 1rem;
     }
 
@@ -338,6 +342,16 @@
 
     .result-div {
       flex-direction: column;
+      min-width: 60px;
+
+      @include tablet {
+        min-width: none;
+      }
+
+      .battle-date {
+        color: gray;
+        font-weight: 100;
+      }
 
       & p {
         font-weight: bold;

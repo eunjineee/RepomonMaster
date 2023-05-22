@@ -57,8 +57,12 @@ function Battle() {
       setTimeout(() => {
         setLoading(false);
       }, 500);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+
+      if (err.response && err.response?.status === 400) {
+        navigate("/error");
+      }
     }
   };
 
