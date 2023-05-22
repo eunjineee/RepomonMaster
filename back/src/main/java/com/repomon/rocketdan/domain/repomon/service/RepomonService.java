@@ -50,7 +50,7 @@ public class RepomonService {
 	private final RepoRedisListRepository redisListRepository;
 	private final ActiveRepoRepository activeRepoRepository;
 
-	private static final long BATTLE_TIMEOUT = 5000; // 5초
+	private static final long BATTLE_TIMEOUT = 2000; // 2초
 
 
 	/**
