@@ -630,7 +630,11 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
   return (
     <div id="pageContainer">
       {soundOn && (
-        <audio ref={audioRef} src="/static/sound/battle_back.mp3" autoPlay />
+        <audio
+          ref={audioRef}
+          src="/static/sound/battle_back_fix.mp3"
+          autoPlay
+        />
       )}
       <audio ref={clickSoundRef} src="/static/sound/click.mp3" />
       <audio ref={avoidSoundRef} src="/static/sound/avoid.mp3" />
