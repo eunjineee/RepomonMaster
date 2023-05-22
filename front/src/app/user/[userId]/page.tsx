@@ -43,15 +43,17 @@ const Page = ({ params }: { params: { userId: string } }) => {
     return getUserDetail(Number(userId));
   }
   useEffect(() => {
-    const data = getUserInfo(params.userId)
-      .then((response) => {
-        const res = response.data.data;
-        setUserInfo(res);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    getUser();
   }, [activeChanged]);
+
+  const getUser = async () => {
+    try {
+      const res = await getUserInfo(params.userId);
+      setUserInfo(res.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   // 레포지토리 리스트 GET
   useEffect(() => {
@@ -100,6 +102,20 @@ const Page = ({ params }: { params: { userId: string } }) => {
     });
     setRepoInfo(temp);
   }
+
+  const onClickUpdate = async () => {
+    customAlert("목록 갱신에 최대 3분 소요될 수 있습니다.");
+    setIsListLoaded(false);
+    try {
+      userInfo?.userId && (await refreshAllRepo(userInfo.userId));
+      setIsListLoaded(true);
+      setIsLoaded(false);
+      setIsReloaded(!isReloaded);
+      getUser();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div id="pageContainer">
@@ -307,23 +323,15 @@ const Page = ({ params }: { params: { userId: string } }) => {
                       <ArrowPathIcon
                         className={styles.arrow}
                         ref={arrowRef}
-                        onClick={async () => {
-                          customAlert(
-                            "목록 갱신에 최대 3분 소요될 수 있습니다."
-                          );
-                          setIsListLoaded(false);
-                          userInfo?.userId &&
-                            (await refreshAllRepo(userInfo.userId));
-                          setIsListLoaded(true);
-                          setIsLoaded(false);
-                          setIsReloaded(!isReloaded);
-                        }}
+                        onClick={onClickUpdate}
                       />
                     </div>
-                    <p className={styles["update-time"]}>
-                      마지막 갱신 시간:
-                      {calcBattleDate(userInfo?.updateTime as string)}
-                    </p>
+                    {userInfo && (
+                      <p className={styles["update-time"]}>
+                        마지막 갱신 시간:
+                        {" " + calcBattleDate(userInfo?.updateTime as string)}
+                      </p>
+                    )}
                   </>
                 )}
               </div>

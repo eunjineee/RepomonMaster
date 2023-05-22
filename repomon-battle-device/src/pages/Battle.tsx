@@ -60,7 +60,7 @@ function Battle() {
     } catch (err: any) {
       console.error(err);
 
-      if (err.response && err.response?.status === 400) {
+      if (err.response && err.response.status === 400) {
         navigate("/error");
       }
     }

@@ -95,7 +95,7 @@ function Login() {
         className={styles["login-btn"]}
         onClick={onClickLogin}
       />
-      <p className={styles.ver}>ver 1.2</p>
+      <p className={styles.ver}>ver 1.4</p>
     </div>
   );
 }

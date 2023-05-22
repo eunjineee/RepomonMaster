@@ -20,6 +20,6 @@ export function calcBattleDate(battleDate: string): string {
   } else if (daysDiff < 30) {
     return `${daysDiff}일 전`;
   } else {
-    return `${monthsDiff}달 전`;
+    return `갱신 정보가 없습니다.`;
   }
 }
