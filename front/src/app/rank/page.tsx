@@ -2,10 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./page.module.scss";
-import {
-  ArrowPathIcon,
-  MagnifyingGlassCircleIcon,
-} from "@heroicons/react/24/solid";
+import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
 import Lottie from "react-lottie-player";
 import rankingLottie from "public/static/lotties/ranking.json";
 import RepomonRank from "@/components/Rank/RepomonRank";

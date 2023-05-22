@@ -5,7 +5,6 @@ import Image from "next/image";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.scss";
 import RepositoryCard, { modelProps } from "@/components/RepositoryCard";
-import { useRouter } from "next/navigation";
 import {
   getTotalRepoList,
   getUserDetail,
