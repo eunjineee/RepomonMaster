@@ -1,6 +1,7 @@
 package com.repomon.rocketdan.domain;
 
 
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -24,7 +25,7 @@ public class ControllerAop {
 	public void beforeRequest(JoinPoint joinPoint) {
 		log.info("###Start request {}", joinPoint.getSignature().toShortString());
 		Arrays.stream(joinPoint.getArgs())
-			.filter(o -> o != null)
+			.filter(Objects::nonNull)
 			.map(Object::toString)
 			.map(str -> "\t" + str)
 			.forEach(log::info);
