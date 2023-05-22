@@ -24,6 +24,7 @@ public class ControllerAop {
 	public void beforeRequest(JoinPoint joinPoint) {
 		log.info("###Start request {}", joinPoint.getSignature().toShortString());
 		Arrays.stream(joinPoint.getArgs())
+			.filter(o -> o != null)
 			.map(Object::toString)
 			.map(str -> "\t" + str)
 			.forEach(log::info);
