@@ -473,8 +473,10 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
 
   useEffect(() => {
     if (currentScript) {
+      // 턴 알림
       if (logIndex === 0) {
         setCurrentLog(currentScript.turn);
+        // 공격 로그
       } else if (logIndex === 1) {
         setCurrentLog(currentScript.attackerScript);
         if (matchData?.data.battleLog[currentIndex].attacker === myId) {
@@ -484,6 +486,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
         ) {
           setIsOpAttack(true);
         }
+        // 피해 로그 [맞을 지, 피할 지 여부 출력]
       } else if (logIndex === 2) {
         setCurrentLog(currentScript.defenderScript);
         if (matchData?.data.battleLog[currentIndex].defender === oppoId) {
@@ -494,8 +497,10 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
               )
             ) {
               setIsOpAvoid(true);
+              if (avoidSoundRef.current) avoidSoundRef.current.play();
             } else {
               setIsOpHurt(true);
+              playRandomSkill();
             }
           }
         } else if (matchData?.data.battleLog[currentIndex].defender === myId) {
@@ -506,11 +511,14 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
               )
             ) {
               setIsMyAvoid(true);
+              if (avoidSoundRef.current) avoidSoundRef.current.play();
             } else {
               setIsMyHurt(true);
+              playRandomSkill();
             }
           }
         }
+        // 피해 결과 출력
       } else if (logIndex === 3) {
         setCurrentLog(currentScript.damageScript);
         if (matchData?.data.battleLog[currentIndex].defender === oppoId) {
@@ -543,6 +551,10 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
         return;
       }
     }
+    // 넘길 때 효과음 처리
+    playClickAudio();
+
+    // 애니메이션 처리
     setLogIndex((logIndex + 1) % 4);
     // 애니메이션 클릭시 IDLE 상태로 다시 초기화
     setIsMyAttack(false);
@@ -564,11 +576,50 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
     Modal.setAppElement("#pageContainer");
   }, []);
 
+  // 효과음 제어
+  const clickSoundRef = useRef<HTMLAudioElement>(null);
+  const avoidSoundRef = useRef<HTMLAudioElement>(null);
+  const skillOne = useRef<HTMLAudioElement>(null);
+  const skillTwo = useRef<HTMLAudioElement>(null);
+  const skillThree = useRef<HTMLAudioElement>(null);
+  const skillFour = useRef<HTMLAudioElement>(null);
+  const skillFive = useRef<HTMLAudioElement>(null);
+  const skillSix = useRef<HTMLAudioElement>(null);
+
+  const skills = [
+    skillOne,
+    skillTwo,
+    skillThree,
+    skillFour,
+    skillFive,
+    skillSix,
+  ];
+  // 스킬 사운드 랜덤 재생
+  const playRandomSkill = () => {
+    const randomIndex = Math.floor(Math.random() * skills.length);
+    const selectedSkill = skills[randomIndex].current;
+    if (selectedSkill) {
+      selectedSkill.play();
+    }
+  };
+
+  const playClickAudio = () => {
+    if (clickSoundRef.current) clickSoundRef.current.play();
+  };
+
   return (
     <div id="pageContainer">
       {soundOn && (
         <audio ref={audioRef} src="/static/sound/battle.mp3" autoPlay />
       )}
+      <audio ref={clickSoundRef} src="/static/sound/click.mp3" />
+      <audio ref={avoidSoundRef} src="/static/sound/avoid.mp3" />
+      <audio ref={skillOne} src="/static/sound/1.mp3" />
+      <audio ref={skillTwo} src="/static/sound/2.mp3" />
+      <audio ref={skillThree} src="/static/sound/3.mp3" />
+      <audio ref={skillFour} src="/static/sound/4.mp3" />
+      <audio ref={skillFive} src="/static/sound/5.mp3" />
+      <audio ref={skillSix} src="/static/sound/6.mp3" />
 
       <div className={styles.pageContainer}>
         {!isAnimationFinished && (
