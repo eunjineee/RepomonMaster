@@ -50,7 +50,7 @@ public class RepomonService {
 	private final RepoRedisListRepository redisListRepository;
 	private final ActiveRepoRepository activeRepoRepository;
 
-	private static final long BATTLE_TIMEOUT = 2000; // 2초
+	private static final long BATTLE_TIMEOUT = 1000; // 1초
 
 
 	/**
@@ -154,13 +154,8 @@ public class RepomonService {
 			Optional<RepomonStatusEntity> repomon = repomonStatusRepository.findByRatingBetweenRandom(
 				startRating, endRating, repomonOwner);
 
-			if (repomon.isPresent()) {
-				if (lastBattleLog.isPresent() && !lastBattleLog.get().getDefenseRepo().equals(repomon)) {
-					return RepomonStatusResponseDto.fromEntity(repomon.get());
-				} else {
-					return RepomonStatusResponseDto.fromEntity(repomon.get());
-				}
-
+			if (repomon.isPresent() && ((lastBattleLog.isPresent() && !lastBattleLog.get().getDefenseRepo().equals(repomon)) || lastBattleLog.isEmpty())) {
+				return RepomonStatusResponseDto.fromEntity(repomon.get());
 			}
 
 			index += 1;
