@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RocketdanApplication {
 
 	public static void main(String[] args) {
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 		SpringApplication.run(RocketdanApplication.class, args);
 	}
 
