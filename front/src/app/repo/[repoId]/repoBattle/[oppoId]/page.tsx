@@ -632,17 +632,17 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
       {soundOn && (
         <audio ref={audioRef} src="/static/sound/battle_back.mp3" autoPlay />
       )}
-      <audio ref={clickSoundRef} src="/static/sound/click_fix.mp3" />
-      <audio ref={avoidSoundRef} src="/static/sound/avoid_fix.mp3" />
-      <audio ref={skillOne} src="/static/sound/1_fix.mp3" />
-      <audio ref={skillTwo} src="/static/sound/2_fix.mp3" />
-      <audio ref={skillThree} src="/static/sound/3_fix.mp3" />
-      <audio ref={skillFour} src="/static/sound/4_fix.mp3" />
-      <audio ref={skillFive} src="/static/sound/5_fix.mp3" />
-      <audio ref={skillSix} src="/static/sound/6_fix.mp3" />
-      <audio ref={attackSound} src="/static/sound/attack_fix.mp3" />
-      <audio ref={winSound} src="/static/sound/win_fix.mp3" />
-      <audio ref={loseSound} src="/static/sound/Lose_fix.mp3" />
+      <audio ref={clickSoundRef} src="/static/sound/click.mp3" />
+      <audio ref={avoidSoundRef} src="/static/sound/avoid.mp3" />
+      <audio ref={skillOne} src="/static/sound/1.mp3" />
+      <audio ref={skillTwo} src="/static/sound/2.mp3" />
+      <audio ref={skillThree} src="/static/sound/3.mp3" />
+      <audio ref={skillFour} src="/static/sound/4.mp3" />
+      <audio ref={skillFive} src="/static/sound/5.mp3" />
+      <audio ref={skillSix} src="/static/sound/6.mp3" />
+      <audio ref={attackSound} src="/static/sound/attack.mp3" />
+      <audio ref={winSound} src="/static/sound/win.mp3" />
+      <audio ref={loseSound} src="/static/sound/Lose.mp3" />
 
       <div className={styles.pageContainer}>
         {!isAnimationFinished && (
