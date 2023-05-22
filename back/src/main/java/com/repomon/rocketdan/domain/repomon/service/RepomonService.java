@@ -154,7 +154,7 @@ public class RepomonService {
 			Optional<RepomonStatusEntity> repomon = repomonStatusRepository.findByRatingBetweenRandom(
 				startRating, endRating, repomonOwner);
 
-			if (repomon.isPresent() && ((lastBattleLog.isPresent() && !lastBattleLog.get().getDefenseRepo().equals(repomon)) || lastBattleLog.isEmpty())) {
+			if (repomon.isPresent() && ((lastBattleLog.isPresent() && !lastBattleLog.get().getDefenseRepo().getRepoId().equals(repomon.get().getRepoId())) || lastBattleLog.isEmpty())) {
 				return RepomonStatusResponseDto.fromEntity(repomon.get());
 			}
 
