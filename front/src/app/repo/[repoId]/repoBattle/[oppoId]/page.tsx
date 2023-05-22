@@ -55,9 +55,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
         setopHp(data?.data.defenseRepo.hp);
         setmyHp(data?.data.attackRepo.hp);
         setLoadData(true);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     }
 
     fetchData();

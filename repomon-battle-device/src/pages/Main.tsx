@@ -153,14 +153,12 @@ function Main() {
     try {
       const res = await axiosGetOppo(repoId);
       console.log("매칭: ", res);
-      setTimeout(() => {
-        navigate("/battle", {
-          state: {
-            repoId,
-            oppoId: res.data.data.repoId as number,
-          },
-        });
-      }, 1000);
+      navigate("/battle", {
+        state: {
+          repoId,
+          oppoId: res.data.data.repoId as number,
+        },
+      });
     } catch (err) {
       console.error(err);
     }

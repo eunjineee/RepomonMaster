@@ -58,9 +58,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
         const res = response.data;
         setRepoName(res.repoName);
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => {});
   }, []);
 
   // 이름 설정 시 유효성 검사
@@ -231,9 +229,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
         const res = response.data.data;
         setRandomRepos(res);
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => {});
   }, []);
 
   // 레포몬 선택 시 스포트라이트

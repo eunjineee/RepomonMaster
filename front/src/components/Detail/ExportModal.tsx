@@ -144,9 +144,7 @@ const ExportModal = ({
     try {
       const res = await axiosRequestUpdateRepoCard(repoId);
       setRepoCardUpdated(true);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   const requestUpdateRepoPersonalCard = async () => {
@@ -163,18 +161,14 @@ const ExportModal = ({
       } else {
         setUpdateRepoPersonalLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   const requestPersonalLans = async () => {
     try {
       const res = await axiosRequestPersonalLans(repoId);
       setApplied(res.data.data);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   const requestSetPersonalLans = async () => {
@@ -185,9 +179,7 @@ const ExportModal = ({
         requestPersonalLans();
         requestUpdateRepoPersonalCard();
       }
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   return (

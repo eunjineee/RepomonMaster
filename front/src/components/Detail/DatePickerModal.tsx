@@ -117,9 +117,7 @@ const DatePickerModal = ({
       );
       setIsUpdated((prev) => !prev);
       closeModal();
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   return (

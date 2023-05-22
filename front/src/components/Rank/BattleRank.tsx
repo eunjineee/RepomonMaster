@@ -55,9 +55,7 @@ const BattleRank = ({
         setTop3(res.data.content.slice(0, 3));
         setIsInitial(false);
       }
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   return (

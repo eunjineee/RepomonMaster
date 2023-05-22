@@ -65,7 +65,6 @@ const MatchModal = ({ repoId }: { repoId: string }) => {
       setOppoRepoId(res.data.data.repoId);
       setIsOpen(true);
     } catch (err) {
-      console.error(err);
       customAlert("매칭 상대가 없습니다.");
     }
   };

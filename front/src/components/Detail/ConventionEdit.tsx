@@ -148,9 +148,7 @@ const ConventionEdit = ({
       const res = await axiosRequestEditConventions(repoId, conventions);
       setConventionUpdated((prev) => !prev);
       setEditMode(false);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   return (
