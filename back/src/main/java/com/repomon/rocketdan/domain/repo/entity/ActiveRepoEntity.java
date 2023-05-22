@@ -48,4 +48,8 @@ public class ActiveRepoEntity {
 			, repoEntity.getIsActive()
 			, ghRepository == null);
 	}
+
+    public void updateTime() {
+		updatedAt = LocalDateTime.now();
+    }
 }

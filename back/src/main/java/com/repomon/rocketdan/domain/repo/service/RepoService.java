@@ -305,6 +305,12 @@ public class RepoService {
 		}
 
 		updateRepositoryInfo(repoEntity, ghRepository, userEntities);
+
+		for (UserEntity userEntity : userEntities) {
+			activeRepoRepository.findByRepoAndUser(repoEntity, userEntity).ifPresent(activeRepo -> {
+				activeRepo.updateTime();
+			});
+		}
 	}
 
 
@@ -409,6 +415,10 @@ public class RepoService {
 					});
 
 					updateRepositoryInfo(repoEntity, ghRepository, List.of(userEntity));
+
+					activeRepoRepository.findByRepoAndUser(repoEntity, userEntity).ifPresent(activeRepo ->{
+						activeRepo.updateTime();
+					});
 				},
 				() -> {
 					if(ghRepository.getSize() > 0) {
