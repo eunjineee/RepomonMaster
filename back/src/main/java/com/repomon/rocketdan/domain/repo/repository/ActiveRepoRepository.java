@@ -10,11 +10,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
 public interface ActiveRepoRepository extends JpaRepository<ActiveRepoEntity, Long> {
 
-	Page<ActiveRepoEntity> findByUser(UserEntity userEntity, Pageable pageable);
+	@Query(nativeQuery = true, value = "SELECT * FROM active_repo ar INNER JOIN repo r ON ar.repo_id = r.repo_id AND ar.user_id = :userId ORDER BY r.repo_name asc")
+	Page<ActiveRepoEntity> findByUser(@Param("userId") UserEntity userEntity, Pageable pageable);
 	Optional<ActiveRepoEntity> findByRepoAndUser(RepoEntity repoEntity, UserEntity userEntity);
 
 	List<ActiveRepoEntity> findAllByUser(UserEntity user);
