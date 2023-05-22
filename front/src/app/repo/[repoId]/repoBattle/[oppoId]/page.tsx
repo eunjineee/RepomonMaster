@@ -410,24 +410,6 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
     );
   };
 
-  // audio control
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    const playAudio = () => {
-      audio?.play();
-      document.removeEventListener("click", playAudio);
-      document.removeEventListener("keydown", playAudio);
-    };
-
-    document.addEventListener("click", playAudio);
-    document.addEventListener("keydown", playAudio);
-  }, []);
-
-  const [soundOn, setSoundOn] = useState<boolean>(true);
-
   // 초기화면
   const gameWrapper = useRef<HTMLDivElement>(null);
 
@@ -479,6 +461,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
         // 공격 로그
       } else if (logIndex === 1) {
         setCurrentLog(currentScript.attackerScript);
+        if (attackSound.current) attackSound.current.play();
         if (matchData?.data.battleLog[currentIndex].attacker === myId) {
           setIsMyAttack(true);
         } else if (
@@ -525,8 +508,10 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
           // 상대 HP 깎기
           if (opHp && matchData) {
             setopHp(opHp - matchData.data.battleLog[currentIndex].damage);
-            if (opHp - matchData.data.battleLog[currentIndex].damage <= 0)
+            if (opHp - matchData.data.battleLog[currentIndex].damage <= 0) {
               setIsOpen(true);
+              if (winSound.current) winSound.current.play();
+            }
           }
           setLogIndex(-1);
         } else if (matchData?.data.battleLog[currentIndex].defender === myId) {
@@ -535,6 +520,7 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
             setmyHp(myHp - matchData.data.battleLog[currentIndex].damage);
             if (myHp - matchData.data.battleLog[currentIndex].damage <= 0) {
               setIsOpen(true);
+              if (loseSound.current) loseSound.current.play();
             }
           }
           setLogIndex(-1);
@@ -548,6 +534,11 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
       if (currentIndex !== 9) setCurrentIndex(currentIndex + 1);
       else {
         setIsOpen(true);
+        if (matchData?.data.isWin && winSound.current) {
+          winSound.current.play();
+        } else if (!matchData?.data.isWin && loseSound.current) {
+          loseSound.current.play();
+        }
         return;
       }
     }
@@ -585,6 +576,9 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
   const skillFour = useRef<HTMLAudioElement>(null);
   const skillFive = useRef<HTMLAudioElement>(null);
   const skillSix = useRef<HTMLAudioElement>(null);
+  const attackSound = useRef<HTMLAudioElement>(null);
+  const winSound = useRef<HTMLAudioElement>(null);
+  const loseSound = useRef<HTMLAudioElement>(null);
 
   const skills = [
     skillOne,
@@ -607,6 +601,31 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
     if (clickSoundRef.current) clickSoundRef.current.play();
   };
 
+  // 배경음악 사운드 조절
+  // const [volume, setVolume] = useState<number>(100);
+  // const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newVolume = parseInt(event.target.value);
+  //   setVolume(newVolume);
+  // };
+
+  // background audio control
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    const playAudio = () => {
+      audio?.play();
+      document.removeEventListener("click", playAudio);
+      document.removeEventListener("keydown", playAudio);
+    };
+
+    document.addEventListener("click", playAudio);
+    document.addEventListener("keydown", playAudio);
+  }, []);
+
+  const [soundOn, setSoundOn] = useState<boolean>(true);
+
   return (
     <div id="pageContainer">
       {soundOn && (
@@ -620,6 +639,9 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
       <audio ref={skillFour} src="/static/sound/4.mp3" />
       <audio ref={skillFive} src="/static/sound/5.mp3" />
       <audio ref={skillSix} src="/static/sound/6.mp3" />
+      <audio ref={attackSound} src="/static/sound/attack.mp3" />
+      <audio ref={winSound} src="/static/sound/Win.mp3" />
+      <audio ref={loseSound} src="/static/sound/Lose.mp3" />
 
       <div className={styles.pageContainer}>
         {!isAnimationFinished && (
@@ -659,6 +681,13 @@ const Page = ({ params }: { params: { repoId: string; oppoId: string } }) => {
                 >
                   {soundOn ? <SoundOn /> : <SoundOff />}
                 </div>
+                {/* <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={volume}
+                  onChange={handleVolumeChange}
+                /> */}
                 <Canvas
                   style={{
                     position: "relative",
