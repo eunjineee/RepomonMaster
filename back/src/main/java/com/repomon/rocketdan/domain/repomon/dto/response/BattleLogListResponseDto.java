@@ -4,6 +4,7 @@ package com.repomon.rocketdan.domain.repomon.dto.response;
 import com.repomon.rocketdan.domain.repomon.entity.BattleLogEntity;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,7 @@ public class BattleLogListResponseDto {
 		private Boolean isWin;
 		private Integer attackPoint;
 		private Integer defensePoint;
+		private LocalDateTime createdAt;
 		private RepomonStatusResponseDto attackRepo;
 		private RepomonStatusResponseDto defenseRepo;
 
@@ -45,6 +47,7 @@ public class BattleLogListResponseDto {
 				.isWin(battleLog.getIsWin())
 				.attackPoint(battleLog.getAttackPoint())
 				.defensePoint(battleLog.getDefensePoint())
+				.createdAt(battleLog.getCreatedAt())
 				.attackRepo(RepomonStatusResponseDto.fromEntity(battleLog.getAttackRepo()))
 				.defenseRepo(RepomonStatusResponseDto.fromEntity(battleLog.getDefenseRepo()))
 				.build();

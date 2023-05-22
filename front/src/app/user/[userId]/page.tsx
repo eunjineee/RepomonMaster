@@ -5,7 +5,6 @@ import Image from "next/image";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import styles from "./page.module.scss";
 import RepositoryCard, { modelProps } from "@/components/RepositoryCard";
-import { useRouter } from "next/navigation";
 import {
   getTotalRepoList,
   getUserDetail,
@@ -22,6 +21,7 @@ import UserExportModal from "@/components/UserExportModal";
 import { customAlert } from "@/app/utils/CustomAlert";
 import Link from "next/link";
 import { KeyIcon } from "@heroicons/react/24/solid";
+import { calcUpdateDate } from "@/app/utils/CalcDate";
 
 const Page = ({ params }: { params: { userId: string } }) => {
   // 레포지토리 유저 정보 GET
@@ -42,15 +42,17 @@ const Page = ({ params }: { params: { userId: string } }) => {
     return getUserDetail(Number(userId));
   }
   useEffect(() => {
-    const data = getUserInfo(params.userId)
-      .then((response) => {
-        const res = response.data.data;
-        setUserInfo(res);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    getUser();
   }, [activeChanged]);
+
+  const getUser = async () => {
+    try {
+      const res = await getUserInfo(params.userId);
+      setUserInfo(res.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   // 레포지토리 리스트 GET
   useEffect(() => {
@@ -100,6 +102,20 @@ const Page = ({ params }: { params: { userId: string } }) => {
     setRepoInfo(temp);
   }
 
+  const onClickUpdate = async () => {
+    customAlert("목록 갱신에 최대 3분 소요될 수 있습니다.");
+    setIsListLoaded(false);
+    try {
+      userInfo?.userId && (await refreshAllRepo(userInfo.userId));
+      setIsListLoaded(true);
+      setIsLoaded(false);
+      setIsReloaded(!isReloaded);
+      getUser();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div id="pageContainer">
       <div className={styles.pageContainer}>
@@ -122,8 +138,9 @@ const Page = ({ params }: { params: { userId: string } }) => {
                 }}
               />
               <p className={`${styles.boxTitle} ${styles.username}`}>
-                {userInfo?.username}{" "}
-                {userInfo?.userId === parseInt(params.userId) && (
+                {userInfo?.username}
+                {userInfo?.userId ===
+                  parseInt(sessionStorage.getItem("userId") as string, 10) && (
                   <KeyIcon
                     onClick={() => onClickKey(userInfo?.extensionKey as string)}
                   />
@@ -300,21 +317,21 @@ const Page = ({ params }: { params: { userId: string } }) => {
                     레포 리스트 로딩중...
                   </p>
                 ) : (
-                  <ArrowPathIcon
-                    width="1.75rem"
-                    style={{ marginLeft: "2%" }}
-                    className={styles.arrow}
-                    ref={arrowRef}
-                    onClick={async () => {
-                      customAlert("목록 갱신에 최대 3분 소요될 수 있습니다.");
-                      setIsListLoaded(false);
-                      userInfo?.userId &&
-                        (await refreshAllRepo(userInfo.userId));
-                      setIsListLoaded(true);
-                      setIsLoaded(false);
-                      setIsReloaded(!isReloaded);
-                    }}
-                  />
+                  <>
+                    <div className={styles.reload}>
+                      <ArrowPathIcon
+                        className={styles.arrow}
+                        ref={arrowRef}
+                        onClick={onClickUpdate}
+                      />
+                    </div>
+                    {userInfo && (
+                      <p className={styles["update-time"]}>
+                        마지막 갱신 시간:
+                        {" " + calcUpdateDate(userInfo?.updateTime as string)}
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
               <p

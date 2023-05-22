@@ -1,7 +1,7 @@
 {
   "short_name": "RBD",
   "name": "Repomon Battle Device",
-  "version": "1.1",
+  "version": "1.4",
   "manifest_version": 3,
   "action": {
     "default_popup": "index.html",

@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
 import Battle from "./pages/Battle";
+import Error from "./pages/Error";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/main" element={<Main />} />
           <Route path="/battle" element={<Battle />} />
+          <Route path="/error" element={<Error />} />
         </Routes>
         <Footer />
       </MemoryRouter>

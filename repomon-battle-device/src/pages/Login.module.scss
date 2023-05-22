@@ -17,7 +17,8 @@
   align-items: center;
 
   & input {
-    width: 220px;
+    width: 40%;
+    min-width: 180px;
     padding: 0.5rem 0.7rem;
     border-radius: 5px;
     font-family: "SUIT-Regular";
@@ -25,15 +26,60 @@
     outline: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
+
+  .key-div {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    & svg {
+      position: absolute;
+      font-size: 22px;
+      color: gray;
+      right: -15%;
+
+      &:hover {
+        cursor: pointer;
+        color: rgb(82, 82, 82);
+      }
+    }
+  }
+}
+
+.tool-tip {
+  text-align: center;
+  font-size: 0.9rem;
+  margin: 1rem 0;
+  color: $highlight;
+  font-weight: bold;
+  animation: fade-in 0.5s ease-in-out;
+  opacity: 1;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @media screen and (max-width: 390px) {
+    font-size: 0.8rem;
+  }
 }
 
 .login-btn {
   display: block;
   margin: 1rem auto 3rem auto;
-  width: 170px;
+  width: 40%;
+  min-width: 180px;
+  border-radius: 5px;
+  border: none;
 
   &:hover {
     cursor: pointer;
+    opacity: 0.95;
   }
 }
 

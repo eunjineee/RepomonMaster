@@ -1,25 +1,25 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import styles from './page.module.scss';
-import { ArrowPathIcon, MagnifyingGlassCircleIcon } from '@heroicons/react/24/solid';
-import Lottie from 'react-lottie-player';
-import rankingLottie from 'public/static/lotties/ranking.json';
-import RepomonRank from '@/components/Rank/RepomonRank';
-import BattleRank from '@/components/Rank/BattleRank';
-import UserRank from '@/components/Rank/UserRank';
+import React, { useEffect, useState } from "react";
+import styles from "./page.module.scss";
+import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
+import Lottie from "react-lottie-player";
+import rankingLottie from "public/static/lotties/ranking.json";
+import RepomonRank from "@/components/Rank/RepomonRank";
+import BattleRank from "@/components/Rank/BattleRank";
+import UserRank from "@/components/Rank/UserRank";
 
 const Page = () => {
-  const [tabIndex, setTabIndex] = useState<string>('레포몬');
-  const [searchInput, setSearchInput] = useState<string>('');
+  const [tabIndex, setTabIndex] = useState<string>("레포몬");
+  const [searchInput, setSearchInput] = useState<string>("");
   const [searchRequestSign, setSearchRequestSign] = useState<boolean>(false);
 
   /** 탭 인덱스 정보 */
   useEffect(() => {
     if (document.referrer !== window.location.href) {
-      setTabIndex('레포몬');
+      setTabIndex("레포몬");
     } else {
-      setTabIndex(localStorage.getItem('rankTabIndex') as string);
+      setTabIndex(sessionStorage.getItem("rankTabIndex") as string);
     }
   }, []);
 
@@ -28,8 +28,8 @@ const Page = () => {
     const target = e.target as HTMLElement;
 
     setTabIndex(target.id);
-    localStorage.setItem('rankTabIndex', target.id);
-    setSearchInput('');
+    sessionStorage.setItem("rankTabIndex", target.id);
+    setSearchInput("");
   };
 
   /** 검색 입력 값 변경 시 */
@@ -39,7 +39,7 @@ const Page = () => {
 
   /** 검색 창에서 엔터키 입력 시 */
   const onKeyDownInSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       setSearchRequestSign(!searchRequestSign);
     }
   };
@@ -51,46 +51,77 @@ const Page = () => {
 
   /** 초기화 버튼 클릭 시 */
   const onClickClearBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setSearchInput('');
+    setSearchInput("");
     setSearchRequestSign(!searchRequestSign);
   };
 
   return (
     <div className={`${styles.rankContainer}`}>
       <div className={`${styles.banner}`}>
-        <div className={styles['banner-inner']}>
-          <div className={styles['banner-text']}>
-            <p className={styles['banner-title']}>{tabIndex} 랭킹</p>
-            {tabIndex === '레포몬' && <p className={styles['banner-comment']}>레포지토리 경험치 기준으로 메겨진 순위입니다.</p>}
-            {tabIndex === '배틀' && <p className={styles['banner-comment']}>배틀 레이팅 기준으로 메겨진 순위입니다.</p>}
-            {tabIndex === '유저' && <p className={styles['banner-comment']}>레포지토리 경험치의 총합으로 메겨진 순위입니다.</p>}
+        <div className={styles["banner-inner"]}>
+          <div className={styles["banner-text"]}>
+            <p className={styles["banner-title"]}>{tabIndex} 랭킹</p>
+            {tabIndex === "레포몬" && (
+              <p className={styles["banner-comment"]}>
+                레포지토리 경험치 기준으로 메겨진 순위입니다.
+              </p>
+            )}
+            {tabIndex === "배틀" && (
+              <p className={styles["banner-comment"]}>
+                배틀 레이팅 기준으로 메겨진 순위입니다.
+              </p>
+            )}
+            {tabIndex === "유저" && (
+              <p className={styles["banner-comment"]}>
+                레포지토리 경험치의 총합으로 메겨진 순위입니다.
+              </p>
+            )}
           </div>
-          <div className={styles['banner-search-div']}>
+          <div className={styles["banner-search-div"]}>
             <input
-              type='text'
-              className={styles['banner-search']}
+              type="text"
+              className={styles["banner-search"]}
               value={searchInput}
               onChange={onChangeSearchInput}
               onKeyDown={onKeyDownInSearch}
-              placeholder={tabIndex === '레포몬' || tabIndex === '배틀' ? '레포지토리 명을 입력해주세요.' : '유저 명을 입력해주세요.'}
+              placeholder={
+                tabIndex === "레포몬" || tabIndex === "배틀"
+                  ? "레포지토리 명을 입력해주세요."
+                  : "유저 명을 입력해주세요."
+              }
             />
-            <MagnifyingGlassCircleIcon onClick={onClickSearchBtn} className={styles['search-icon']} />
+            <MagnifyingGlassCircleIcon
+              onClick={onClickSearchBtn}
+              className={styles["search-icon"]}
+            />
           </div>
-          <div className={`${styles['banner-lottie']} hidden md:block`}>
+          <div className={`${styles["banner-lottie"]} hidden md:block`}>
             <Lottie loop={false} animationData={rankingLottie} play />
           </div>
         </div>
       </div>
       <div className={styles.tab}>
-        <div className='flex justify-between'>
+        <div className="flex justify-between">
           <div>
-            <button id='레포몬' onClick={onClickTabBtn} className={tabIndex === '레포몬' ? styles.selected : undefined}>
+            <button
+              id="레포몬"
+              onClick={onClickTabBtn}
+              className={tabIndex === "레포몬" ? styles.selected : undefined}
+            >
               레포몬
             </button>
-            <button id='배틀' onClick={onClickTabBtn} className={tabIndex === '배틀' ? styles.selected : undefined}>
+            <button
+              id="배틀"
+              onClick={onClickTabBtn}
+              className={tabIndex === "배틀" ? styles.selected : undefined}
+            >
               배틀
             </button>
-            <button id='유저' onClick={onClickTabBtn} className={tabIndex === '유저' ? styles.selected : undefined}>
+            <button
+              id="유저"
+              onClick={onClickTabBtn}
+              className={tabIndex === "유저" ? styles.selected : undefined}
+            >
               유저
             </button>
           </div>
@@ -102,9 +133,24 @@ const Page = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {tabIndex === '레포몬' && <RepomonRank searchInput={searchInput} searchRequestSign={searchRequestSign} />}
-        {tabIndex === '배틀' && <BattleRank searchInput={searchInput} searchRequestSign={searchRequestSign} />}
-        {tabIndex === '유저' && <UserRank searchInput={searchInput} searchRequestSign={searchRequestSign} />}
+        {tabIndex === "레포몬" && (
+          <RepomonRank
+            searchInput={searchInput}
+            searchRequestSign={searchRequestSign}
+          />
+        )}
+        {tabIndex === "배틀" && (
+          <BattleRank
+            searchInput={searchInput}
+            searchRequestSign={searchRequestSign}
+          />
+        )}
+        {tabIndex === "유저" && (
+          <UserRank
+            searchInput={searchInput}
+            searchRequestSign={searchRequestSign}
+          />
+        )}
       </div>
     </div>
   );

@@ -140,17 +140,30 @@ public class RepoService {
 
 		boolean myRepo = false;
 		boolean myPresentRepo = false;
-		if(userEntity != null){
-			myRepo = activeRepoRepository.existsByUserAndRepo(userEntity, repoEntity);
-			if(myRepo){
-				ActiveRepoEntity activeRepoEntity = userEntity.getRepresentRepo().orElse(null);
-				if(activeRepoEntity != null){
-					myPresentRepo = repoEntity.getRepoId() == activeRepoEntity.getRepo().getRepoId();
-				}
+		LocalDateTime updateTime = null;
+		List<ActiveRepoEntity> activeRepoList = activeRepoRepository.findAllByRepo(repoEntity);
+		for(ActiveRepoEntity activeRepo : activeRepoList){
+			if(updateTime == null || updateTime.isBefore(activeRepo.getUpdatedAt())){
+				updateTime = activeRepo.getUpdatedAt();
+			}
 
+			UserEntity user = activeRepo.getUser();
+			if(user.equals(userEntity)){
+				myRepo = true;
+
+				ActiveRepoEntity representRepo = user.getRepresentRepo().orElse(null);
+				if(activeRepo.equals(representRepo)){
+					myPresentRepo = true;
+				}
+				break;
 			}
 		}
-		return RepoResponseDto.fromEntityAndGHRepository(repoEntity, ghRepository, myRepo, myPresentRepo);
+
+		if(updateTime == null){
+			updateTime = LocalDateTime.now();
+		}
+
+		return RepoResponseDto.fromEntityAndGHRepository(repoEntity, ghRepository, updateTime, myRepo, myPresentRepo);
 	}
 
 
@@ -292,6 +305,12 @@ public class RepoService {
 		}
 
 		updateRepositoryInfo(repoEntity, ghRepository, userEntities);
+
+		for (UserEntity userEntity : userEntities) {
+			activeRepoRepository.findByRepoAndUser(repoEntity, userEntity).ifPresent(activeRepo -> {
+				activeRepo.updateTime();
+			});
+		}
 	}
 
 
@@ -396,6 +415,10 @@ public class RepoService {
 					});
 
 					updateRepositoryInfo(repoEntity, ghRepository, List.of(userEntity));
+
+					activeRepoRepository.findByRepoAndUser(repoEntity, userEntity).ifPresent(activeRepo ->{
+						activeRepo.updateTime();
+					});
 				},
 				() -> {
 					if(ghRepository.getSize() > 0) {

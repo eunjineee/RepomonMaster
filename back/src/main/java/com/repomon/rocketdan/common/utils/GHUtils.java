@@ -83,7 +83,8 @@ public class GHUtils {
 		Map<String, GHRepository> repositoriesWithNodeKey = new HashMap<>();
 
 		repositories.forEach((s, ghRepository) -> {
-			if (!s.equals(name) && !ghRepository.isFork() && !s.equals(name + ".github.io")) {
+			String lowerName = s.toLowerCase();
+			if (!lowerName.equals(name) && !ghRepository.isFork() && !lowerName.equals(name + ".github.io")) {
 				repositoriesWithNodeKey.put(ghRepository.getNodeId(), ghRepository);
 			}
 		});

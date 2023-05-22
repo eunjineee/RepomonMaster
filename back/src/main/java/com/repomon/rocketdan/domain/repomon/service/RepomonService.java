@@ -146,6 +146,7 @@ public class RepomonService {
 
 		String repomonOwner = repomonStatus.getRepoOwner();
 		Integer userRating = repomonStatus.getRating();
+		Optional<BattleLogEntity> lastBattleLog = battleLogRepository.findTopByAttackRepoOrderByCreatedAtDesc(repomonStatus);
 		int index = 1;
 		while (index <= 10) {
 			Integer startRating = userRating - (index * 100);
@@ -154,7 +155,6 @@ public class RepomonService {
 				startRating, endRating, repomonOwner);
 
 			if (repomon.isPresent()) {
-				Optional<BattleLogEntity> lastBattleLog = battleLogRepository.findTopByAttackRepoOrderByCreatedAtDesc(repomonStatus);
 				if (lastBattleLog.isPresent() && !lastBattleLog.get().getDefenseRepo().equals(repomon)) {
 					return RepomonStatusResponseDto.fromEntity(repomon.get());
 				} else {
@@ -162,12 +162,16 @@ public class RepomonService {
 				}
 
 			}
-		
+
 			index += 1;
 
 		}
 
-		throw new CustomException(NOT_FOUND_REPOSITORY);
+		if (!lastBattleLog.isPresent())
+			return RepomonStatusResponseDto.fromEntity(repomonStatusRepository.findByRandom(repomonOwner, -1L));
+		else {
+			return RepomonStatusResponseDto.fromEntity(repomonStatusRepository.findByRandom(repomonOwner, lastBattleLog.get().getDefenseRepo().getRepoId()));
+		}
 
 	}
 
