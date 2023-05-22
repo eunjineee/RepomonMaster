@@ -27,6 +27,7 @@ public class RepoResponseDto {
 	private String repomonName;
 	private String repomonUrl;
 	private String repoDescription;
+	private LocalDateTime updateTime;
 	private Long repoExp;
 	private int starCnt;
 	private int forkCnt;
@@ -37,7 +38,7 @@ public class RepoResponseDto {
 	private boolean myRepo;
 	private boolean myPresentRepo;
 
-	public static RepoResponseDto fromEntityAndGHRepository(RepoEntity repoEntity, GHRepository ghRepository, boolean myRepo, boolean myPresentRepo) {
+	public static RepoResponseDto fromEntityAndGHRepository(RepoEntity repoEntity, GHRepository ghRepository, LocalDateTime updateTime, boolean myRepo, boolean myPresentRepo) {
 		try {
 			Map<String, Long> languageMap = ghRepository.listLanguages();
 			List<GHTag> ghTags = ghRepository.listTags().toList();
@@ -55,6 +56,7 @@ public class RepoResponseDto {
 				.repomonName(repoEntity.getRepomonNickname())
 				.repomonUrl(S3Utils.modelUrl(repomon.getRepomonUrl()))
 				.repoDescription(ghRepository.getDescription())
+				.updateTime(updateTime)
 				.repoExp(repoEntity.getRepoExp())
 				.starCnt(ghRepository.getStargazersCount())
 				.forkCnt(ghRepository.getForksCount())
