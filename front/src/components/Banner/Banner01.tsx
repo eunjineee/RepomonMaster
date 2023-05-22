@@ -109,8 +109,8 @@ const Banner01 = () => {
   }
 
   function handleRegistBtn() {
-    if (localStorage.getItem("accessToken")) {
-      router.push(`/user/${localStorage.getItem("userId")}`);
+    if (sessionStorage.getItem("accessToken")) {
+      router.push(`/user/${sessionStorage.getItem("userId")}`);
     } else {
       router.push(githubLoginUrl);
     }

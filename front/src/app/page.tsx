@@ -158,14 +158,17 @@ const Home = () => {
 
   useEffect(() => {
     if (params.get("access-token")) {
-      localStorage.setItem("accessToken", params.get("access-token") as string);
-      localStorage.setItem(
+      sessionStorage.setItem(
+        "accessToken",
+        params.get("access-token") as string
+      );
+      sessionStorage.setItem(
         "refreshToken",
         params.get("refresh-token") as string
       );
-      localStorage.setItem("userId", params.get("userId") as string);
-      localStorage.setItem("userName", params.get("username") as string);
-      localStorage.setItem("avatarUrl", params.get("avatarUrl") as string);
+      sessionStorage.setItem("userId", params.get("userId") as string);
+      sessionStorage.setItem("userName", params.get("username") as string);
+      sessionStorage.setItem("avatarUrl", params.get("avatarUrl") as string);
       dispatch(setAuthLoginState());
       router.push("/");
     }

@@ -25,10 +25,10 @@ const Header = () => {
 
   /** ======================================== useEffect ======================================== */
   useEffect(() => {
-    if (login || localStorage.getItem("accessToken")) {
-      setUserId(parseInt(localStorage.getItem("userId") as string, 10));
-      setAvatarUrl(localStorage.getItem("avatarUrl") as string);
-      setUsername(localStorage.getItem("userName") as string);
+    if (login || sessionStorage.getItem("accessToken")) {
+      setUserId(parseInt(sessionStorage.getItem("userId") as string, 10));
+      setAvatarUrl(sessionStorage.getItem("avatarUrl") as string);
+      setUsername(sessionStorage.getItem("userName") as string);
     } else {
       setUserId(-1);
     }
@@ -62,7 +62,7 @@ const Header = () => {
     setShowMenu(false);
     try {
       const res = await axiosRequestLogout();
-      localStorage.clear();
+      sessionStorage.clear();
       setUserId(-1);
       router.push(".");
       dispatch(setAuthLogoutState());

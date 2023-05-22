@@ -141,7 +141,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
               <p className={`${styles.boxTitle} ${styles.username}`}>
                 {userInfo?.username}
                 {userInfo?.userId ===
-                  parseInt(localStorage.getItem("userId") as string, 10) && (
+                  parseInt(sessionStorage.getItem("userId") as string, 10) && (
                   <KeyIcon
                     onClick={() => onClickKey(userInfo?.extensionKey as string)}
                   />
