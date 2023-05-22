@@ -117,7 +117,7 @@ function RepositoryCard(props: propType) {
           marginBottom: '5%',
         }}>
         <div
-          className='flex flex-col'
+          className={`${styles.overflow} flex flex-col`}
           style={{
             width: '40%',
             display: 'flex',
@@ -130,12 +130,12 @@ function RepositoryCard(props: propType) {
             <directionalLight color='white' position={[0, 0, 5]} intensity={1} />
             <Model repomonUrl={props.repomonUrl} repoId={props.repoId} />
           </Canvas>
-          <div className='flex justify-center items-center mb-3'>
+          <div className={`flex justify-center items-center mb-3`}>
             <div className='rounded-full mx-2 bg-indigo-300' style={{ width: '16px', height: '16px' }}></div>
             <p>{props.repomonName}</p>
           </div>
         </div>
-        <div className={`flex flex-col justify-between py-2`} style={{ width: '50%' }}>
+        <div className={`flex flex-col justify-between py-3`} style={{ width: '50%' }}>
           <div>
             <p
               style={{
@@ -148,7 +148,14 @@ function RepositoryCard(props: propType) {
               id={styles.repoTitle}>
               {props.title}
             </p>
-            <p style={{ fontSize: '1em', fontWeight: '500', marginBlock: '3%' }} id={styles.repoDesc}>
+            <p
+              className={`${styles.overflowTwoLine}`}
+              style={{
+                fontSize: '1em',
+                fontWeight: '500',
+                marginBlock: '3%',
+              }}
+              id={styles.repoDesc}>
               {props.desc === null ? '설명 없음' : props.desc}
             </p>
           </div>
@@ -173,8 +180,8 @@ function RepositoryCard(props: propType) {
               </button>
             ) : (
               <div>
-                <p>경험치 : {props.exp}</p>
-                <p>배틀 레이팅 : {props.rating} </p>
+                <p className={`${styles.overflow}`}>경험치 : {props.exp}</p>
+                <p className={`${styles.overflow}`}>배틀 레이팅 : {props.rating} </p>
               </div>
             )}
           </div>
