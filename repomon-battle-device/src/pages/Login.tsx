@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Login.module.scss";
-import githubLoginBtn from "../assets/github_login_button.svg";
+import loginBtn from "../assets/login.svg";
 import Repomon from "../components/Repomon";
 import { aixosRequestLogin } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import { UserType } from "../types/type";
+import { AiFillQuestionCircle } from "react-icons/ai";
 
 function Login() {
   const [userName, setUserName] = useState<string>("");
   const [key, setKey] = useState<string>("");
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [showToolTip, setShowToolTip] = useState<boolean>(false);
 
   useEffect(() => {
     if (localStorage && localStorage.getItem("accessToken")) {
@@ -59,29 +61,41 @@ function Login() {
       </div>
       <Repomon />
       <div className={styles.form}>
-        <input
-          type="text"
-          value={userName}
-          placeholder="Github 유저명을 입력해주세요."
-          onChange={onChangeUserName}
-          style={{ margin: "0 0 0.5rem 0" }}
-        />
         <div>
+          <input
+            type="text"
+            value={userName}
+            placeholder="Github 유저명을 입력해주세요."
+            onChange={onChangeUserName}
+            style={{ margin: "0 0 0.5rem 0" }}
+          />
+        </div>
+        <div className={styles["key-div"]}>
           <input
             type="password"
             value={key}
             placeholder="발급받은 Key를 입력해주세요."
             onChange={onChangeKey}
           />
+          <AiFillQuestionCircle
+            onClick={() => {
+              setShowToolTip(!showToolTip);
+            }}
+          />
         </div>
       </div>
+      {showToolTip && (
+        <p className={styles["tool-tip"]}>
+          repomon.kr - 내 프로필 - Key 아이콘을 눌러 발급받을 수 있어요.
+        </p>
+      )}
       <img
         alt="github login button"
-        src={githubLoginBtn}
+        src={loginBtn}
         className={styles["login-btn"]}
         onClick={onClickLogin}
       />
-      <p className={styles.ver}>ver 1.0.0</p>
+      <p className={styles.ver}>ver 1.4</p>
     </div>
   );
 }

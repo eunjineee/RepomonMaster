@@ -9,7 +9,6 @@ import Pagination from "@/components/UI/Pagination";
 import top1Icon from "public/static/rank/1.png";
 import top2Icon from "public/static/rank/2.png";
 import top3Icon from "public/static/rank/3.png";
-import { pretreatModelUrl } from "@/app/utils/PretreatModelUrl";
 import { useRouter } from "next/navigation";
 import Loading from "@/app/loading";
 

@@ -11,6 +11,7 @@ export type RepresentRepoType = {
 };
 
 export type UserInfoType = {
+  updateTime: string;
   extensionKey: string;
   avatarUrl: string;
   nickname: string;

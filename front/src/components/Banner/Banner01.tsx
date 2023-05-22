@@ -1,13 +1,11 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import styles from "./banner.module.scss";
 import { Canvas, useLoader, useFrame } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { useAppDispatch } from "@/redux/hooks";
-import { setAuthLoginState } from "@/redux/features/authSlice";
 import * as THREE from "three";
-import { GitTipType, RepoInfo } from "@/types/repomons";
+import { GitTipType } from "@/types/repomons";
 import { getModelLists } from "@/api/modelLoader";
 import "@/styles/speechBubble.scss";
 import { gitTipData } from "../../app/dashboard/gitData";
@@ -109,8 +107,8 @@ const Banner01 = () => {
   }
 
   function handleRegistBtn() {
-    if (localStorage.getItem("accessToken")) {
-      router.push(`/user/${localStorage.getItem("userId")}`);
+    if (sessionStorage.getItem("accessToken")) {
+      router.push(`/user/${sessionStorage.getItem("userId")}`);
     } else {
       router.push(githubLoginUrl);
     }

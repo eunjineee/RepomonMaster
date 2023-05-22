@@ -135,6 +135,7 @@ export type BattleRecordType = {
   defensePoint: number;
   defenseRepo: BattleRepoType;
   isWin: boolean;
+  createdAt: string;
 };
 
 export type StatType = {

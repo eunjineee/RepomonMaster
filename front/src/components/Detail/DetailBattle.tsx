@@ -24,6 +24,7 @@ import platinum from "public/static/tier/platinum.svg";
 import diamond from "public/static/tier/diamond.svg";
 import { pretreatModelUrl } from "@/app/utils/PretreatModelUrl";
 import MatchModal from "./MatchModal";
+import { calcBattleDate } from "@/app/utils/CalcDate";
 
 const DetailBattle = ({
   battleInfo,
@@ -319,12 +320,13 @@ const DetailBattle = ({
                     {record.attackRepo.repomonNickname ===
                       myRepomonNickname && (
                       <>
-                        <p className={record.isWin ? styles.win : styles.lose}>
-                          {record.isWin ? "승리" : "패배"}
+                        <p className={styles["battle-date"]}>
+                          {calcBattleDate(record.createdAt)}
                         </p>
                         <p className={record.isWin ? styles.win : styles.lose}>
+                          {record.isWin ? "승리" : "패배"} (
                           {record.attackPoint > 0 && "+"}
-                          {record.attackPoint}
+                          {record.attackPoint})
                         </p>
                       </>
                     )}
@@ -332,11 +334,9 @@ const DetailBattle = ({
                       myRepomonNickname && (
                       <>
                         <p className={!record.isWin ? styles.win : styles.lose}>
-                          {!record.isWin ? "승리" : "패배"}
-                        </p>
-                        <p className={!record.isWin ? styles.win : styles.lose}>
+                          {!record.isWin ? "승리" : "패배"} (
                           {record.defensePoint > 0 && "+"}
-                          {record.defensePoint}
+                          {record.defensePoint})
                         </p>
                       </>
                     )}

@@ -61,8 +61,8 @@ function RepositoryCard(props: propType) {
   // 3D 모델 렌더링
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      setUserOriginId(parseInt(localStorage.getItem("userId") as string, 10));
+    if (sessionStorage.getItem("accessToken")) {
+      setUserOriginId(parseInt(sessionStorage.getItem("userId") as string, 10));
     } else {
       setUserOriginId(-1);
     }
@@ -132,7 +132,7 @@ function RepositoryCard(props: propType) {
         }}
       >
         <div
-          className="flex flex-col"
+          className={`${styles.overflow} flex flex-col`}
           style={{
             width: "40%",
             display: "flex",
@@ -154,7 +154,7 @@ function RepositoryCard(props: propType) {
             />
             <Model repomonUrl={props.repomonUrl} repoId={props.repoId} />
           </Canvas>
-          <div className="flex justify-center items-center mb-3">
+          <div className={`flex justify-center items-center mb-3`}>
             <div
               className="rounded-full mx-2 bg-indigo-300"
               style={{ width: "16px", height: "16px" }}
@@ -163,7 +163,7 @@ function RepositoryCard(props: propType) {
           </div>
         </div>
         <div
-          className={`flex flex-col justify-between py-2`}
+          className={`flex flex-col justify-between py-3`}
           style={{ width: "50%" }}
         >
           <div>
@@ -180,7 +180,12 @@ function RepositoryCard(props: propType) {
               {props.title}
             </p>
             <p
-              style={{ fontSize: "1em", fontWeight: "500", marginBlock: "3%" }}
+              className={`${styles.overflowTwoLine}`}
+              style={{
+                fontSize: "1em",
+                fontWeight: "500",
+                marginBlock: "3%",
+              }}
               id={styles.repoDesc}
             >
               {props.desc === null ? "설명 없음" : props.desc}
@@ -190,6 +195,7 @@ function RepositoryCard(props: propType) {
           <div>
             {props.repomonId >= 9000 ? (
               <button
+                className={`${styles.overflow}`}
                 style={{
                   display: props.isSameUser ? "block" : "none",
                   textAlign: "center",
@@ -207,9 +213,11 @@ function RepositoryCard(props: propType) {
                 레포몬 등록
               </button>
             ) : (
-              <div style={{ display: props.isSameUser ? "block" : "none" }}>
-                <p>경험치 : {props.exp}</p>
-                <p>배틀 레이팅 : {props.rating} </p>
+              <div>
+                <p className={`${styles.overflow}`}>경험치 : {props.exp}</p>
+                <p className={`${styles.overflow}`}>
+                  배틀 레이팅 : {props.rating}{" "}
+                </p>
               </div>
             )}
           </div>

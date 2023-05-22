@@ -1,0 +1,34 @@
+@import "../styles/variables.scss";
+
+.container {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.comment {
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+
+  @media screen and (max-width: 400px) {
+    font-size: 0.9rem;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: $highlight;
+  }
+
+  & svg {
+    margin: 0 0.5rem 0 0;
+  }
+}
