@@ -324,9 +324,9 @@ const DetailBattle = ({
                           {calcBattleDate(record.createdAt)}
                         </p>
                         <p className={record.isWin ? styles.win : styles.lose}>
-                          {record.isWin ? "승리" : "패배"}{" "}
+                          {record.isWin ? "승리" : "패배"} (
                           {record.attackPoint > 0 && "+"}
-                          {record.attackPoint}
+                          {record.attackPoint})
                         </p>
                       </>
                     )}
@@ -334,9 +334,9 @@ const DetailBattle = ({
                       myRepomonNickname && (
                       <>
                         <p className={!record.isWin ? styles.win : styles.lose}>
-                          {!record.isWin ? "승리" : "패배"}{" "}
+                          {!record.isWin ? "승리" : "패배"} (
                           {record.defensePoint > 0 && "+"}
-                          {record.defensePoint}
+                          {record.defensePoint})
                         </p>
                       </>
                     )}
