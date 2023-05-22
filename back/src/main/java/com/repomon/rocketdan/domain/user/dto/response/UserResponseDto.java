@@ -4,6 +4,7 @@ package com.repomon.rocketdan.domain.user.dto.response;
 import com.repomon.rocketdan.domain.repo.dto.response.RepomonResponseDto;
 import com.repomon.rocketdan.domain.repo.entity.RepoEntity;
 import com.repomon.rocketdan.domain.user.entity.UserEntity;
+import java.time.LocalDateTime;
 import lombok.*;
 
 import java.util.Map;
@@ -26,6 +27,7 @@ public class UserResponseDto {
 	private Long totalExp;
 	private RepresentRepo representRepo;
 	private Integer userRank;
+	private LocalDateTime updateTime;
 
 
 	public static UserResponseDto fromEntity(UserEntity user, Map<String, String> userInfo) {

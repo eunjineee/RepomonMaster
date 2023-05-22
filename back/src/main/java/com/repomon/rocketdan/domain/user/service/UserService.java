@@ -26,6 +26,7 @@ import com.repomon.rocketdan.domain.user.repository.UserRepository;
 import com.repomon.rocketdan.exception.CustomException;
 import com.repomon.rocketdan.exception.ErrorCode;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +110,13 @@ public class UserService {
 		// 총 경험치 조회
 		Long totalExp = 0L;
 		List<ActiveRepoEntity> activeRepoEntityList = activeRepoRepository.findAllByUser(user);
+		LocalDateTime updateTime = null;
 		for (ActiveRepoEntity activeRepo : activeRepoEntityList) {
+			LocalDateTime updatedAt = activeRepo.getUpdatedAt();
+			if(updateTime == null || updateTime.isBefore(updatedAt)){
+				updateTime = updatedAt;
+			}
+
 			RepoEntity repo = activeRepo.getRepo();
 			totalExp = repo.getIsActive() ? totalExp + repo.getRepoExp() : totalExp;
 
@@ -120,6 +127,7 @@ public class UserService {
 		}
 		userResponseDto.setTotalExp(totalExp);
 		userResponseDto.setActiveRepoCnt(activeRepoCnt);
+		userResponseDto.setUpdateTime(updateTime);
 
 		// 깃허브에 레포 정보 조회
 		Map<String, GHRepository> repositories = ghUtils.getRepositoriesWithName(user.getUserName());

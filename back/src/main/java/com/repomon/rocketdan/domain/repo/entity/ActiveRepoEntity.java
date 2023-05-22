@@ -3,6 +3,7 @@ package com.repomon.rocketdan.domain.repo.entity;
 
 import com.repomon.rocketdan.domain.repo.app.RepoDetail;
 import com.repomon.rocketdan.domain.user.entity.UserEntity;
+import java.time.LocalDateTime;
 import lombok.*;
 import org.kohsuke.github.GHRepository;
 
@@ -30,10 +31,13 @@ public class ActiveRepoEntity {
 	@JoinColumn(name = "repo_id")
 	private RepoEntity repo;
 
+	private LocalDateTime updatedAt;
+
 	public static ActiveRepoEntity of(UserEntity userEntity, RepoEntity repoEntity) {
 		return ActiveRepoEntity.builder()
 			.user(userEntity)
 			.repo(repoEntity)
+			.updatedAt(LocalDateTime.now())
 			.build();
 	}
 
