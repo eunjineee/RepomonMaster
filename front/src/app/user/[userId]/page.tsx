@@ -22,7 +22,7 @@ import UserExportModal from "@/components/UserExportModal";
 import { customAlert } from "@/app/utils/CustomAlert";
 import Link from "next/link";
 import { KeyIcon } from "@heroicons/react/24/solid";
-import { calcBattleDate } from "@/app/utils/CalcBattleDate";
+import { calcUpdateDate } from "@/app/utils/CalcDate";
 
 const Page = ({ params }: { params: { userId: string } }) => {
   // 레포지토리 유저 정보 GET
@@ -329,7 +329,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
                     {userInfo && (
                       <p className={styles["update-time"]}>
                         마지막 갱신 시간:
-                        {" " + calcBattleDate(userInfo?.updateTime as string)}
+                        {" " + calcUpdateDate(userInfo?.updateTime as string)}
                       </p>
                     )}
                   </>
