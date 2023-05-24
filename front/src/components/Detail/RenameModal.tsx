@@ -81,7 +81,6 @@ const RenameModal = ({
       setIsDuplicated(false);
     } catch (err) {
       customAlert("중복된 레포몬 닉네임입니다.");
-      console.error(err);
     }
   };
 
@@ -93,9 +92,7 @@ const RenameModal = ({
       );
       setIsUpdated((prev) => !prev);
       closeModal();
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   return (

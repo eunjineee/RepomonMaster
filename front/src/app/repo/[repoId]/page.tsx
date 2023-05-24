@@ -211,9 +211,7 @@ function Page({ params }: { params: { repoId: string } }) {
     try {
       const res = await axiosRequestRepoDetail(repoId, userId);
       setRepoDetailInfo(res.data);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   /** 레포 디테일 분석 정보 */
@@ -221,9 +219,7 @@ function Page({ params }: { params: { repoId: string } }) {
     try {
       const res = await axiosRequestRepoDetailResearch(repoId);
       setRepoDetailResearchInfo(res.data);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   /** 레포 디테일 배틀 정보 */
@@ -231,9 +227,7 @@ function Page({ params }: { params: { repoId: string } }) {
     try {
       const res = await axiosRequestRepoDetailBattleInfo(repoId);
       setRepoDetailBattleInfo(res.data.data);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   /** 레포 디테일 배틀 랭킹 정보 */
@@ -241,9 +235,7 @@ function Page({ params }: { params: { repoId: string } }) {
     try {
       const res = await axiosRequestBattleRanking(repoId);
       setBattleRank(res.data.rank);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   /** 레포 디테일 배틀 전적 정보 */
@@ -252,7 +244,6 @@ function Page({ params }: { params: { repoId: string } }) {
       const res = await axiosRequestBattleRecord(repoId);
       setBattleRecordInfo(res.data.data.battleLogList);
     } catch (err: any) {
-      console.error(err);
       if (err.response.data.status === 404) {
         setBattleRecordInfo([]);
       }
@@ -267,7 +258,6 @@ function Page({ params }: { params: { repoId: string } }) {
 
       setRepoDetailConventionInfo(res.data);
     } catch (err) {
-      console.error(err);
     } finally {
       setConventionLoading(false);
     }
@@ -278,9 +268,7 @@ function Page({ params }: { params: { repoId: string } }) {
     try {
       const res = await axiosRequestRepoDetailContribution(repoId);
       setRepoDetailContributionInfo(res.data);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   /** 레포 갱신 */
@@ -291,7 +279,6 @@ function Page({ params }: { params: { repoId: string } }) {
 
       setIsUpdated2(!isUpdated2);
     } catch (err) {
-      console.error(err);
       customAlert("잠시후 다시 시도해주세요.");
     } finally {
       setUpdateLoading(false);
@@ -309,9 +296,7 @@ function Page({ params }: { params: { repoId: string } }) {
       const res = await axiosRequestSetRepresent(repoId, userId);
       customAlert("대표 레포지토리로 설정되었습니다.");
       setIsUpdated3(!isUpdated3);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   return (

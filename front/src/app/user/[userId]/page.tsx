@@ -49,9 +49,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
     try {
       const res = await getUserInfo(params.userId);
       setUserInfo(res.data.data);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   // 레포지토리 리스트 GET
@@ -68,9 +66,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
         setTimeout(() => {
           setIsLoaded(true);
         }, 1500);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
 
     fetchData();
@@ -111,9 +107,7 @@ const Page = ({ params }: { params: { userId: string } }) => {
       setIsLoaded(false);
       setIsReloaded(!isReloaded);
       getUser();
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   return (

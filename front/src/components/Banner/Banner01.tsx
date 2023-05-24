@@ -27,9 +27,7 @@ const Model = ({ isClicked, onIsClickedChange }: any) => {
       try {
         const response = await getModelLists();
         setRepomonURL(response.data.repomonUrls);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
 
     fetchData();

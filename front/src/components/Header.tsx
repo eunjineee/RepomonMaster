@@ -66,9 +66,7 @@ const Header = () => {
       setUserId(-1);
       router.push(".");
       dispatch(setAuthLogoutState());
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
   const pathname = usePathname();
 

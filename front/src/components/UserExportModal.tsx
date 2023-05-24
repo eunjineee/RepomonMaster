@@ -119,27 +119,21 @@ const UserExportModal = ({ userId }: { userId: string }) => {
       } else {
         setApplyLanLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   const getUserLan = async (userId: number) => {
     try {
       const res = await axiosGetUserLan(userId);
       setLans(res.data.data);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   const getUserCardLan = async (userId: number) => {
     try {
       const res = await axiosGetUserCardLan(userId);
       setApplied(res.data.data);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   const setUserCardLan = async (userId: number) => {
@@ -150,9 +144,7 @@ const UserExportModal = ({ userId }: { userId: string }) => {
         updateUserCard(userId);
         getUserCardLan(userId);
       }
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   return (
