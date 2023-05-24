@@ -747,7 +747,7 @@ public class RepoService {
 		double conventionrate = 0;
 		RepoConventionResponseDto conventionDto = getRepoConventionInfo(repoId);
 		if (conventionDto.getTotalCnt() != 0 && conventionDto.getCollectCnt() != 0) {
-			conventionrate = conventionDto.getCollectCnt() / conventionDto.getTotalCnt() * 100;
+			conventionrate = (double) conventionDto.getCollectCnt() / conventionDto.getTotalCnt() * 100.0;
 		}
 
 		RepoRedisCardResponseDto responseDto = RepoRedisCardResponseDto.fromEntityAndGHRepository(repoId, repoEntity, ghRepository, historyEntityList, totalLineCount, contributers, conventionrate);
@@ -830,7 +830,7 @@ public class RepoService {
 		double conventionrate = 0;
 		RepoConventionResponseDto conventionDto = getRepoConventionInfo(repoId);
 		if (conventionDto.getTotalCnt() != 0 && conventionDto.getCollectCnt() != 0) {
-			conventionrate = conventionDto.getCollectCnt() / conventionDto.getTotalCnt() * 100;
+			conventionrate = (double)conventionDto.getCollectCnt() / conventionDto.getTotalCnt() * 100;
 		}
 
 		RepoRedisPersonalCardResponseDto responseDto = RepoRedisPersonalCardResponseDto.fromEntityAndOthers(userId, repoEntity, historyEntityList, contributers, userInfo, contributeResponse, myIssue,
