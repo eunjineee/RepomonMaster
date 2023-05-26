@@ -18,7 +18,7 @@ public interface RepomonStatusRepository extends JpaRepository<RepomonStatusEnti
 		value = "SELECT * FROM repomon_status INNER JOIN repo " +
 			"ON repomon_status.repo_id = repo.repo_id " +
 			"WHERE repo.rating >= :startRating and repo.rating < :endRating " +
-			"and repo.repomon_id < 9000 and repo.repo_owner != :repomonOwner " +
+			"and repo.repomon_id < 9000 and repo.repo_owner != :repomonOwner and repo.is_active = true " +
 			"ORDER BY RAND() limit 1 ")
 	Optional<RepomonStatusEntity> findByRatingBetweenRandom(
 		@Param("startRating") Integer startRating, @Param("endRating") Integer endRating,

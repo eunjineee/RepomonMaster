@@ -162,7 +162,7 @@ public class RepomonService {
 				}
 
 			}
-		
+
 			index += 1;
 
 		}
@@ -194,6 +194,11 @@ public class RepomonService {
 			battleLogRequestDto.getOpponentRepoId()).orElseThrow(
 			() -> new CustomException(NOT_FOUND_REPOSITORY)
 		);
+
+		// 액티브상태인지 확인
+		if (yourRepomon.getIsActive().equals(false) || myRepomon.getIsActive().equals(false)) {
+			throw new CustomException(NOT_ACTIVE_REPO);
+		}
 
 		// 타임아웃 확인
 		Optional<BattleLogEntity> lastBattleLog = battleLogRepository.findTopByAttackRepoOrderByCreatedAtDesc(myRepomon);
