@@ -164,10 +164,10 @@ Github의 사용자는 나날이 증가하는 가운데, 프로젝트의 지표�
         </td>
         <td>
             <ul>
-                <li>Card (Repo, Repo_personal, User) 담당</li>
-                <li>Django 를 이용한 Card 구현</li>
-                <li>Repo, Repo_Personal, User Card 관련 레포지토리 요약 API </li>
-                <li>Repo_Personal, User Card  언어 설정 API </li> 
+                <li>Card (Repo, Repo_personal, User) 담당했습니다.</li>
+                <li>Django 를 이용한 Card 구현하였습니다.</li>
+                <li>Repo, Repo_Personal, User Card 관련 레포지토리 요약 API를 구현하였습니다.</li>
+                <li>Repo_Personal, User Card  언어 설정 API를 구현하였습니다.</li> 
             </ul>
         </td>
         </tr>
